@@ -1,5 +1,6 @@
 package com.mateo.freetpv.util;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -9,6 +10,16 @@ public class DatabaseConnection {
 
     // Añadimos al directorio el archivo .db
     private String url = "jdbc:sqlite:" + path + "/freetpv.db";
+
+    // Conectarse a la bd en otras clases
+    public Connection getConnection() {
+        try {
+            return DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 
     // Conexion a base de datos
     public void connect() {
