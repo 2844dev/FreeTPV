@@ -21,6 +21,7 @@ public class DatabaseConnection {
 
     // Creamos las tablas si no existen
     public void initDatabase() {
+
         // Crear tabla usuarios
         var tabla_usuarios = "CREATE TABLE IF NOT EXISTS usuarios ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -29,10 +30,14 @@ public class DatabaseConnection {
                 + "salt text NOT NULL,"
                 + "rol text NOT NULL"
                 + ")";
+
+        // Crear tabla categorias
         var tabla_categorias = "CREATE TABLE IF NOT EXISTS categorias ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "nombre text NOT NULL"
                 + ")";
+
+        // Crear tabla productos
         var tabla_productos = "CREATE TABLE IF NOT EXISTS productos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "nombre text NOT NULL,"
@@ -43,11 +48,15 @@ public class DatabaseConnection {
                 + "categoria_id integer NOT NULL,"
                 + "FOREIGN KEY (categoria_id) REFERENCES categorias(id)"
                 + ")";
+
+        // Crear tabla mesas
         var tabla_mesas = "CREATE TABLE IF NOT EXISTS mesas ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "numero integer NOT NULL,"
                 + "estado text NOT NULL"
                 + ")";
+
+        // Crear tabla pedidos
         var tabla_pedidos = "CREATE TABLE IF NOT EXISTS pedidos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "fecha text NOT NULL,"
@@ -58,6 +67,8 @@ public class DatabaseConnection {
                 + "FOREIGN KEY (usuario_id) REFERENCES usuarios(id),"
                 + "FOREIGN KEY (mesa_id) REFERENCES mesas(id)"
                 + ")";
+
+        // Crear tabla liena pedidos
         var tabla_lineas_pedidos = "CREATE TABLE IF NOT EXISTS lineas_pedidos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "cantidad integer NOT NULL,"
@@ -67,6 +78,8 @@ public class DatabaseConnection {
                 + "FOREIGN KEY (pedido_id) REFERENCES pedidos(id),"
                 + "FOREIGN KEY (producto_id) REFERENCES productos(id)"
                 + ")";
+
+        // Crear tabla clientes
         var tabla_clientes = "CREATE TABLE IF NOT EXISTS clientes ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "nombre text NOT NULL,"
@@ -75,6 +88,8 @@ public class DatabaseConnection {
                 + "telefono text NOT NULL,"
                 + "email text NOT NULL"
                 + ")";
+
+        // Intentar conexion y ejecutar todas las consultas sql
         try (var connection = DriverManager.getConnection(url)) {
             var stmt = connection.createStatement();
             stmt.execute(tabla_usuarios);
