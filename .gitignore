@@ -8,6 +8,7 @@ target/
 .mvn/
 mvnw
 mvnw.cmd
+*.db
 
 ### IntelliJ IDEA ###
 .idea/
