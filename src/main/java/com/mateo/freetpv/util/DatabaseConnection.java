@@ -13,7 +13,7 @@ public class DatabaseConnection {
     // Conexion a base de datos
     public void connect() {
         try ( var connection = DriverManager.getConnection(url)) {
-            System.out.println("Database connection established");
+            System.out.println("Base de datos conectada");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
