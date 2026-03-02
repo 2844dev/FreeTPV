@@ -21,7 +21,6 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("FreeTPV");
         stage.setScene(scene);
-        stage.setFullScreen(true);
         stage.show();
     }
 

@@ -24,7 +24,7 @@
             <ComboBox fx:id="usuarioComboBox" maxWidth="150.0" prefWidth="150.0" promptText="Usuario" />
             <PasswordField fx:id="pinField" alignment="CENTER" maxWidth="100.0" prefWidth="100.0" promptText="PIN" />
             <Button fx:id="loginButton" maxWidth="150.0" mnemonicParsing="false" onAction="#handleLogin" text="Iniciar sesión" />
-            <Label fx:id="errorLabel" disable="true" />
+            <Label fx:id="errorLabel" visible="false" />
          </children>
       </VBox>
    </center>

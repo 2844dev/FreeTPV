@@ -1,14 +1,19 @@
 package com.mateo.freetpv.controller;
 
+import com.mateo.freetpv.HelloApplication;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class LoginController {
@@ -31,16 +36,26 @@ public class LoginController {
 
         // Comprobar que introduzca usuario y pin
         if (usuario == null || pin.isEmpty()) {
-            errorLabel.setDisable(false);
+            errorLabel.setVisible(true);
             errorLabel.setText("Ingrese un usuario o pin.");
         } else {
 
             // Comprobamos si devuelve usuario o null para saber si es valido o no
             Usuario user = usuarioDAO.validarLogin(usuario, pin);
             if (user != null) {
-                System.out.println(user.getRol());
+                try {
+                    // Cargar ventana principal
+                    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/main-view.fxml"));
+                    Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+
+                    // Conseguir stage desde el un objeto
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
             } else {
-                errorLabel.setDisable(false);
+                errorLabel.setVisible(true);
                 errorLabel.setText("Pin incorrecto.");
             }
         }
