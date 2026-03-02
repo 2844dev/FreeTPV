@@ -100,6 +100,17 @@ public class DatabaseConnection {
                 + "email text NOT NULL"
                 + ")";
 
+        // Crear tabla caja
+        var tabla_caja = "CREATE TABLE IF NOT EXISTS caja ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "fecha_apertura text NOT NULL,"
+                + "fecha_cierre text NOT NULL,"
+                + "saldo_inicial real NOT NULL,"
+                + "saldo_final real NOT NULL,"
+                + "usuario_id integer NOT NULL,"
+                + "FOREIGN KEY (usuario_id) REFERENCES usuarios(id)"
+                + ")";
+
         // Intentar conexion y ejecutar todas las consultas sql
         try (var connection = DriverManager.getConnection(url)) {
             var stmt = connection.createStatement();
@@ -110,6 +121,7 @@ public class DatabaseConnection {
             stmt.execute(tabla_pedidos);
             stmt.execute(tabla_lineas_pedidos);
             stmt.execute(tabla_clientes);
+            stmt.execute(tabla_caja);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
