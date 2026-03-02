@@ -36,7 +36,7 @@ public class DatabaseConnection {
         // Crear tabla usuarios
         var tabla_usuarios = "CREATE TABLE IF NOT EXISTS usuarios ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "nombre text NOT NULL,"
+                + "nombre text NOT NULL UNIQUE,"
                 + "hash text NOT NULL,"
                 + "salt text NOT NULL,"
                 + "rol text NOT NULL"

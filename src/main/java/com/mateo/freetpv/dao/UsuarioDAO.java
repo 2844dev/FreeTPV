@@ -6,10 +6,35 @@ import com.mateo.freetpv.util.HashUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO {
     private HashUtil hashUtil = new HashUtil();
     private DatabaseConnection db = new DatabaseConnection();
+
+    // Nombres para el combobox de ventana login
+    public List<String> obtenerNombres() {
+
+        // Seleccionamos todos los valores de la columna nombres de la tabla usuarios
+        String sql = "SELECT nombre FROM usuarios";
+        try (var connection = db.getConnection()) {
+            var stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Creamos una lista de arrays de string y añadimos todos a ella
+            List<String> nombres = new ArrayList<>();
+
+            // Vamos por todos los valores, si no hay ninguno devolvemos lista vacia
+            while (rs.next()) {
+                nombres.add(rs.getString("nombre"));
+            }
+            return nombres;
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 
     public void crearUsuario(String nombre, String pin, String rol) {
         String salt = hashUtil.generarSalt();
