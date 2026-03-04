@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.MainController">
    <left>
@@ -18,9 +19,20 @@
                   <Image url="@../images/freetpv_logo.png" />
                </image>
             </ImageView>
-            <Button fx:id="ventasButton" mnemonicParsing="false" onAction="#mostrarVentas" prefHeight="100.0" prefWidth="250.0" text="Pantalla de ventas" />
-            <Button fx:id="productosButton" mnemonicParsing="false" onAction="#mostrarProductos" prefHeight="100.0" prefWidth="250.0" text="Gestion de productos" />
-            <Button fx:id="inventarioButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="100.0" prefWidth="250.0" text="Inventario" />
+            <Button fx:id="ventasButton" mnemonicParsing="false" onAction="#mostrarVentas" prefHeight="70.0" prefWidth="250.0" text="Pantalla de ventas" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label prefWidth="250.0" text="GESTIÓN">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="empleadosButton" mnemonicParsing="false" onAction="#mostrarProductos" prefHeight="35.0" prefWidth="250.0" text="Gestión de empleados" />
+                  <Button fx:id="productosButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="35.0" prefWidth="250.0" text="Gestión de productos" />
+                  <Button fx:id="mesasButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="35.0" prefWidth="250.0" text="Gestión de mesas" />
+                  <Button fx:id="clientesButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="35.0" prefWidth="250.0" text="Gestión de clientes" />
+               </children>
+            </VBox>
             <Label text="FREETPV 1.0">
                <VBox.margin>
                   <Insets top="50.0" />

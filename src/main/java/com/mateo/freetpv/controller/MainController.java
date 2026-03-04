@@ -11,8 +11,10 @@ import java.io.IOException;
 
 public class MainController {
     @FXML private Button ventasButton;
+    @FXML private Button empleadosButton;
     @FXML private Button productosButton;
-    @FXML private Button inventarioButton;
+    @FXML private Button mesasButton;
+    @FXML private Button clientesButton;
     @FXML private StackPane contenedor;
 
 
