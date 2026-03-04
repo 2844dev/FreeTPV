@@ -6,20 +6,21 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.MainController">
    <left>
-      <VBox alignment="TOP_CENTER" maxWidth="250.0" prefWidth="250.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxWidth="250.0" prefWidth="250.0" spacing="30.0" style="-fx-background-color: #e6d7fc;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/freetpv_logo.png" />
                </image>
             </ImageView>
-            <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Pantalla de ventas" />
-            <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Gestion de productos" />
-            <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Inventario" />
+            <Button fx:id="ventasButton" mnemonicParsing="false" onAction="#mostrarVentas" prefHeight="100.0" prefWidth="250.0" text="Pantalla de ventas" />
+            <Button fx:id="productosButton" mnemonicParsing="false" onAction="#mostrarProductos" prefHeight="100.0" prefWidth="250.0" text="Gestion de productos" />
+            <Button fx:id="inventarioButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="100.0" prefWidth="250.0" text="Inventario" />
             <Label text="FREETPV 1.0">
                <VBox.margin>
                   <Insets top="50.0" />
@@ -28,4 +29,7 @@
          </children>
       </VBox>
    </left>
+   <center>
+      <StackPane fx:id="contenedor" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>
