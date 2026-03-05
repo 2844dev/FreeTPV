@@ -33,82 +33,91 @@ public class DatabaseConnection {
     // Creamos las tablas si no existen
     public void initDatabase() {
 
-        // Crear tabla usuarios
         var tabla_usuarios = "CREATE TABLE IF NOT EXISTS usuarios ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "nombre text NOT NULL UNIQUE,"
-                + "hash text NOT NULL,"
-                + "salt text NOT NULL,"
-                + "rol text NOT NULL"
+                + "nombre TEXT NOT NULL UNIQUE,"
+                + "hash TEXT NOT NULL,"
+                + "salt TEXT NOT NULL,"
+                + "rol TEXT NOT NULL,"
+                + "fecha_creacion TEXT NOT NULL"
                 + ")";
 
-        // Crear tabla categorias
         var tabla_categorias = "CREATE TABLE IF NOT EXISTS categorias ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "nombre text NOT NULL"
+                + "nombre TEXT NOT NULL UNIQUE"
                 + ")";
 
-        // Crear tabla productos
+        var tabla_zonas = "CREATE TABLE IF NOT EXISTS zonas ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "nombre TEXT NOT NULL"
+                + ")";
+
         var tabla_productos = "CREATE TABLE IF NOT EXISTS productos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "nombre text NOT NULL,"
-                + "nombre_ticket text NOT NULL,"
-                + "imagen text,"
-                + "precio real NOT NULL,"
-                + "iva integer NOT NULL,"
-                + "categoria_id integer NOT NULL,"
+                + "nombre TEXT NOT NULL,"
+                + "nombre_ticket TEXT NOT NULL,"
+                + "imagen TEXT,"
+                + "precio REAL NOT NULL,"
+                + "iva INTEGER NOT NULL,"
+                + "categoria_id INTEGER NOT NULL,"
                 + "FOREIGN KEY (categoria_id) REFERENCES categorias(id)"
                 + ")";
 
-        // Crear tabla mesas
-        var tabla_mesas = "CREATE TABLE IF NOT EXISTS mesas ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "numero integer NOT NULL,"
-                + "estado text NOT NULL"
-                + ")";
-
-        // Crear tabla pedidos
-        var tabla_pedidos = "CREATE TABLE IF NOT EXISTS pedidos ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "fecha text NOT NULL,"
-                + "total real NOT NULL,"
-                + "estado text NOT NULL,"
-                + "usuario_id integer NOT NULL,"
-                + "mesa_id integer NOT NULL,"
-                + "FOREIGN KEY (usuario_id) REFERENCES usuarios(id),"
-                + "FOREIGN KEY (mesa_id) REFERENCES mesas(id)"
-                + ")";
-
-        // Crear tabla liena pedidos
-        var tabla_lineas_pedidos = "CREATE TABLE IF NOT EXISTS lineas_pedidos ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "cantidad integer NOT NULL,"
-                + "precio_unitario real NOT NULL,"
-                + "pedido_id integer NOT NULL,"
-                + "producto_id integer NOT NULL,"
-                + "FOREIGN KEY (pedido_id) REFERENCES pedidos(id),"
-                + "FOREIGN KEY (producto_id) REFERENCES productos(id)"
-                + ")";
-
-        // Crear tabla clientes
         var tabla_clientes = "CREATE TABLE IF NOT EXISTS clientes ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "nombre text NOT NULL,"
-                + "nif text NOT NULL,"
-                + "direccion text NOT NULL,"
-                + "telefono text NOT NULL,"
-                + "email text NOT NULL"
+                + "nombre TEXT NOT NULL,"
+                + "nif TEXT NOT NULL UNIQUE,"
+                + "direccion TEXT NOT NULL,"
+                + "telefono TEXT,"
+                + "email TEXT"
                 + ")";
 
-        // Crear tabla caja
         var tabla_caja = "CREATE TABLE IF NOT EXISTS caja ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "fecha_apertura text NOT NULL,"
-                + "fecha_cierre text NOT NULL,"
-                + "saldo_inicial real NOT NULL,"
-                + "saldo_final real NOT NULL,"
-                + "usuario_id integer NOT NULL,"
-                + "FOREIGN KEY (usuario_id) REFERENCES usuarios(id)"
+                + "fecha_apertura TEXT NOT NULL,"
+                + "fecha_cierre TEXT," // NULL hasta que se cierre
+                + "fondo_inicial REAL NOT NULL,"
+                + "total_efectivo_esperado REAL NOT NULL,"
+                + "total_efectivo_real REAL NOT NULL,"
+                + "total_tarjeta REAL NOT NULL,"
+                + "descuadre REAL NOT NULL"
+                + ")";
+
+        var tabla_mesas = "CREATE TABLE IF NOT EXISTS mesas ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "numero INTEGER NOT NULL,"
+                + "estado INTEGER NOT NULL," // 0 LIBRE, 1 OCUPADA
+                + "zona_id INTEGER NOT NULL,"
+                + "pedido_id INTEGER UNIQUE," // NULL si la mesa está libre
+                + "FOREIGN KEY (zona_id) REFERENCES zonas(id)"
+                + ")";
+
+        var tabla_pedidos = "CREATE TABLE IF NOT EXISTS pedidos ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "fecha TEXT NOT NULL,"
+                + "total REAL NOT NULL,"
+                + "estado TEXT NOT NULL," // Abierto, Pagado
+                + "metodo_pago TEXT NOT NULL," // Efectivo, Tarjeta
+                + "usuario_id INTEGER NOT NULL,"
+                + "mesa_id INTEGER NOT NULL,"
+                + "caja_id INTEGER NOT NULL,"
+                + "cliente_id INTEGER,"
+                + "FOREIGN KEY (usuario_id) REFERENCES usuarios(id),"
+                + "FOREIGN KEY (mesa_id) REFERENCES mesas(id),"
+                + "FOREIGN KEY (caja_id) REFERENCES caja(id),"
+                + "FOREIGN KEY (cliente_id) REFERENCES clientes(id)"
+                + ")";
+
+        var tabla_lineas_pedidos = "CREATE TABLE IF NOT EXISTS lineas_pedidos ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "cantidad INTEGER NOT NULL,"
+                + "precio_unitario REAL NOT NULL,"
+                + "iva INTEGER NOT NULL,"
+                + "subtotal REAL NOT NULL,"
+                + "pedido_id INTEGER NOT NULL,"
+                + "producto_id INTEGER NOT NULL,"
+                + "FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,"
+                + "FOREIGN KEY (producto_id) REFERENCES productos(id)"
                 + ")";
 
         // Intentar conexion y ejecutar todas las consultas sql
@@ -116,6 +125,7 @@ public class DatabaseConnection {
             var stmt = connection.createStatement();
             stmt.execute(tabla_usuarios);
             stmt.execute(tabla_categorias);
+            stmt.execute(tabla_zonas);
             stmt.execute(tabla_productos);
             stmt.execute(tabla_mesas);
             stmt.execute(tabla_pedidos);

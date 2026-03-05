@@ -6,6 +6,8 @@ import com.mateo.freetpv.util.HashUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +42,20 @@ public class UsuarioDAO {
         String salt = hashUtil.generarSalt();
         String hash = hashUtil.hashPin(pin, salt);
 
+        // Cogemos la fecha actual y la ponemos automaticamente en la base de datos
+        LocalDate fecha = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fecha_creacion = fecha.format(formato);
+
         // Utilizamos prepareStatement para evitar SQL injection
-        String sql = "INSERT INTO usuarios (nombre, hash, salt, rol) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nombre, hash, salt, rol, fecha_creacion) VALUES (?, ?, ?, ?, ?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
             stmt.setString(2, hash);
             stmt.setString(3, salt);
             stmt.setString(4, rol);
+            stmt.setString(5, fecha_creacion);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
