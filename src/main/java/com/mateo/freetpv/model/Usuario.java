@@ -8,14 +8,16 @@ public class Usuario {
     private String hash;
     private String salt;
     private String rol;
+    private String fecha_creacion;
 
     // Constructor
-    public Usuario(int id, String nombre, String hash, String salt, String rol) {
+    public Usuario(int id, String nombre, String hash, String salt, String rol, String fecha_creacion) {
         this.id = id;
         this.nombre = nombre;
         this.hash = hash;
         this.salt = salt;
         this.rol = rol;
+        this.fecha_creacion = fecha_creacion;
     }
 
     // Setters
@@ -25,14 +27,15 @@ public class Usuario {
     public void setHash(String hash) {
         this.hash = hash;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public void setNombre(String nombre) { this.nombre = nombre; }
     public void setId(int id) {
         this.id = id;
     }
     public void setRol(String rol) {
         this.rol = rol;
+    }
+    public void setFecha_creacion(String fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 
 
@@ -51,5 +54,8 @@ public class Usuario {
     }
     public String getRol() {
         return rol;
+    }
+    public String getFecha_creacion() {
+        return fecha_creacion;
     }
 }

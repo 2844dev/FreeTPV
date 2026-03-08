@@ -38,6 +38,46 @@ public class UsuarioDAO {
         }
     }
 
+    // Obtenemos usuarios para el tableview de la ventana empleados
+    public List<Usuario> obtenerUsuarios() {
+
+        // Cogemos todos los datos de la tabla usuarios
+        String sql = "SELECT * FROM usuarios";
+
+        // Nos conectamos a la base de datos
+        try (var connection = db.getConnection()) {
+            var stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Creamos una lista de usuarios y todos los atributos que tiene un usuario
+            List<Usuario> usuarios = new ArrayList<>();
+            int id;
+            String nombre;
+            String hash;
+            String salt;
+            String rol;
+            String fecha_creacion;
+            Usuario usuario;
+
+            // Probamos a crear usuarios hasta que no haya mas usuarios
+            while (rs.next()) {
+                id = rs.getInt("id");
+                nombre = rs.getString("nombre");
+                hash = rs.getString("hash");
+                salt = rs.getString("salt");
+                rol = rs.getString("rol");
+                fecha_creacion = rs.getString("fecha_creacion");
+                usuario = new Usuario(id, nombre, hash, salt, rol, fecha_creacion);
+                usuarios.add(usuario);
+            }
+            return usuarios;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    // Creamos un hash y guardamos usuario en la base de datos
     public void crearUsuario(String nombre, String pin, String rol) {
         String salt = hashUtil.generarSalt();
         String hash = hashUtil.hashPin(pin, salt);
@@ -62,6 +102,7 @@ public class UsuarioDAO {
         }
     }
 
+    // Comparamos hashes para validar un login, si es valido returneamos un Usuario
     public Usuario validarLogin(String nombre, String pin) {
 
         // Buscamos de la tabla usuarios donde el nombre coincide
@@ -83,7 +124,8 @@ public class UsuarioDAO {
                 if (hashAlmacenado.equals(hashInsertado)) {
                     int id  = rs.getInt("id");
                     String rol = rs.getString("rol");
-                    return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol);
+                    String fecha_creacion = rs.getString("fecha_creacion");
+                    return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, fecha_creacion);
                 } else  {
                     return null;
                 }

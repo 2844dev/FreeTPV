@@ -97,7 +97,7 @@ public class DatabaseConnection {
                 + "fecha TEXT NOT NULL,"
                 + "total REAL NOT NULL,"
                 + "estado TEXT NOT NULL," // Abierto, Pagado
-                + "metodo_pago TEXT NOT NULL," // Efectivo, Tarjeta
+                + "metodo_pago TEXT NULL," // Efectivo, Tarjeta o todavia no se ha cobrado
                 + "usuario_id INTEGER NOT NULL,"
                 + "mesa_id INTEGER NOT NULL,"
                 + "caja_id INTEGER NOT NULL,"
