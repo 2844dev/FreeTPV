@@ -48,15 +48,14 @@ public class EmpleadosController {
         rolColumn.setCellValueFactory(new PropertyValueFactory<>("rol"));
         fechaColumn.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
 
-        // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
-
-        // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
-        empleadosTable.setItems(FXCollections.observableList(usuarios));
+        // Actualizamos la tabla con los usuarios
+        cargarUsuarios();
 
         // Añadimos los roles al choicebox para elegir
         rolChoiceBox.setItems(FXCollections.observableArrayList("admin", "camarero"));
     }
+
+    // Guardamos el usuario
 
     // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario
     @FXML public void mostrarFormularioNuevo() {
@@ -75,5 +74,13 @@ public class EmpleadosController {
 
         // Habilitamos el panel principal
         empleadosPane.setDisable(false);
+    }
+
+    private void cargarUsuarios() {
+        // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
+
+        // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
+        empleadosTable.setItems(FXCollections.observableList(usuarios));
     }
 }
