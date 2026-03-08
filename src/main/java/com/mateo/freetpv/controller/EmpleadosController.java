@@ -38,6 +38,9 @@ public class EmpleadosController {
 
     @FXML public void initialize() {
 
+        // Nos aseguramos que el panel de nuevo empleado esta invisible
+        nuevoempleadoPane.setVisible(false);
+
         // Indicamos a cada columna que atributo de usuario mostrar
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         rolColumn.setCellValueFactory(new PropertyValueFactory<>("rol"));
@@ -51,5 +54,13 @@ public class EmpleadosController {
 
         // Añadimos los roles al choicebox para elegir
         rolChoiceBox.setItems(FXCollections.observableArrayList("admin", "camarero"));
+    }
+    @FXML public void mostrarFormularioNuevo() {
+        empleadosPane.setVisible(false);
+        nuevoempleadoPane.setVisible(true);
+    }
+    @FXML public void cerrarFormulario() {
+        nuevoempleadoPane.setVisible(false);
+        empleadosPane.setVisible(true);
     }
 }

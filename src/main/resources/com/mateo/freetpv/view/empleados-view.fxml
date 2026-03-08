@@ -19,7 +19,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="editarButton" mnemonicParsing="false" text="Editar Usuario" />
-                  <Button fx:id="nuevoButton" mnemonicParsing="false" text="Nuevo usuario" />
+                  <Button fx:id="nuevoButton" onAction="#mostrarFormularioNuevo" mnemonicParsing="false" text="Nuevo usuario" />
                   <TextField fx:id="buscarField" promptText="Buscar..." />
                </children>
             </HBox>
@@ -47,7 +47,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
                         <Button fx:id="guardarButton" mnemonicParsing="false" text="Guardar" />
-                        <Button fx:id="cancelarButton" mnemonicParsing="false" text="Cancelar" />
+                        <Button fx:id="cancelarButton" onAction="#cerrarFormulario" mnemonicParsing="false" text="Cancelar" />
                      </children>
                   </HBox>
                </children>
