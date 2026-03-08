@@ -27,10 +27,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="empleadosButton" mnemonicParsing="false" onAction="#mostrarProductos" prefHeight="35.0" prefWidth="250.0" text="Gestión de empleados" />
-                  <Button fx:id="productosButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="35.0" prefWidth="250.0" text="Gestión de productos" />
-                  <Button fx:id="mesasButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="35.0" prefWidth="250.0" text="Gestión de mesas" />
-                  <Button fx:id="clientesButton" mnemonicParsing="false" onAction="#mostrarInventario" prefHeight="35.0" prefWidth="250.0" text="Gestión de clientes" />
+                  <Button fx:id="empleadosButton" mnemonicParsing="false" onAction="#mostrarEmpleados" prefHeight="35.0" prefWidth="250.0" text="Gestión de empleados" />
+                  <Button fx:id="productosButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Gestión de productos" />
+                  <Button fx:id="mesasButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Gestión de mesas" />
+                  <Button fx:id="clientesButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Gestión de clientes" />
                </children>
             </VBox>
             <Label text="FREETPV 1.0">

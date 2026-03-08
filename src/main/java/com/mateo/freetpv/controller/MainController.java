@@ -37,10 +37,8 @@ public class MainController {
     @FXML public void mostrarVentas() {
         cargarVista("ventas-view.fxml");
     }
-    @FXML public void mostrarProductos() {
-        cargarVista("productos-view.fxml");
+    @FXML public void mostrarEmpleados() {
+        cargarVista("empleados-view.fxml");
     }
-    @FXML public void mostrarInventario() {
-        cargarVista("inventario-view.fxml");
-    }
+
 }

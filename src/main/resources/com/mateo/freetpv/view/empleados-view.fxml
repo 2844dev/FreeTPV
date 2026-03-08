@@ -12,42 +12,42 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.EmpleadosController">
    <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <BorderPane fx:id="empleadosPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
          <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="Eliminar usuario" />
-                  <Button mnemonicParsing="false" text="Editar Usuario" />
-                  <Button mnemonicParsing="false" text="Nuevo usuario" />
+                  <Button fx:id="editarButton" mnemonicParsing="false" text="Editar Usuario" />
+                  <Button fx:id="nuevoButton" mnemonicParsing="false" text="Nuevo usuario" />
+                  <TextField fx:id="buscarField" promptText="Buscar..." />
                </children>
             </HBox>
          </top>
          <center>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="empleadosTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn minWidth="500.0" prefWidth="830.0" resizable="false" text="Nombre" />
-                <TableColumn minWidth="200.0" prefWidth="200.0" resizable="false" text="Rol" />
+                  <TableColumn fx:id="nombreColumn" maxWidth="567.0" minWidth="567.0" prefWidth="567.0" resizable="false" text="Nombre" />
+                  <TableColumn fx:id="rolColumn" maxWidth="218.0" minWidth="218.0" prefWidth="218.0" resizable="false" text="Rol" />
+                  <TableColumn fx:id="fechaColumn" maxWidth="204.0" minWidth="204.0" prefWidth="204.0" resizable="false" text="Fecha creación" />
               </columns>
             </TableView>
          </center>
       </BorderPane>
-      <BorderPane maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: #FFFFFF;" visible="false">
+      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: #FFFFFF;" visible="false">
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Usuario" />
-                  <TextField maxWidth="250.0" promptText="Azzusa Nakano" />
-                  <Label text="Contraseña" />
-                  <PasswordField maxWidth="250.0" promptText="1234" />
+                  <TextField fx:id="usuarioField" maxWidth="250.0" promptText="Azusa Nakano" />
+                  <Label text="Pin" />
+                  <PasswordField fx:id="pinField" maxWidth="250.0" promptText="1234" />
                   <Label text="Rol" />
-                  <ChoiceBox prefWidth="150.0" />
+                  <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Guardar" />
-                        <Button mnemonicParsing="false" text="Cancelar" />
+                        <Button fx:id="guardarButton" mnemonicParsing="false" text="Guardar" />
+                        <Button fx:id="cancelarButton" mnemonicParsing="false" text="Cancelar" />
                      </children>
                   </HBox>
                </children>
