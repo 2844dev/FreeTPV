@@ -19,7 +19,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="editarButton" mnemonicParsing="false" text="Editar Usuario" />
-                  <Button fx:id="nuevoButton" onAction="#mostrarFormularioNuevo" mnemonicParsing="false" text="Nuevo usuario" />
+                  <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Nuevo usuario" />
                   <TextField fx:id="buscarField" promptText="Buscar..." />
                </children>
             </HBox>
@@ -27,9 +27,10 @@
          <center>
             <TableView fx:id="empleadosTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                  <TableColumn fx:id="nombreColumn" maxWidth="567.0" minWidth="567.0" prefWidth="567.0" resizable="false" text="Nombre" />
-                  <TableColumn fx:id="rolColumn" maxWidth="218.0" minWidth="218.0" prefWidth="218.0" resizable="false" text="Rol" />
-                  <TableColumn fx:id="fechaColumn" maxWidth="204.0" minWidth="204.0" prefWidth="204.0" resizable="false" text="Fecha creación" />
+                  <TableColumn fx:id="codigoColumn" editable="false" maxWidth="567.0" minWidth="85.0" prefWidth="115.0" resizable="false" text="Código" />
+                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="1049.0" minWidth="490.0" prefWidth="532.0" resizable="false" text="Nombre" />
+                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="295.0" minWidth="57.0" prefWidth="162.0" resizable="false" text="Rol" />
+                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="442.0" minWidth="149.0" prefWidth="180.0" resizable="false" text="Fecha creación" />
               </columns>
             </TableView>
          </center>
@@ -47,7 +48,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
                         <Button fx:id="guardarButton" mnemonicParsing="false" text="Guardar" />
-                        <Button fx:id="cancelarButton" onAction="#cerrarFormulario" mnemonicParsing="false" text="Cancelar" />
+                        <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
                      </children>
                   </HBox>
                </children>

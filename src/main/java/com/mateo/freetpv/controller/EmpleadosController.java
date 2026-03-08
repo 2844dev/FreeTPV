@@ -22,6 +22,7 @@ public class EmpleadosController {
     @FXML private Button nuevoButton;
     @FXML private TextField buscarField;
     @FXML private TableView<Usuario> empleadosTable;
+    @FXML private TableColumn<Usuario, Integer> codigoColumn;
     @FXML private TableColumn<Usuario, String> nombreColumn;
     @FXML private TableColumn<Usuario, String> rolColumn;
     @FXML private TableColumn<Usuario, String> fechaColumn;
@@ -42,6 +43,7 @@ public class EmpleadosController {
         nuevoempleadoPane.setVisible(false);
 
         // Indicamos a cada columna que atributo de usuario mostrar
+        codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         rolColumn.setCellValueFactory(new PropertyValueFactory<>("rol"));
         fechaColumn.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
@@ -55,12 +57,23 @@ public class EmpleadosController {
         // Añadimos los roles al choicebox para elegir
         rolChoiceBox.setItems(FXCollections.observableArrayList("admin", "camarero"));
     }
+
+    // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario
     @FXML public void mostrarFormularioNuevo() {
-        empleadosPane.setVisible(false);
+        empleadosPane.setDisable(true);
         nuevoempleadoPane.setVisible(true);
     }
+
+    // Eliminamos todos los datos que queden en los campos del formulario una vez se cancela
     @FXML public void cerrarFormulario() {
         nuevoempleadoPane.setVisible(false);
-        empleadosPane.setVisible(true);
+
+        // Limpiamos el formulario
+        usuarioField.clear();
+        pinField.clear();
+        rolChoiceBox.getSelectionModel().clearSelection();
+
+        // Habilitamos el panel principal
+        empleadosPane.setDisable(false);
     }
 }
