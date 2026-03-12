@@ -18,7 +18,7 @@
          <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="editarButton" mnemonicParsing="false" text="Editar Usuario" />
+                  <Button fx:id="editarButton" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Editar Usuario" />
                   <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Nuevo usuario" />
                   <TextField fx:id="buscarField" promptText="Buscar..." />
                </children>
@@ -45,9 +45,10 @@
                   <PasswordField fx:id="pinField" maxWidth="250.0" promptText="1234" />
                   <Label text="Rol" />
                   <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
+                  <Label fx:id="errorLabel" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button fx:id="guardarButton" mnemonicParsing="false" text="Guardar" />
+                        <Button fx:id="guardarButton" mnemonicParsing="false" onAction="#guardarFormulario" text="Guardar" />
                         <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
                      </children>
                   </HBox>

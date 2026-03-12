@@ -4,12 +4,7 @@ import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
@@ -31,11 +26,14 @@ public class EmpleadosController {
     @FXML private BorderPane nuevoempleadoPane;
     @FXML private TextField usuarioField;
     @FXML private PasswordField pinField;
-    @FXML private ChoiceBox rolChoiceBox;
+    @FXML private ChoiceBox<String> rolChoiceBox;
     @FXML private Button guardarButton;
     @FXML private Button cancelarButton;
+    @FXML private Label errorLabel;
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+    private Usuario usuarioEditando = null;
 
     @FXML public void initialize() {
 
@@ -57,10 +55,64 @@ public class EmpleadosController {
 
     // Guardamos el usuario
 
+    @FXML public void guardarFormulario() {
+        if (usuarioEditando != null) {
+            if (usuarioField.getText().equals("") || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
+                errorLabel.setText("Debe rellenar usuario y rol");
+            } else {
+                usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
+                // Actualizamos la tabla
+                cargarUsuarios();
+
+                // Cerramos el formulario
+                cerrarFormulario();
+            }
+        } else {
+            if (usuarioField.getText().equals("") || pinField.getText().equals("") || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
+                errorLabel.setText("Debe rellenar todos los campos.");
+            } else {
+                usuarioDAO.crearUsuario(usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
+                // Actualizamos la tabla
+                cargarUsuarios();
+
+                // Cerramos el formulario
+                cerrarFormulario();
+            }
+        }
+    }
+
     // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario
     @FXML public void mostrarFormularioNuevo() {
         empleadosPane.setDisable(true);
         nuevoempleadoPane.setVisible(true);
+    }
+
+    @FXML public void mostrarFormularioEditar() {
+
+        // Escogemos el usuario editado como el seleccionado en la tabla
+        usuarioEditando = empleadosTable.getSelectionModel().getSelectedItem();
+
+        // Comprobamos que haya un usuario seleccionado
+        if (usuarioEditando != null) {
+        // Ponemos los datos del usuario en el formulario
+        usuarioField.setText(usuarioEditando.getNombre());
+
+        // Dejamos el pin en blanco si no lo queremos editar
+        pinField.clear();
+
+        // Seleccionamos admin si tiene admin, si no siempre sera camarero
+        if (usuarioEditando.getRol().equals("admin")) {
+            rolChoiceBox.getSelectionModel().select(0);
+        } else {
+            rolChoiceBox.getSelectionModel().select(1);
+        }
+
+        // Hacemos visible el panel
+        empleadosPane.setDisable(true);
+        nuevoempleadoPane.setVisible(true);
+
+        // Si no hay usuario seleccionado cancelamos
+        }
     }
 
     // Eliminamos todos los datos que queden en los campos del formulario una vez se cancela

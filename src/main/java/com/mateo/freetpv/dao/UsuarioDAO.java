@@ -77,6 +77,41 @@ public class UsuarioDAO {
         }
     }
 
+    public void editarUsuario(Usuario usuario, String nombre, String pin, String rol) {
+        int id = usuario.getId();
+
+        // Si el pin no esta vacio lo cambiamos creando un hash y salt nuevos
+        if (pin != null && !pin.isEmpty()) {
+            String salt = hashUtil.generarSalt();
+            String hash = hashUtil.hashPin(pin, salt);
+            String sql = "UPDATE usuarios SET nombre = ?, hash = ?, salt = ?, rol = ? WHERE id = ?";
+            try (var connection = db.getConnection();
+                 var stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, nombre);
+                stmt.setString(2, hash);
+                stmt.setString(3, salt);
+                stmt.setString(4, rol);
+                stmt.setInt(5, id);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+        // Si esta vacio actualizamos solo nombre y rol
+        } else {
+        String sql = "UPDATE usuarios SET nombre = ?, rol = ? WHERE id = ?";
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            stmt.setString(2, rol);
+            stmt.setInt(3, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        }
+    }
+
     // Creamos un hash y guardamos usuario en la base de datos
     public void crearUsuario(String nombre, String pin, String rol) {
         String salt = hashUtil.generarSalt();
