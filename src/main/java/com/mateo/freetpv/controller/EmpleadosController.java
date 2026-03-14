@@ -40,6 +40,9 @@ public class EmpleadosController {
         // Nos aseguramos que el panel de nuevo empleado esta invisible
         nuevoempleadoPane.setVisible(false);
 
+        // Nos aseguramos que no tiene texto
+        errorLabel.setText("");
+
         // Indicamos a cada columna que atributo de usuario mostrar
         codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -123,6 +126,7 @@ public class EmpleadosController {
         usuarioField.clear();
         pinField.clear();
         rolChoiceBox.getSelectionModel().clearSelection();
+        errorLabel.setText("");
 
         // Habilitamos el panel principal
         empleadosPane.setDisable(false);
