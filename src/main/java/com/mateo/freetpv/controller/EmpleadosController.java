@@ -35,6 +35,8 @@ public class EmpleadosController {
 
     private Usuario usuarioEditando = null;
 
+    private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+
     @FXML public void initialize() {
 
         // Nos aseguramos que el panel de nuevo empleado esta invisible
@@ -64,6 +66,12 @@ public class EmpleadosController {
                 errorLabel.setText("Debe rellenar usuario y rol");
             } else {
                 usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
+
+                // Mostramos un mensaje de confirmación
+                infoAlert.setTitle("Editar Usuario");
+                infoAlert.setHeaderText("Usuario " + usuarioField.getText() + " editado correctamente");
+                infoAlert.showAndWait();
+
                 // Actualizamos la tabla
                 cargarUsuarios();
 
@@ -75,6 +83,12 @@ public class EmpleadosController {
                 errorLabel.setText("Debe rellenar todos los campos.");
             } else {
                 usuarioDAO.crearUsuario(usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
+
+                // Mostramos un mensaje de confirmación
+                infoAlert.setTitle("Crear Usuario");
+                infoAlert.setHeaderText("Usuario " + usuarioField.getText() + " creado correctamente");
+                infoAlert.showAndWait();
+
                 // Actualizamos la tabla
                 cargarUsuarios();
 
