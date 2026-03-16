@@ -39,6 +39,7 @@ public class DatabaseConnection {
                 + "hash TEXT NOT NULL,"
                 + "salt TEXT NOT NULL,"
                 + "rol TEXT NOT NULL,"
+                + "estado INTEGER NOT NULL," // 0 no activo 1 activo
                 + "fecha_creacion TEXT NOT NULL"
                 + ")";
 

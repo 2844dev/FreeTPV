@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -43,8 +44,17 @@
                   <TextField fx:id="usuarioField" maxWidth="250.0" promptText="Azusa Nakano" />
                   <Label text="Pin" />
                   <PasswordField fx:id="pinField" maxWidth="250.0" promptText="1234" />
-                  <Label text="Rol" />
-                  <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Rol" />
+                              <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
+                           </children>
+                        </VBox>
+                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?" />
+                     </children>
+                  </HBox>
                   <Label fx:id="errorLabel" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>

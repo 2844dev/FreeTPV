@@ -19,7 +19,7 @@ public class UsuarioDAO {
     public List<String> obtenerNombres() {
 
         // Seleccionamos todos los valores de la columna nombres de la tabla usuarios
-        String sql = "SELECT nombre FROM usuarios";
+        String sql = "SELECT nombre, estado FROM usuarios";
         try (var connection = db.getConnection()) {
             var stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -27,9 +27,12 @@ public class UsuarioDAO {
             // Creamos una lista de arrays de string y añadimos todos a ella
             List<String> nombres = new ArrayList<>();
 
-            // Vamos por todos los valores, si no hay ninguno devolvemos lista vacia
+            // Vamos por todos los valores comprobando que estan activos
+            // si no hay ninguno devolvemos lista vacia
             while (rs.next()) {
-                nombres.add(rs.getString("nombre"));
+                if (rs.getInt("estado") == 1) {
+                    nombres.add(rs.getString("nombre"));
+                }
             }
             return nombres;
         } catch (SQLException e){
@@ -57,6 +60,7 @@ public class UsuarioDAO {
             String salt;
             String rol;
             String fecha_creacion;
+            boolean estado;
             Usuario usuario;
 
             // Probamos a crear usuarios hasta que no haya mas usuarios
@@ -67,7 +71,15 @@ public class UsuarioDAO {
                 salt = rs.getString("salt");
                 rol = rs.getString("rol");
                 fecha_creacion = rs.getString("fecha_creacion");
-                usuario = new Usuario(id, nombre, hash, salt, rol, fecha_creacion);
+
+                // Miramos si en la BD tiene 1 o 0 (1 activo, 0 no activo)
+                if (rs.getInt("estado") == 1) {
+                    estado = true;
+                } else {
+                    estado = false;
+                }
+
+                usuario = new Usuario(id, nombre, hash, salt, rol, estado, fecha_creacion);
                 usuarios.add(usuario);
             }
             return usuarios;
@@ -77,34 +89,46 @@ public class UsuarioDAO {
         }
     }
 
-    public void editarUsuario(Usuario usuario, String nombre, String pin, String rol) {
+    public void editarUsuario(Usuario usuario, String nombre, String pin, String rol, boolean estado) {
         int id = usuario.getId();
+
+        // Cambiamos el estado de un bool a un int
+        int estado_int;
+        if (estado == true) {
+            estado_int = 1; // 1 ACTIVADO
+        } else {
+            estado_int = 0; // 0 DESACTIVADO
+        }
 
         // Si el pin no esta vacio lo cambiamos creando un hash y salt nuevos
         if (pin != null && !pin.isEmpty()) {
+
             String salt = hashUtil.generarSalt();
             String hash = hashUtil.hashPin(pin, salt);
-            String sql = "UPDATE usuarios SET nombre = ?, hash = ?, salt = ?, rol = ? WHERE id = ?";
+
+            String sql = "UPDATE usuarios SET nombre = ?, hash = ?, salt = ?, rol = ?, estado = ? WHERE id = ?";
             try (var connection = db.getConnection();
                  var stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, nombre);
                 stmt.setString(2, hash);
                 stmt.setString(3, salt);
                 stmt.setString(4, rol);
-                stmt.setInt(5, id);
+                stmt.setInt(5, estado_int);
+                stmt.setInt(6, id);
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
 
-        // Si esta vacio actualizamos solo nombre y rol
+        // Si esta vacio actualizamos nombre, rol y estado
         } else {
-        String sql = "UPDATE usuarios SET nombre = ?, rol = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET nombre = ?, rol = ?, estado = ? WHERE id = ?";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
             stmt.setString(2, rol);
-            stmt.setInt(3, id);
+            stmt.setInt(3, estado_int);
+            stmt.setInt(4, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -122,15 +146,19 @@ public class UsuarioDAO {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fecha_creacion = fecha.format(formato);
 
+        // Hacemos que el estado al crear un usuario sea activo por defecto
+        int estado_int = 1;
+
         // Utilizamos prepareStatement para evitar SQL injection
-        String sql = "INSERT INTO usuarios (nombre, hash, salt, rol, fecha_creacion) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nombre, hash, salt, rol, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
             stmt.setString(2, hash);
             stmt.setString(3, salt);
             stmt.setString(4, rol);
-            stmt.setString(5, fecha_creacion);
+            stmt.setInt(5, estado_int);
+            stmt.setString(6, fecha_creacion);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -159,8 +187,18 @@ public class UsuarioDAO {
                 if (hashAlmacenado.equals(hashInsertado)) {
                     int id  = rs.getInt("id");
                     String rol = rs.getString("rol");
+
+                    // Pasamos el estado a un boolean
+                    int estado_int = rs.getInt("estado");
+                    boolean estado;
+                    if (estado_int == 1) {
+                        estado = true;
+                    } else {
+                        estado = false;
+                    }
+
                     String fecha_creacion = rs.getString("fecha_creacion");
-                    return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, fecha_creacion);
+                    return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, estado, fecha_creacion);
                 } else  {
                     return null;
                 }

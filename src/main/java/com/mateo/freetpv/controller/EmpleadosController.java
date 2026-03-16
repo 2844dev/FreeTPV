@@ -27,6 +27,7 @@ public class EmpleadosController {
     @FXML private TextField usuarioField;
     @FXML private PasswordField pinField;
     @FXML private ChoiceBox<String> rolChoiceBox;
+    @FXML private CheckBox estadoCheckBox;
     @FXML private Button guardarButton;
     @FXML private Button cancelarButton;
     @FXML private Label errorLabel;
@@ -65,7 +66,9 @@ public class EmpleadosController {
             if (usuarioField.getText().equals("") || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
                 errorLabel.setText("Debe rellenar usuario y rol");
             } else {
-                usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
+
+                // Crear usuario
+                usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem(), estadoCheckBox.isSelected());
 
                 // Mostramos un mensaje de confirmación
                 infoAlert.setTitle("Editar Usuario");
@@ -102,6 +105,10 @@ public class EmpleadosController {
     @FXML public void mostrarFormularioNuevo() {
         empleadosPane.setDisable(true);
         nuevoempleadoPane.setVisible(true);
+
+        // Forzamos que un usuario este habilitado por defecto
+        estadoCheckBox.setSelected(true);
+        estadoCheckBox.setDisable(true);
     }
 
     @FXML public void mostrarFormularioEditar() {
@@ -123,6 +130,10 @@ public class EmpleadosController {
         } else {
             rolChoiceBox.getSelectionModel().select(1);
         }
+
+        // Habilitamos la edición del estado y lo seleccionamos acorde a su estado
+        estadoCheckBox.setDisable(false);
+        estadoCheckBox.setSelected(usuarioEditando.getEstado());
 
         // Hacemos visible el panel
         empleadosPane.setDisable(true);
