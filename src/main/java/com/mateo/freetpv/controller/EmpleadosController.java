@@ -72,7 +72,8 @@ public class EmpleadosController {
 
                 // Mostramos un mensaje de confirmación
                 infoAlert.setTitle("Editar Usuario");
-                infoAlert.setHeaderText("Usuario " + usuarioField.getText() + " editado correctamente");
+                infoAlert.setHeaderText("Usuario editado correctamente");
+                infoAlert.setContentText("Usuario " + usuarioField.getText() + " editado.");
                 infoAlert.showAndWait();
 
                 // Actualizamos la tabla
@@ -89,7 +90,8 @@ public class EmpleadosController {
 
                 // Mostramos un mensaje de confirmación
                 infoAlert.setTitle("Crear Usuario");
-                infoAlert.setHeaderText("Usuario " + usuarioField.getText() + " creado correctamente");
+                infoAlert.setHeaderText("Usuario creado correctamente");
+                infoAlert.setContentText("Usuario " + usuarioField.getText() + " creado.");
                 infoAlert.showAndWait();
 
                 // Actualizamos la tabla
