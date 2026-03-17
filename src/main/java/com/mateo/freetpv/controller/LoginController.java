@@ -47,7 +47,7 @@ public class LoginController {
         List<String> usuarios = usuarioDAO.obtenerNombres();
 
         // Comprobamos que la lista no esta vacia
-        if (!usuarios.isEmpty()) {
+        if (!usuarios.isEmpty() && !(usuarios != null)) {
             usuarioComboBox.setItems(FXCollections.observableList(usuarios));
         } else {
 

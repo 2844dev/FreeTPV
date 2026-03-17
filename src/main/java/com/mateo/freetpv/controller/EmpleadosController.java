@@ -162,7 +162,9 @@ public class EmpleadosController {
         // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
         List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
 
-        // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
-        empleadosTable.setItems(FXCollections.observableList(usuarios));
+        if (usuarios != null && !usuarios.isEmpty()) {
+            // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
+            empleadosTable.setItems(FXCollections.observableList(usuarios));
+        }
     }
 }
