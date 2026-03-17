@@ -2,6 +2,8 @@
 FULL CREDITS TO:
 https://github.com/othneildrew/Best-README-Template 
 -->
+> [!IMPORTANT]
+> Este proyecto esta actualmente en desarrollo, no funcionara correctamente.
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
