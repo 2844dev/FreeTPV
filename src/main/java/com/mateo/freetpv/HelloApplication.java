@@ -26,6 +26,6 @@ public class HelloApplication extends Application {
 
     public void crearUsuarioPrueba() {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioDAO.crearUsuario("Admin", "1234", "admin");
+        usuarioDAO.crearUsuario("Admin", "1234", "Admin");
     }
 }

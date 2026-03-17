@@ -56,7 +56,7 @@ public class EmpleadosController {
         cargarUsuarios();
 
         // Añadimos los roles al choicebox para elegir
-        rolChoiceBox.setItems(FXCollections.observableArrayList("admin", "camarero"));
+        rolChoiceBox.setItems(FXCollections.observableArrayList("Admin", "Camarero"));
     }
 
     // Guardamos el usuario
@@ -127,10 +127,10 @@ public class EmpleadosController {
         pinField.clear();
 
         // Seleccionamos admin si tiene admin, si no siempre sera camarero
-        if (usuarioEditando.getRol().equals("admin")) {
-            rolChoiceBox.getSelectionModel().select(0);
+        if (usuarioEditando.getRol().equals("Admin")) {
+            rolChoiceBox.getSelectionModel().select(0); // Admin es la opcion 0
         } else {
-            rolChoiceBox.getSelectionModel().select(1);
+            rolChoiceBox.getSelectionModel().select(1); // Camarero es la opcion 1
         }
 
         // Habilitamos la edición del estado y lo seleccionamos acorde a su estado
@@ -141,7 +141,6 @@ public class EmpleadosController {
         empleadosPane.setDisable(true);
         nuevoempleadoPane.setVisible(true);
 
-        // Si no hay usuario seleccionado cancelamos
         }
     }
 
