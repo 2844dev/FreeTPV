@@ -37,7 +37,7 @@ public class LoginController {
         // Comprobar que introduzca usuario y pin
         if (usuario == null || pin.isEmpty()) {
             errorLabel.setVisible(true);
-            errorLabel.setText("Ingrese un usuario o pin.");
+            errorLabel.setText("Ingrese un usuario y pin.");
         } else {
 
             // Comprobamos si devuelve usuario o null para saber si es valido o no
