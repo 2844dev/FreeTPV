@@ -3,31 +3,65 @@ package com.mateo.freetpv.controller;
 import com.mateo.freetpv.HelloApplication;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
+import com.mateo.freetpv.util.NombreUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 
 public class LoginController {
+
+
+    // Panel login
+    @FXML private BorderPane loginPane;
     @FXML private ComboBox<String> usuarioComboBox;
     @FXML private PasswordField pinField;
     @FXML private Button loginButton;
     @FXML private Label errorLabel;
+
+    // Panel primer uso
+    @FXML private BorderPane firstPane;
+    @FXML private TextField newusuarioField;
+    @FXML private PasswordField newpinField;
+    @FXML private Label newerrorLabel;
+    @FXML private Button newguardarButton;
+    @FXML private Button buscarButton; // Boton para buscar BD
+
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     @FXML public void initialize() {
 
-        // Cargamos todos los usuarios de la base de datos
+        // Nos aseguramos que el panel de primer uso no se ve
+        // Y el panel de login esta activo y el texto de error invisible
+        firstPane.setVisible(false);
+        loginPane.setDisable(false);
+        errorLabel.setVisible(false);
+
+        // Cargamos todos los nombres de usuarios de la base de datos
         List<String> usuarios = usuarioDAO.obtenerNombres();
-        usuarioComboBox.setItems(FXCollections.observableList(usuarios));
+
+        // Comprobamos que la lista no esta vacia
+        if (!usuarios.isEmpty()) {
+            usuarioComboBox.setItems(FXCollections.observableList(usuarios));
+        } else {
+
+            // Si la lista esta vacia mostramos para crear el primer usuario o importar
+
+            // Cojemos un nombre aleatorio de NombreUtil y lo usamos de prompt
+            NombreUtil prompt = new NombreUtil();
+            newusuarioField.setPromptText(prompt.getNombre());
+
+            // Mostramos la pantalla y deshabilitamos la otra por si acaso
+            loginPane.setDisable(true);
+            firstPane.setVisible(true);
+        }
+
     }
 
     @FXML public void handleLogin() {
@@ -58,6 +92,28 @@ public class LoginController {
                 errorLabel.setVisible(true);
                 errorLabel.setText("Pin incorrecto.");
             }
+        }
+    }
+
+    @FXML public void crearPrimerUsuario() {
+        String usuario = newusuarioField.getText();
+        String pin = newpinField.getText();
+
+        // Comprobamos que hay usuario y pin escrito
+        if (usuario.isEmpty() || pin.isEmpty()) {
+            newerrorLabel.setText("Inserte un usuario y pin.");
+            newerrorLabel.setVisible(true);
+        } else {
+            // Creamos un usuario forzado a ser admin
+            usuarioDAO.crearUsuario(usuario, pin, "Admin");
+
+            // Actualizamos la lista de usuarios
+            List<String> usuarios = usuarioDAO.obtenerNombres();
+            usuarioComboBox.setItems(FXCollections.observableList(usuarios));
+
+            // Cerramos la pantalla
+            firstPane.setVisible(false);
+            loginPane.setDisable(false);
         }
     }
 }
