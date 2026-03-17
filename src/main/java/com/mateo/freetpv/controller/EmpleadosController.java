@@ -63,7 +63,7 @@ public class EmpleadosController {
 
     @FXML public void guardarFormulario() {
         if (usuarioEditando != null) {
-            if (usuarioField.getText().equals("") || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
+            if (usuarioField.getText().isEmpty() || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
                 errorLabel.setText("Debe rellenar usuario y rol");
             } else {
 
@@ -83,7 +83,7 @@ public class EmpleadosController {
                 cerrarFormulario();
             }
         } else {
-            if (usuarioField.getText().equals("") || pinField.getText().equals("") || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
+            if (usuarioField.getText().isEmpty() || pinField.getText().isEmpty() || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
                 errorLabel.setText("Debe rellenar todos los campos.");
             } else {
                 usuarioDAO.crearUsuario(usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
