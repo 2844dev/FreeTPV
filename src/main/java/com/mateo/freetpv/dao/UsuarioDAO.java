@@ -11,11 +11,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase DAO, permite acceder a la base de datos para hacer operaciones CRU y consultas
+ * relacionadas con los objetos {@link Usuario}.
+ *
+ * @author Mateo
+ * @since 01/03/2026
+ */
 public class UsuarioDAO {
     private HashUtil hashUtil = new HashUtil();
     private DatabaseConnection db = new DatabaseConnection();
 
-    // Nombres para el combobox de ventana login
+    /**
+     * Recupera una lista con los nombres de todos los usuarios que
+     * tienen un estado activo en la base de datos.
+     *
+     * @return Una {@code List<String>} con los nombres de los usuarios activos.
+     *         Devuelve una lista vacía si no hay usuarios activos o {@code null}
+     *         si ocurre un error durante la conexión o la consulta.
+     */
+    // Descripción hecha por modo IA de Google.
     public List<String> obtenerNombres() {
 
         // Seleccionamos todos los valores de la columna nombres de la tabla usuarios
@@ -41,7 +56,13 @@ public class UsuarioDAO {
         }
     }
 
-    // Obtenemos usuarios para el tableview de la ventana empleados
+    /**
+     * Recupera una lista de tipo {@link Usuario} con todos los datos de todos los usuarios.
+     *
+     * @return Devuelve una {@code List<Usuario>} con todos los Usuarios
+     * guardados en la base de datos. Devuelve una lista vacia en caso de
+     * que no hubiera resultados o {@code null} en caso de error.
+     */
     public List<Usuario> obtenerUsuarios() {
 
         // Cogemos todos los datos de la tabla usuarios
@@ -72,12 +93,8 @@ public class UsuarioDAO {
                 rol = rs.getString("rol");
                 fecha_creacion = rs.getString("fecha_creacion");
 
-                // Miramos si en la BD tiene 1 o 0 (1 activo, 0 no activo)
-                if (rs.getInt("estado") == 1) {
-                    estado = true;
-                } else {
-                    estado = false;
-                }
+                // Pasamos el estado de un int a un boolean
+                estado = intBoolean(rs.getInt("estado"));
 
                 usuario = new Usuario(id, nombre, hash, salt, rol, estado, fecha_creacion);
                 usuarios.add(usuario);
@@ -89,16 +106,22 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     *
+     * Edita los valores de un usuario acorde a los parametros.
+     *
+     *
+     * @param usuario
+     * @param nombre
+     * @param pin Es opcional
+     * @param rol
+     * @param estado
+     */
     public void editarUsuario(Usuario usuario, String nombre, String pin, String rol, boolean estado) {
         int id = usuario.getId();
 
         // Cambiamos el estado de un bool a un int
-        int estado_int;
-        if (estado == true) {
-            estado_int = 1; // 1 ACTIVADO
-        } else {
-            estado_int = 0; // 0 DESACTIVADO
-        }
+        int estado_int = booleanInt(estado);
 
         // Si el pin no esta vacio lo cambiamos creando un hash y salt nuevos
         if (pin != null && !pin.isEmpty()) {
@@ -190,13 +213,9 @@ public class UsuarioDAO {
 
                     // Pasamos el estado a un boolean
                     int estado_int = rs.getInt("estado");
-                    boolean estado;
-                    if (estado_int == 1) {
-                        estado = true;
-                    } else {
-                        estado = false;
-                    }
+                    boolean estado = intBoolean(estado_int);
 
+                    // Creamos el usuario validado
                     String fecha_creacion = rs.getString("fecha_creacion");
                     return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, estado, fecha_creacion);
                 } else  {
@@ -209,5 +228,32 @@ public class UsuarioDAO {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    /**
+     *
+     * Convierte un int a un boolean
+     *
+     * @param i
+     * @return Devuelve {@code true} si llega {@code 1},
+     *         si no, devuelve {@code false}
+     */
+
+    private boolean intBoolean(int i) {
+        if (i == 1) return true;
+        return false;
+    }
+
+    /**
+     *
+     * Convierte un boolean a un int
+     *
+     * @param i
+     * @return Devuelve {@code 1} si llega {@code True},
+     *         si no, devuelve {@code 0}
+     */
+    private int booleanInt(boolean i) {
+        if (i == true) return 1;
+        return 0;
     }
 }
