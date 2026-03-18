@@ -103,7 +103,7 @@ public class LoginController {
         if (usuario.isEmpty() || pin.isEmpty()) {
             newerrorLabel.setText("Inserte un usuario y pin.");
             newerrorLabel.setVisible(true);
-        } else {
+        } else if (!usuarioDAO.existeUsuario(usuario)){
             // Creamos un usuario forzado a ser admin
             usuarioDAO.crearUsuario(usuario, pin, "Admin");
 
@@ -114,6 +114,9 @@ public class LoginController {
             // Cerramos la pantalla
             firstPane.setVisible(false);
             loginPane.setDisable(false);
+        } else {
+            newerrorLabel.setText("Ya existe un usuario con ese nombre.");
+            newerrorLabel.setVisible(true);
         }
     }
 }

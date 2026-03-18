@@ -62,11 +62,12 @@ public class EmpleadosController {
     // Guardamos el usuario
 
     @FXML public void guardarFormulario() {
+
+        // Si existe editamos usuario
         if (usuarioEditando != null) {
             if (usuarioField.getText().isEmpty() || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
                 errorLabel.setText("Debe rellenar usuario y rol");
-            } else {
-
+            } else if (!usuarioDAO.existeUsuario(usuarioField.getText())) {
                 // Crear usuario
                 usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem(), estadoCheckBox.isSelected());
 
@@ -81,11 +82,14 @@ public class EmpleadosController {
 
                 // Cerramos el formulario
                 cerrarFormulario();
+            } else {
+                errorLabel.setText("Existe ya un usuario con ese nombre.");
             }
+            // Si no existe creamos uno nuevo
         } else {
             if (usuarioField.getText().isEmpty() || pinField.getText().isEmpty() || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
                 errorLabel.setText("Debe rellenar todos los campos.");
-            } else {
+            } else if (!usuarioDAO.existeUsuario(usuarioField.getText())) {
                 usuarioDAO.crearUsuario(usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
 
                 // Mostramos un mensaje de confirmación
@@ -99,6 +103,8 @@ public class EmpleadosController {
 
                 // Cerramos el formulario
                 cerrarFormulario();
+            } else {
+                errorLabel.setText("Existe ya un usuario con ese nombre.");
             }
         }
     }

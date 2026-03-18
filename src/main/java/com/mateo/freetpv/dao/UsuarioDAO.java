@@ -23,6 +23,27 @@ public class UsuarioDAO {
     private DatabaseConnection db = new DatabaseConnection();
 
     /**
+     *
+     * Comprueba si ya existe un usuario con ese nombre en la BD
+     *
+     * @param nombre Nombre del usuario
+     * @return Devuelve {@code true} si ya existe un usuario con ese nombre
+     *         o si da error. Si no, devuelve {@code false}
+     */
+    public boolean existeUsuario(String nombre) {
+       String sql = "SELECT nombre FROM usuarios WHERE nombre = ?";
+       try (var connection = db.getConnection();
+            var stmt = connection.prepareStatement(sql)) {
+           stmt.setString(1, nombre);
+           ResultSet rs = stmt.executeQuery();
+           return rs.next();
+       } catch (SQLException e) {
+           System.out.println(e.getMessage());
+           return true;
+       }
+    }
+
+    /**
      * Recupera una lista con los nombres de todos los usuarios que
      * tienen un estado activo en la base de datos.
      *
