@@ -10,6 +10,14 @@ import javafx.scene.layout.BorderPane;
 
 import java.util.List;
 
+
+/**
+ * Clase controller, muestra información al usuario y se comunica con {@link UsuarioDAO}
+ * para crear objetos {@link Usuario} o editarlos y guardarlos en la BD
+ *
+ * @author Mateo
+ * @since  08/03/2026
+ */
 public class EmpleadosController {
     // Panel principal de empleados
     @FXML private BorderPane empleadosPane;
@@ -38,6 +46,11 @@ public class EmpleadosController {
 
     private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
+    /**
+     *
+     * Inicializa la pantalla de gestión de empleados
+     *
+     */
     @FXML public void initialize() {
 
         // Nos aseguramos que el panel de nuevo empleado esta invisible
@@ -61,6 +74,12 @@ public class EmpleadosController {
 
     // Guardamos el usuario
 
+    /**
+     *
+     * Dependiendo de si se esta editando un usuario o creando uno,
+     * edita o crea un usuario
+     *
+     */
     @FXML public void guardarFormulario() {
 
         // Si existe editamos usuario
