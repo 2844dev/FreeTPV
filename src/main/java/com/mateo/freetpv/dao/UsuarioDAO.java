@@ -108,58 +108,66 @@ public class UsuarioDAO {
 
     /**
      *
-     * Edita los valores de un usuario acorde a los parametros.
+     * Edita los valores de un usuario acorde a los parametros
+     * y los guarda en la BD
+     * <p>
+     * Genera un nuevo salt y hash si se cambia el pin.
      *
-     *
-     * @param usuario
-     * @param nombre
-     * @param pin Es opcional
-     * @param rol
-     * @param estado
+     * @param usuario Usuario que editaremos
+     * @param nombre Nuevo nombre de usuario
+     * @param pin Opcional
+     * @param rol Admin, Camarero
+     * @param estado Activo o no activo (true, false)
      */
     public void editarUsuario(Usuario usuario, String nombre, String pin, String rol, boolean estado) {
         int id = usuario.getId();
-
-        // Cambiamos el estado de un bool a un int
         int estado_int = booleanInt(estado);
 
-        // Si el pin no esta vacio lo cambiamos creando un hash y salt nuevos
+        // Escribimos el caso default si no tiene que cambiar el pin
+        String sql = "UPDATE usuarios SET nombre = ?, rol = ?, estado = ? WHERE id = ?";
+        String salt = null;
+        String hash = null;
+
+        // Si el pin se cambia generamos nuevo hash y salt y cambiamos la consulta
         if (pin != null && !pin.isEmpty()) {
+            salt = hashUtil.generarSalt();
+            hash = hashUtil.hashPin(pin, salt);
+            sql = "UPDATE usuarios SET nombre = ?, hash = ?, salt = ?, rol = ?, estado = ? WHERE id = ?";
+        }
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
 
-            String salt = hashUtil.generarSalt();
-            String hash = hashUtil.hashPin(pin, salt);
-
-            String sql = "UPDATE usuarios SET nombre = ?, hash = ?, salt = ?, rol = ?, estado = ? WHERE id = ?";
-            try (var connection = db.getConnection();
-                 var stmt = connection.prepareStatement(sql)) {
+            // En el caso de que se cambie el pin ponemos los datos en su orden
+            if (hash != null && salt != null) {
                 stmt.setString(1, nombre);
                 stmt.setString(2, hash);
                 stmt.setString(3, salt);
                 stmt.setString(4, rol);
                 stmt.setInt(5, estado_int);
                 stmt.setInt(6, id);
-                stmt.executeUpdate();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
 
-        // Si esta vacio actualizamos nombre, rol y estado
-        } else {
-        String sql = "UPDATE usuarios SET nombre = ?, rol = ?, estado = ? WHERE id = ?";
-        try (var connection = db.getConnection();
-             var stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, nombre);
-            stmt.setString(2, rol);
-            stmt.setInt(3, estado_int);
-            stmt.setInt(4, id);
+                // Si no se cambia el pin ponemos los datos en el orden del caso default
+            } else {
+                stmt.setString(1, nombre);
+                stmt.setString(2, rol);
+                stmt.setInt(3, estado_int);
+                stmt.setInt(4, id);
+            }
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        }
     }
 
-    // Creamos un hash y guardamos usuario en la base de datos
+    /**
+     *
+     * Crea un nuevo usuario con hash y salt y lo guarda
+     * en la base de datos
+     *
+     * @param nombre Nombre de usuario
+     * @param pin Pin del usuario
+     * @param rol Rol del usuario
+     */
     public void crearUsuario(String nombre, String pin, String rol) {
         String salt = hashUtil.generarSalt();
         String hash = hashUtil.hashPin(pin, salt);
@@ -188,7 +196,15 @@ public class UsuarioDAO {
         }
     }
 
-    // Comparamos hashes para validar un login, si es valido returneamos un Usuario
+    /**
+     *
+     * Valida un login comparando hashes
+     *
+     * @param nombre
+     * @param pin
+     * @return Si el hash calculado es igual al guardado devolvemos un {@code Usuario}
+     * del tipo {@link Usuario}, si no es igual o da error devolvemos {@code null}
+     */
     public Usuario validarLogin(String nombre, String pin) {
 
         // Buscamos de la tabla usuarios donde el nombre coincide
@@ -234,26 +250,24 @@ public class UsuarioDAO {
      *
      * Convierte un int a un boolean
      *
-     * @param i
+     * @param i Int que convertir a boolean
      * @return Devuelve {@code true} si llega {@code 1},
      *         si no, devuelve {@code false}
      */
-
     private boolean intBoolean(int i) {
-        if (i == 1) return true;
-        return false;
+        return i == 1;
     }
 
     /**
      *
      * Convierte un boolean a un int
      *
-     * @param i
+     * @param i Boolean que convertir a int
      * @return Devuelve {@code 1} si llega {@code True},
      *         si no, devuelve {@code 0}
      */
     private int booleanInt(boolean i) {
-        if (i == true) return 1;
+        if (i) return 1;
         return 0;
     }
 }
