@@ -95,8 +95,11 @@ public class EmpleadosController {
             }
         } else {
 
-            // Comprobamos que el usuario no exista
-            if (usuarioDAO.existeUsuario(usuarioField.getText()) && (usuarioEditando == null || !usuarioField.getText().equals(usuarioEditando.getNombre()))) {
+            // Comprobamos que el nombre no tenga mas de 35 chars
+            if (usuarioField.getText().length() > 35) {
+                errorLabel.setText("El usuario no puede tener más de 35 caracteres.");
+                // Comprobamos que el usuario no exista
+            } else if (usuarioDAO.existeUsuario(usuarioField.getText()) && (usuarioEditando == null || !usuarioField.getText().equals(usuarioEditando.getNombre()))) {
                 errorLabel.setText("Ya existe un usuario con ese nombre.");
             } else {
                 // Creamos un usuario si no se esta editando
@@ -107,7 +110,7 @@ public class EmpleadosController {
                     infoAlert.setContentText("Usuario " + usuarioField.getText() + " creado.");
                     infoAlert.showAndWait();
 
-                // Editamos un usuario si se esta editando
+                    // Editamos un usuario si se esta editando
                 } else {
                     usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem(), estadoCheckBox.isSelected());
                     infoAlert.setTitle("Editar Usuario");
@@ -119,53 +122,6 @@ public class EmpleadosController {
                 cerrarFormulario();
             }
         }
-//
-
-
-//        // Si existe editamos usuario
-//        if (usuarioEditando != null) {
-//            if (usuarioField.getText().isEmpty() || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
-//                errorLabel.setText("Debe rellenar usuario y rol");
-//            } else if (!usuarioDAO.existeUsuario(usuarioField.getText())) {
-//                // Crear usuario
-//                usuarioDAO.editarUsuario(usuarioEditando, usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem(), estadoCheckBox.isSelected());
-//
-//                // Mostramos un mensaje de confirmación
-//                infoAlert.setTitle("Editar Usuario");
-//                infoAlert.setHeaderText("Usuario editado correctamente");
-//                infoAlert.setContentText("Usuario " + usuarioField.getText() + " editado.");
-//                infoAlert.showAndWait();
-//
-//                // Actualizamos la tabla
-//                cargarUsuarios();
-//
-//                // Cerramos el formulario
-//                cerrarFormulario();
-//            } else {
-//                errorLabel.setText("Existe ya un usuario con ese nombre.");
-//            }
-//            // Si no existe creamos uno nuevo
-//        } else {
-//            if (usuarioField.getText().isEmpty() || pinField.getText().isEmpty() || rolChoiceBox.getSelectionModel().getSelectedItem() == null) {
-//                errorLabel.setText("Debe rellenar todos los campos.");
-//            } else if (!usuarioDAO.existeUsuario(usuarioField.getText())) {
-//                usuarioDAO.crearUsuario(usuarioField.getText(), pinField.getText(), rolChoiceBox.getSelectionModel().getSelectedItem());
-//
-//                // Mostramos un mensaje de confirmación
-//                infoAlert.setTitle("Crear Usuario");
-//                infoAlert.setHeaderText("Usuario creado correctamente");
-//                infoAlert.setContentText("Usuario " + usuarioField.getText() + " creado.");
-//                infoAlert.showAndWait();
-//
-//                // Actualizamos la tabla
-//                cargarUsuarios();
-//
-//                // Cerramos el formulario
-//                cerrarFormulario();
-//            } else {
-//                errorLabel.setText("Existe ya un usuario con ese nombre.");
-//            }
-//        }
     }
 
     // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario

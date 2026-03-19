@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,10 +21,27 @@
          <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="editarButton" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Editar Usuario" />
-                  <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Nuevo usuario" />
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                     <children>
+                        <Button fx:id="editarButton" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Crear categoria" />
+                        <Button fx:id="editarButton1" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Crear producto" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                     <children>
+                        <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Editar categoria" />
+                        <Button fx:id="nuevoButton1" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Editar producto" />
+                     </children>
+                  </VBox>
+                  <ComboBox prefWidth="150.0" promptText="Categoria" />
                   <TextField fx:id="buscarField" promptText="Buscar..." />
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </HBox>
          </top>
          <center>
