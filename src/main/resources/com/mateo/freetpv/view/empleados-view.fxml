@@ -26,12 +26,12 @@
             </HBox>
          </top>
          <center>
-            <TableView fx:id="empleadosTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="empleadosTable" prefHeight="580.0" prefWidth="990.0" BorderPane.alignment="CENTER">
               <columns>
-                  <TableColumn fx:id="codigoColumn" editable="false" maxWidth="567.0" minWidth="85.0" prefWidth="115.0" resizable="false" text="Código" />
-                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="1049.0" minWidth="490.0" prefWidth="532.0" resizable="false" text="Nombre" />
-                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="295.0" minWidth="57.0" prefWidth="162.0" resizable="false" text="Rol" />
-                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="442.0" minWidth="149.0" prefWidth="180.0" resizable="false" text="Fecha creación" />
+                  <TableColumn fx:id="codigoColumn" editable="false" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" resizable="false" text="Código" />
+                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="532.0" minWidth="532.0" prefWidth="532.0" resizable="false" text="Nombre" />
+                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" resizable="false" text="Rol" />
+                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="179.0" minWidth="179.0" prefWidth="179.0" resizable="false" text="Fecha creación" />
               </columns>
             </TableView>
          </center>

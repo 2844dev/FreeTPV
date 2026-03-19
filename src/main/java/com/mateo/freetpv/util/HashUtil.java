@@ -6,11 +6,20 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-//
-// Utilizamos SHA-512 con salt para generar un Hash del pin
-//
-
+/**
+ *
+ * Utilidad para generar Salt y Hash para las contraseñas
+ *
+ * @author Mateo
+ * @since 01/03/2026
+ */
 public class HashUtil {
+
+    /**
+     * Genera un salt aleatorio de 32 bytes
+     *
+     * @return Devuelve un {@code String} de un salt aleatorio
+     */
     public String generarSalt(){
 
         // Generamos un salt
@@ -18,10 +27,19 @@ public class HashUtil {
         byte[] salt = new byte[32];
         random.nextBytes(salt);
 
-        // Convertimos el salt a un string
-        String salt_string = Base64.getEncoder().encodeToString(salt);
-        return salt_string;
+        // Convertimos el salt a un string y lo devolvemos
+        return Base64.getEncoder().encodeToString(salt);
     }
+
+    /**
+     *
+     * Calcula un hash dependiendo del pin y el salt
+     *
+     * @param pin Contraseña introducida
+     * @param salt Salt del usuario
+     * @return Devolvemos un hash en {@code String} calculado
+     *          con un pin y un salt.
+     */
     public String hashPin(String pin, String salt) {
 
         // Inicializamos variable

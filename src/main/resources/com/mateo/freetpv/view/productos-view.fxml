@@ -1,11 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-    <center>
-        <Label text="PRODUCTOS" BorderPane.alignment="CENTER" />
-    </center>
-</BorderPane>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.EmpleadosController">
+   <children>
+      <BorderPane fx:id="productosPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
+         <top>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="editarButton" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Editar Usuario" />
+                  <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Nuevo usuario" />
+                  <TextField fx:id="buscarField" promptText="Buscar..." />
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <TableView fx:id="empleadosTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <columns>
+                  <TableColumn fx:id="codigoColumn" editable="false" maxWidth="567.0" minWidth="85.0" prefWidth="115.0" resizable="false" text="Código" />
+                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="1049.0" minWidth="490.0" prefWidth="532.0" resizable="false" text="Nombre" />
+                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="295.0" minWidth="57.0" prefWidth="162.0" resizable="false" text="Rol" />
+                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="442.0" minWidth="149.0" prefWidth="180.0" resizable="false" text="Fecha creación" />
+               </columns>
+            </TableView>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="nuevoproductoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: #FFFFFF;" visible="false">
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Usuario" />
+                  <TextField fx:id="usuarioField" maxWidth="250.0" promptText="Azusa Nakano" />
+                  <Label text="Pin" />
+                  <PasswordField fx:id="pinField" maxWidth="250.0" promptText="1234" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Rol" />
+                              <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
+                           </children>
+                        </VBox>
+                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="errorLabel" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <Button fx:id="guardarButton" mnemonicParsing="false" onAction="#guardarFormulario" text="Guardar" />
+                        <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>
