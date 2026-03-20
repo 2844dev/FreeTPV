@@ -19,23 +19,35 @@ public class LoginController {
 
 
     // Panel login
-    @FXML private BorderPane loginPane;
-    @FXML private ComboBox<String> usuarioComboBox;
-    @FXML private PasswordField pinField;
-    @FXML private Button loginButton;
-    @FXML private Label errorLabel;
+    @FXML
+    private BorderPane loginPane;
+    @FXML
+    private ComboBox<String> usuarioComboBox;
+    @FXML
+    private PasswordField pinField;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Label errorLabel;
 
     // Panel primer uso
-    @FXML private BorderPane firstPane;
-    @FXML private TextField newusuarioField;
-    @FXML private PasswordField newpinField;
-    @FXML private Label newerrorLabel;
-    @FXML private Button newguardarButton;
-    @FXML private Button buscarButton; // Boton para buscar BD
+    @FXML
+    private BorderPane firstPane;
+    @FXML
+    private TextField newusuarioField;
+    @FXML
+    private PasswordField newpinField;
+    @FXML
+    private Label newerrorLabel;
+    @FXML
+    private Button newguardarButton;
+    @FXML
+    private Button buscarButton; // Boton para buscar BD
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
 
         // Nos aseguramos que el panel de primer uso no se ve
         // Y el panel de login esta activo y el texto de error invisible
@@ -64,7 +76,8 @@ public class LoginController {
 
     }
 
-    @FXML public void handleLogin() {
+    @FXML
+    public void handleLogin() {
         String usuario = usuarioComboBox.getSelectionModel().getSelectedItem();
         String pin = pinField.getText();
 
@@ -95,28 +108,48 @@ public class LoginController {
         }
     }
 
-    @FXML public void crearPrimerUsuario() {
+    /**
+     *
+     * Crea el primer usuario administrador al no tener ningun usuario
+     * Valida formulario correctamente y da error visual en {@code newerrorLabel}
+     *
+     */
+    @FXML
+    public void crearPrimerUsuario() {
         String usuario = newusuarioField.getText();
         String pin = newpinField.getText();
+        newerrorLabel.setText("");
 
-        // Comprobamos que hay usuario y pin escrito
+        // Comprobamos que haya pin y nombre escrito
         if (usuario.isEmpty() || pin.isEmpty()) {
             newerrorLabel.setText("Inserte un usuario y pin.");
             newerrorLabel.setVisible(true);
-        } else if (!usuarioDAO.existeUsuario(usuario)){
-            // Creamos un usuario forzado a ser admin
-            usuarioDAO.crearUsuario(usuario, pin, "Admin");
+            return;
+        }
 
-            // Actualizamos la lista de usuarios
-            List<String> usuarios = usuarioDAO.obtenerNombres();
-            usuarioComboBox.setItems(FXCollections.observableList(usuarios));
+        // Comprobamos que no tenga mas de 35 caracteres
+        if (usuario.length() > 35) {
+            newerrorLabel.setText("El nombre no debe tener mas de 35 caracteres");
+            newerrorLabel.setVisible(true);
+            return;
+        }
 
-            // Cerramos la pantalla
-            firstPane.setVisible(false);
-            loginPane.setDisable(false);
-        } else {
+        // Comprobamos que no existe un usuario con el mismo nombre
+        if (usuarioDAO.existeUsuario(usuario)) {
             newerrorLabel.setText("Ya existe un usuario con ese nombre.");
             newerrorLabel.setVisible(true);
+            return;
         }
+
+        // Creamos un usuario nuevo Admin
+        usuarioDAO.crearUsuario(usuario, pin, "Admin");
+
+        // Actualizamos la lista de usuarios
+        List<String> usuarios = usuarioDAO.obtenerNombres();
+        usuarioComboBox.setItems(FXCollections.observableList(usuarios));
+
+        // Cerramos la pantalla
+        firstPane.setVisible(false);
+        loginPane.setDisable(false);
     }
 }
