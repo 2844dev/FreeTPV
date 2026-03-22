@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.EmpleadosController">
    <children>
@@ -19,8 +20,14 @@
          <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="editarButton" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Editar Usuario" />
-                  <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Nuevo usuario" />
+                  <Button fx:id="editarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Editar Usuario">
+                     <graphic>
+                        <FontIcon iconLiteral="fas-pen" iconSize="16" />
+                     </graphic></Button>
+                  <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Nuevo usuario">
+                     <graphic>
+                        <FontIcon iconLiteral="fas-plus" iconSize="16" />
+                     </graphic></Button>
                   <TextField fx:id="buscarField" promptText="Buscar..." />
                </children>
             </HBox>
@@ -58,8 +65,14 @@
                   <Label fx:id="errorLabel" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button fx:id="guardarButton" mnemonicParsing="false" onAction="#guardarFormulario" text="Guardar" />
-                        <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
+                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarFormulario" style="-fx-background-color: -color-success-4;" text="Guardar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-save" iconSize="16" />
+                           </graphic></Button>
+                        <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarFormulario" style="-fx-background-color: -color-danger-4;" text="Cancelar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-times" iconSize="16" />
+                           </graphic></Button>
                      </children>
                   </HBox>
                </children>

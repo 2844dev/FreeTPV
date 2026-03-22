@@ -40,5 +40,6 @@ public class MainController {
     @FXML public void mostrarEmpleados() {
         cargarVista("empleados-view.fxml");
     }
+    @FXML public void mostrarAjustes() { cargarVista("ajustes-view.fxml");}
 
 }
