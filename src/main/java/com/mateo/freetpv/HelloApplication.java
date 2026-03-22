@@ -1,6 +1,6 @@
 package com.mateo.freetpv;
 
-import atlantafx.base.theme.PrimerLight;
+import atlantafx.base.theme.Dracula;
 import com.mateo.freetpv.util.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class HelloApplication extends Application {
         db.connect();
         db.initDatabase();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/login-view.fxml"));
-        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+        Application.setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("FreeTPV");
         stage.setScene(scene);

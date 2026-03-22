@@ -36,7 +36,7 @@
             </TableView>
          </center>
       </BorderPane>
-      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: #FFFFFF;" visible="false">
+      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: -color-bg-subtle;" visible="false">
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
