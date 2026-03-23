@@ -148,33 +148,34 @@ public class EmpleadosController {
         estadoCheckBox.setDisable(true);
     }
 
-    @FXML public void mostrarFormularioEditar() {
+    @FXML
+    public void mostrarFormularioEditar() {
 
         // Escogemos el usuario editado como el seleccionado en la tabla
         usuarioEditando = empleadosTable.getSelectionModel().getSelectedItem();
 
         // Comprobamos que haya un usuario seleccionado
         if (usuarioEditando != null) {
-        // Ponemos los datos del usuario en el formulario
-        usuarioField.setText(usuarioEditando.getNombre());
+            // Ponemos los datos del usuario en el formulario
+            usuarioField.setText(usuarioEditando.getNombre());
 
-        // Dejamos el pin en blanco si no lo queremos editar
-        pinField.clear();
+            // Dejamos el pin en blanco si no lo queremos editar
+            pinField.clear();
 
-        // Seleccionamos admin si tiene admin, si no siempre sera camarero
-        if (usuarioEditando.getRol().equals("Admin")) {
-            rolChoiceBox.getSelectionModel().select(0); // Admin es la opcion 0
-        } else {
-            rolChoiceBox.getSelectionModel().select(1); // Camarero es la opcion 1
-        }
+            // Seleccionamos admin si tiene admin, si no siempre sera camarero
+            if (usuarioEditando.getRol().equals("Admin")) {
+                rolChoiceBox.getSelectionModel().select(0); // Admin es la opcion 0
+            } else {
+                rolChoiceBox.getSelectionModel().select(1); // Camarero es la opcion 1
+            }
 
-        // Habilitamos la edición del estado y lo seleccionamos acorde a su estado
-        estadoCheckBox.setDisable(false);
-        estadoCheckBox.setSelected(usuarioEditando.getEstado());
+            // Habilitamos la edición del estado y lo seleccionamos acorde a su estado
+            estadoCheckBox.setDisable(false);
+            estadoCheckBox.setSelected(usuarioEditando.getEstado());
 
-        // Hacemos visible el panel
-        empleadosPane.setDisable(true);
-        nuevoempleadoPane.setVisible(true);
+            // Hacemos visible el panel
+            empleadosPane.setDisable(true);
+            nuevoempleadoPane.setVisible(true);
 
         }
     }
@@ -188,6 +189,9 @@ public class EmpleadosController {
         pinField.clear();
         rolChoiceBox.getSelectionModel().clearSelection();
         errorLabel.setText("");
+
+        // Reestablecemos el usuario editado
+        usuarioEditando = null;
 
         // Habilitamos el panel principal
         empleadosPane.setDisable(false);
