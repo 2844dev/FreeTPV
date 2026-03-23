@@ -15,10 +15,10 @@ public class MainController {
     @FXML private Button productosButton;
     @FXML private Button mesasButton;
     @FXML private Button clientesButton;
+    @FXML private Button ajustesButton;
     @FXML private StackPane contenedor;
 
-
-    private void cargarVista(String fxml) {
+    private void cargarVista(String fxml, Button button) {
         try {
 
             // Creamos un fxmlloader con un archivo fxml indicado
@@ -29,17 +29,23 @@ public class MainController {
 
             // Y cargamos el nodo en el contenedor
             contenedor.getChildren().setAll(vista);
+
+            ventasButton.setStyle("-fx-background-radius: 0");
+            empleadosButton.setStyle("-fx-background-radius: 0");
+            ajustesButton.setStyle("-fx-background-radius: 0");
+            button.setStyle("-fx-background-color: -color-accent-4; -fx-background-radius: 0");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @FXML public void mostrarVentas() {
-        cargarVista("ventas-view.fxml");
+        cargarVista("ventas-view.fxml", ventasButton);
     }
     @FXML public void mostrarEmpleados() {
-        cargarVista("empleados-view.fxml");
+        cargarVista("empleados-view.fxml", empleadosButton);
     }
-    @FXML public void mostrarAjustes() { cargarVista("ajustes-view.fxml");}
-
+    @FXML public void mostrarAjustes() {
+        cargarVista("ajustes-view.fxml", ajustesButton);
+    }
 }

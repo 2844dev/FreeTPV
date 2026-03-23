@@ -1,5 +1,6 @@
 package com.mateo.freetpv.controller;
 
+import atlantafx.base.theme.Tweaks;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
 import javafx.collections.FXCollections;
@@ -7,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class EmpleadosController {
     @FXML private TableColumn<Usuario, String> nombreColumn;
     @FXML private TableColumn<Usuario, String> rolColumn;
     @FXML private TableColumn<Usuario, String> fechaColumn;
+    @FXML private TableColumn activoColumn;
+    @FXML private TableColumn editarColumn;
 
     // Panel extra de edicion y creacion de empleados
     @FXML private BorderPane nuevoempleadoPane;
@@ -64,6 +68,12 @@ public class EmpleadosController {
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         rolColumn.setCellValueFactory(new PropertyValueFactory<>("rol"));
         fechaColumn.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+//        editarColumn.setCellFactory(param -> new TableCell<>() {
+//            private Button edtrButton = new Button("");
+//                    {
+//                        Usuario user = getTableRow().getItem();
+//                    }
+//                }
 
         // Actualizamos la tabla con los usuarios
         cargarUsuarios();

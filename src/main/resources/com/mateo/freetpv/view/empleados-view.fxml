@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -26,7 +27,7 @@
                         <FontIcon iconLiteral="fas-pen" iconSize="16" />
                      </graphic></Button>
                   <TextField fx:id="buscarField" promptText="Buscar..." />
-                  <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" style="-fx-background-color: -color-accent-3;" text="Nuevo usuario">
+                  <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" style="-fx-background-color: -color-accent-4;" text="Nuevo usuario">
                      <graphic>
                         <FontIcon iconLiteral="fas-plus" iconSize="16" />
                      </graphic></Button>
@@ -40,13 +41,19 @@
             </HBox>
          </top>
          <center>
-            <TableView fx:id="empleadosTable" prefHeight="580.0" prefWidth="990.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="empleadosTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="990.0" BorderPane.alignment="CENTER">
               <columns>
                   <TableColumn fx:id="codigoColumn" editable="false" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" resizable="false" text="Código" />
-                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="532.0" minWidth="532.0" prefWidth="532.0" resizable="false" text="Nombre" />
-                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" resizable="false" text="Rol" />
-                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="179.0" minWidth="179.0" prefWidth="179.0" resizable="false" text="Fecha creación" />
+                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="424.0" minWidth="424.0" prefWidth="424.0" resizable="false" text="Nombre" />
+                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="147.0" minWidth="147.0" prefWidth="147.0" resizable="false" text="Rol" />
+                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="152.0" minWidth="152.0" prefWidth="152.0" resizable="false" text="Fecha creación" />
+                  <TableColumn fx:id="activoColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="Activo" />
+                  <TableColumn fx:id="editarColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" />
               </columns>
+               <styleClass>
+                  <String fx:value="bordered" />
+                  <String fx:value="striped" />
+               </styleClass>
             </TableView>
          </center>
       </BorderPane>
@@ -85,6 +92,9 @@
                </children>
             </VBox>
          </center>
+         <styleClass>
+            <String fx:value="elevated-2" />
+         </styleClass>
       </BorderPane>
    </children>
 </StackPane>

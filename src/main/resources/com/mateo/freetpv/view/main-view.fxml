@@ -135,7 +135,7 @@
                   </Button>
                </children>
             </VBox>
-            <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mostrarAjustes" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Ajustes">
+            <Button fx:id="ajustesButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mostrarAjustes" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Ajustes">
                <graphic>
                   <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="250.0" spacing="25.0">
                      <children>
