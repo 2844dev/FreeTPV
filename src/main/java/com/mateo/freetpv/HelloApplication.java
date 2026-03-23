@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
         db.connect();
         db.initDatabase();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/login-view.fxml"));
-        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("FreeTPV");
         stage.setScene(scene);
