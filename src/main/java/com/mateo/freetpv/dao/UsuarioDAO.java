@@ -83,51 +83,53 @@ public class UsuarioDAO {
      * guardados en la base de datos. Devuelve una lista vacia en caso de
      * que no hubiera resultados o {@code null} en caso de error.
      */
-    public List<Usuario> obtenerUsuarios(Boolean filtro) {
-
+    public List<Usuario> obtenerUsuarios(String buscar, boolean filtro) {
+        boolean where = false;
         // Consulta por defecto
         String sql = "SELECT * FROM usuarios";
-
+        if (buscar != null && !buscar.isEmpty()) {
+            sql += " WHERE nombre LIKE ? COLLATE NOCASE";
+            where = true;
+        }
         // Comprobamos si filtramos o no
         if (filtro) {
-            sql = "SELECT * FROM usuarios WHERE estado = 1";
+            if (where) {
+                sql += " AND estado = 1";
+            } else {
+                sql += " WHERE estado = 1";
+            }
         }
 
         // Nos conectamos a la base de datos
-        try (var connection = db.getConnection()) {
-            var stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        try (var connection = db.getConnection();
+            var stmt = connection.prepareStatement(sql)) {
+            if (buscar != null && !buscar.isEmpty()) {
+                stmt.setString(1, "%" + buscar + "%");
+            }
+            ResultSet rs = stmt.executeQuery();
 
             // Creamos una lista de usuarios y todos los atributos que tiene un usuario
             List<Usuario> usuarios = new ArrayList<>();
-            int id;
-            String nombre;
-            String hash;
-            String salt;
-            String rol;
-            String fecha_creacion;
-            boolean estado;
-            Usuario usuario;
 
             // Probamos a crear usuarios hasta que no haya mas usuarios
             while (rs.next()) {
-                id = rs.getInt("id");
-                nombre = rs.getString("nombre");
-                hash = rs.getString("hash");
-                salt = rs.getString("salt");
-                rol = rs.getString("rol");
-                fecha_creacion = rs.getString("fecha_creacion");
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                String hash = rs.getString("hash");
+                String salt = rs.getString("salt");
+                String rol = rs.getString("rol");
+                String fecha_creacion = rs.getString("fecha_creacion");
 
                 // Pasamos el estado de un int a un boolean
-                estado = intBoolean(rs.getInt("estado"));
+                boolean estado = intBoolean(rs.getInt("estado"));
 
-                usuario = new Usuario(id, nombre, hash, salt, rol, estado, fecha_creacion);
+                Usuario usuario = new Usuario(id, nombre, hash, salt, rol, estado, fecha_creacion);
                 usuarios.add(usuario);
             }
             return usuarios;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
 

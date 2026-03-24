@@ -24,27 +24,46 @@ import java.util.List;
  */
 public class EmpleadosController {
     // Panel principal de empleados
-    @FXML private BorderPane empleadosPane;
-    @FXML private CheckBox filtroCheckBox;
-    @FXML private Button nuevoButton;
-    @FXML private TextField buscarField;
-    @FXML private TableView<Usuario> empleadosTable;
-    @FXML private TableColumn<Usuario, Integer> codigoColumn;
-    @FXML private TableColumn<Usuario, String> nombreColumn;
-    @FXML private TableColumn<Usuario, String> rolColumn;
-    @FXML private TableColumn<Usuario, String> fechaColumn;
-    @FXML private TableColumn<Usuario, Void> estadoColumn;
-    @FXML private TableColumn<Usuario, Void> editarColumn;
+    @FXML
+    private BorderPane empleadosPane;
+    @FXML
+    private CheckBox filtroCheckBox;
+    @FXML
+    private Button nuevoButton;
+    @FXML
+    private TextField buscarField;
+    @FXML
+    private TableView<Usuario> empleadosTable;
+    @FXML
+    private TableColumn<Usuario, Integer> codigoColumn;
+    @FXML
+    private TableColumn<Usuario, String> nombreColumn;
+    @FXML
+    private TableColumn<Usuario, String> rolColumn;
+    @FXML
+    private TableColumn<Usuario, String> fechaColumn;
+    @FXML
+    private TableColumn<Usuario, Void> estadoColumn;
+    @FXML
+    private TableColumn<Usuario, Void> editarColumn;
 
     // Panel extra de edicion y creacion de empleados
-    @FXML private BorderPane nuevoempleadoPane;
-    @FXML private TextField usuarioField;
-    @FXML private PasswordField pinField;
-    @FXML private ChoiceBox<String> rolChoiceBox;
-    @FXML private CheckBox estadoCheckBox;
-    @FXML private Button guardarButton;
-    @FXML private Button cancelarButton;
-    @FXML private Label errorLabel;
+    @FXML
+    private BorderPane nuevoempleadoPane;
+    @FXML
+    private TextField usuarioField;
+    @FXML
+    private PasswordField pinField;
+    @FXML
+    private ChoiceBox<String> rolChoiceBox;
+    @FXML
+    private CheckBox estadoCheckBox;
+    @FXML
+    private Button guardarButton;
+    @FXML
+    private Button cancelarButton;
+    @FXML
+    private Label errorLabel;
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
@@ -57,13 +76,16 @@ public class EmpleadosController {
      * Inicializa la pantalla de gestión de empleados
      *
      */
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
 
         // Nos aseguramos que el panel de nuevo empleado esta invisible
         nuevoempleadoPane.setVisible(false);
 
         // Nos aseguramos que no tiene texto
         errorLabel.setText("");
+
+        buscarField.textProperty().addListener((observable, oldValue, newValue) -> actualizarUsuarios());
 
         // Indicamos a cada columna que atributo de usuario mostrar
         codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -75,7 +97,8 @@ public class EmpleadosController {
         estadoColumn.setCellFactory(param -> new TableCell<>() {
             private FontIcon icon = new FontIcon();
 
-            @Override protected void updateItem(Void item, boolean empty) {
+            @Override
+            protected void updateItem(Void item, boolean empty) {
                 if (empty) {
                     setGraphic(null);
                 } else {
@@ -100,6 +123,7 @@ public class EmpleadosController {
 
             // Creamos un atributo boton
             private Button editarButton = new Button("");
+
             // Bloque inicializador
             {
                 // Configuramos como se vera el boton
@@ -111,13 +135,15 @@ public class EmpleadosController {
                     mostrarFormularioEditar(getTableView().getItems().get(getIndex()));
                 });
             }
+
             // Llamamos a updateItem para decir si se vera o no el botón
-            @Override protected void updateItem(Void item, boolean empty) {
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        setGraphic(editarButton);
-                    }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(editarButton);
+                }
             }
         });
 
@@ -136,7 +162,8 @@ public class EmpleadosController {
      * edita o crea un usuario
      *
      */
-    @FXML public void guardarFormulario() {
+    @FXML
+    public void guardarFormulario() {
         String nombre = usuarioField.getText();
         String rol = rolChoiceBox.getSelectionModel().getSelectedItem();
         String pin = pinField.getText();
@@ -172,7 +199,7 @@ public class EmpleadosController {
             infoAlert.setHeaderText("Usuario creado correctamente");
             infoAlert.setContentText("Usuario " + usuarioField.getText() + " creado.");
             infoAlert.showAndWait();
-        // Editamos un usuario
+            // Editamos un usuario
         } else {
             usuarioDAO.editarUsuario(usuarioEditando, nombre, pin, rol, estado);
             infoAlert.setTitle("Editar Usuario");
@@ -180,12 +207,13 @@ public class EmpleadosController {
             infoAlert.setContentText("Usuario " + usuarioField.getText() + " editado.");
             infoAlert.showAndWait();
         }
-        cargarUsuarios();
+        actualizarUsuarios();
         cerrarFormulario();
     }
 
     // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario
-    @FXML public void mostrarFormularioNuevo() {
+    @FXML
+    public void mostrarFormularioNuevo() {
         empleadosPane.setDisable(true);
         nuevoempleadoPane.setVisible(true);
 
@@ -194,7 +222,7 @@ public class EmpleadosController {
         estadoCheckBox.setDisable(true);
     }
 
-    public void mostrarFormularioEditar(Usuario usuario) {
+    private void mostrarFormularioEditar(Usuario usuario) {
 
         // Escogemos el usuario editado como el seleccionado en la tabla
         usuarioEditando = usuario;
@@ -229,7 +257,8 @@ public class EmpleadosController {
     }
 
     // Eliminamos todos los datos que queden en los campos del formulario una vez se cancela
-    @FXML public void cerrarFormulario() {
+    @FXML
+    public void cerrarFormulario() {
         nuevoempleadoPane.setVisible(false);
 
         // Limpiamos el formulario
@@ -245,13 +274,19 @@ public class EmpleadosController {
         empleadosPane.setDisable(false);
     }
 
-    @FXML public void cargarUsuarios() {
+    public void cargarUsuarios() {
         // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(!filtroCheckBox.isSelected());
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), !filtroCheckBox.isSelected());
 
-        if (usuarios != null && !usuarios.isEmpty()) {
-            // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
-            empleadosTable.setItems(FXCollections.observableList(usuarios));
-        }
+        // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
+        empleadosTable.setItems(FXCollections.observableList(usuarios));
+    }
+
+    @FXML public void actualizarUsuarios() {
+        // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), !filtroCheckBox.isSelected());
+
+        // Convertimos la lista a una observableList, y ponemos los items con los nuevos
+        empleadosTable.getItems().setAll(FXCollections.observableList(usuarios));
     }
 }

@@ -22,7 +22,7 @@
          <top>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <CheckBox fx:id="filtroCheckBox" mnemonicParsing="false" onAction="#cargarUsuarios" text="Ver usuarios inactivos">
+                  <CheckBox fx:id="filtroCheckBox" mnemonicParsing="false" onAction="#actualizarUsuarios" text="Ver usuarios inactivos">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
