@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class UsuarioDAO {
     private HashUtil hashUtil = new HashUtil();
-    private DatabaseConnection db = new DatabaseConnection();
+    private DatabaseConnection db = DatabaseConnection.getInstancia();
 
     /**
      *
@@ -54,8 +54,8 @@ public class UsuarioDAO {
     // Descripción hecha por modo IA de Google.
     public List<String> obtenerNombres() {
 
-        // Seleccionamos todos los valores de la columna nombres de la tabla usuarios
-        String sql = "SELECT nombre, estado FROM usuarios";
+        // Seleccionamos todos los valores de la columna nombres de la tabla usuarios que tengan estado 1 (Activos)
+        String sql = "SELECT nombre FROM usuarios WHERE estado = 1";
         try (var connection = db.getConnection()) {
             var stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -63,12 +63,9 @@ public class UsuarioDAO {
             // Creamos una lista de arrays de string y añadimos todos a ella
             List<String> nombres = new ArrayList<>();
 
-            // Vamos por todos los valores comprobando que estan activos
-            // si no hay ninguno devolvemos lista vacia
+            // Añadimos todos los valores a la lista
             while (rs.next()) {
-                if (rs.getInt("estado") == 1) {
-                    nombres.add(rs.getString("nombre"));
-                }
+                nombres.add(rs.getString("nombre"));
             }
             return nombres;
         } catch (SQLException e){
@@ -80,14 +77,21 @@ public class UsuarioDAO {
     /**
      * Recupera una lista de tipo {@link Usuario} con todos los datos de todos los usuarios.
      *
+     * @param filtro 0 -> devuelve todos los usuarios 1 -> Devuelve solo los activos
+     *
      * @return Devuelve una {@code List<Usuario>} con todos los Usuarios
      * guardados en la base de datos. Devuelve una lista vacia en caso de
      * que no hubiera resultados o {@code null} en caso de error.
      */
-    public List<Usuario> obtenerUsuarios() {
+    public List<Usuario> obtenerUsuarios(Boolean filtro) {
 
-        // Cogemos todos los datos de la tabla usuarios
+        // Consulta por defecto
         String sql = "SELECT * FROM usuarios";
+
+        // Comprobamos si filtramos o no
+        if (filtro) {
+            sql = "SELECT * FROM usuarios WHERE estado = 1";
+        }
 
         // Nos conectamos a la base de datos
         try (var connection = db.getConnection()) {

@@ -1,14 +1,16 @@
 package com.mateo.freetpv.controller;
 
+import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ import java.util.List;
 public class EmpleadosController {
     // Panel principal de empleados
     @FXML private BorderPane empleadosPane;
-    @FXML private Button editarButton;
+    @FXML private CheckBox filtroCheckBox;
     @FXML private Button nuevoButton;
     @FXML private TextField buscarField;
     @FXML private TableView<Usuario> empleadosTable;
@@ -31,8 +33,8 @@ public class EmpleadosController {
     @FXML private TableColumn<Usuario, String> nombreColumn;
     @FXML private TableColumn<Usuario, String> rolColumn;
     @FXML private TableColumn<Usuario, String> fechaColumn;
-    @FXML private TableColumn activoColumn;
-    @FXML private TableColumn editarColumn;
+    @FXML private TableColumn<Usuario, Void> estadoColumn;
+    @FXML private TableColumn<Usuario, Void> editarColumn;
 
     // Panel extra de edicion y creacion de empleados
     @FXML private BorderPane nuevoempleadoPane;
@@ -68,12 +70,56 @@ public class EmpleadosController {
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         rolColumn.setCellValueFactory(new PropertyValueFactory<>("rol"));
         fechaColumn.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
-//        editarColumn.setCellFactory(param -> new TableCell<>() {
-//            private Button edtrButton = new Button("");
-//                    {
-//                        Usuario user = getTableRow().getItem();
-//                    }
-//                }
+
+        estadoColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
+        estadoColumn.setCellFactory(param -> new TableCell<>() {
+            private FontIcon icon = new FontIcon();
+
+            @Override protected void updateItem(Void item, boolean empty) {
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    icon.getStyleClass().removeAll(Styles.SUCCESS, Styles.DANGER);
+                    if (getTableView().getItems().get(getIndex()).getEstado()) {
+                        icon.setIconLiteral("fas-user-check");
+                        icon.getStyleClass().add(Styles.SUCCESS);
+                    } else {
+                        icon.setIconLiteral("fas-user-minus");
+                        icon.getStyleClass().add(Styles.DANGER);
+                    }
+                    setGraphic(icon);
+                }
+            }
+        });
+
+        // Columna editar
+        editarColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
+
+        // Configuramos fabrica para poner los botones en cada celda
+        editarColumn.setCellFactory(param -> new TableCell<>() {
+
+            // Creamos un atributo boton
+            private Button editarButton = new Button("");
+            // Bloque inicializador
+            {
+                // Configuramos como se vera el boton
+                FontIcon icon = new FontIcon();
+                icon.setIconLiteral("fas-edit");
+                editarButton.setGraphic(icon);
+                editarButton.setStyle("-fx-padding: 4;");
+                editarButton.setOnAction(e -> {
+                    mostrarFormularioEditar(getTableView().getItems().get(getIndex()));
+                });
+            }
+            // Llamamos a updateItem para decir si se vera o no el botón
+            @Override protected void updateItem(Void item, boolean empty) {
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(editarButton);
+                    }
+            }
+        });
 
         // Actualizamos la tabla con los usuarios
         cargarUsuarios();
@@ -148,16 +194,18 @@ public class EmpleadosController {
         estadoCheckBox.setDisable(true);
     }
 
-    @FXML
-    public void mostrarFormularioEditar() {
+    public void mostrarFormularioEditar(Usuario usuario) {
 
         // Escogemos el usuario editado como el seleccionado en la tabla
-        usuarioEditando = empleadosTable.getSelectionModel().getSelectedItem();
+        usuarioEditando = usuario;
 
         // Comprobamos que haya un usuario seleccionado
         if (usuarioEditando != null) {
             // Ponemos los datos del usuario en el formulario
             usuarioField.setText(usuarioEditando.getNombre());
+
+            // Deseleccionamos el campo despues de renderizarlo
+            Platform.runLater(() -> guardarButton.requestFocus());
 
             // Dejamos el pin en blanco si no lo queremos editar
             pinField.clear();
@@ -197,9 +245,9 @@ public class EmpleadosController {
         empleadosPane.setDisable(false);
     }
 
-    private void cargarUsuarios() {
+    @FXML public void cargarUsuarios() {
         // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(!filtroCheckBox.isSelected());
 
         if (usuarios != null && !usuarios.isEmpty()) {
             // Convertimos la lista a una observableList y lo ponemos como los items en la tabla

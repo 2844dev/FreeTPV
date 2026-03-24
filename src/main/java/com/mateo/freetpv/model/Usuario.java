@@ -37,7 +37,7 @@ public class Usuario {
         this.rol = rol;
     }
     public void setEstado(boolean estado) {
-        this.estado = this.estado;
+        this.estado = estado;
     }
     public void setFecha_creacion(String fecha_creacion) {
         this.fecha_creacion = fecha_creacion;

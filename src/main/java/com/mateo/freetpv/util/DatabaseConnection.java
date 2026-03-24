@@ -5,11 +5,25 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
+
+    private static DatabaseConnection instancia;
+
     // Cojemos el directorio del cual se esta ejecutando
     private String path = System.getProperty("user.dir");
 
     // Añadimos al directorio el archivo .db
     private String url = "jdbc:sqlite:" + path + "/freetpv.db";
+
+    // Ponemos el constructor privado para Singleton
+    private DatabaseConnection() {}
+
+    // Creamos metodo para coger instancia desde otras clases
+    public static DatabaseConnection getInstancia() {
+        if (instancia == null) {
+            instancia = new DatabaseConnection();
+        }
+        return instancia;
+    }
 
     // Conectarse a la bd en otras clases
     public Connection getConnection() {
