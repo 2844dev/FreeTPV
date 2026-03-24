@@ -27,7 +27,7 @@
                         <Insets />
                      </opaqueInsets>
                      <HBox.margin>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="6.0" />
                      </HBox.margin>
                   </CheckBox>
                   <TextField fx:id="buscarField" promptText="Buscar..." />
@@ -77,7 +77,11 @@
                               <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
                            </children>
                         </VBox>
-                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?" />
+                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?">
+                           <HBox.margin>
+                              <Insets top="17.0" />
+                           </HBox.margin>
+                        </CheckBox>
                      </children>
                   </HBox>
                   <Label fx:id="errorLabel" />

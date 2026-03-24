@@ -65,11 +65,11 @@ public class EmpleadosController {
     @FXML
     private Label errorLabel;
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    final private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     private Usuario usuarioEditando = null;
 
-    private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+    final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
     /**
      *

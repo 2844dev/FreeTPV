@@ -19,8 +19,8 @@ import java.util.List;
  * @since 01/03/2026
  */
 public class UsuarioDAO {
-    private HashUtil hashUtil = new HashUtil();
-    private DatabaseConnection db = DatabaseConnection.getInstancia();
+    final private HashUtil hashUtil = new HashUtil();
+    private final DatabaseConnection db = DatabaseConnection.getInstancia();
 
     /**
      *
