@@ -10,9 +10,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class LoginController {
@@ -151,5 +156,30 @@ public class LoginController {
         // Cerramos la pantalla
         firstPane.setVisible(false);
         loginPane.setDisable(false);
+    }
+    @FXML
+    public void importarBd() {
+        // Creamos un selector de archivos
+        FileChooser selector = new FileChooser();
+        // Creamos un filtro de extension de archivo con opcion a .bd
+        FileChooser.ExtensionFilter filtro = new FileChooser.ExtensionFilter("Base de datos (.db)", "*.db");
+        // Añadimos el filtro al selector de archivos
+        selector.getExtensionFilters().setAll(filtro);
+        // Conseguir stage desde el un objeto
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        File bd = selector.showOpenDialog(stage);
+        // Si se ha escogido un archivo
+        if (bd != null) {
+            // Establecemos el destino hasta donde tiene que estar el archivo
+            Path destino = Path.of(System.getProperty("user.dir") + "/freetpv.db");
+            try {
+                // Copiamos el archivo en el destino reemplazando el existente
+                Files.copy(bd.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
+                // Recargamos la pantalla
+                initialize();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }

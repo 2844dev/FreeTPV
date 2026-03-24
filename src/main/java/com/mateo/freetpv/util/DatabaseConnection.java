@@ -74,6 +74,7 @@ public class DatabaseConnection {
                 + "imagen TEXT,"
                 + "precio REAL NOT NULL,"
                 + "iva INTEGER NOT NULL,"
+                + "estado INTEGER NOT NULL,"
                 + "categoria_id INTEGER NOT NULL,"
                 + "FOREIGN KEY (categoria_id) REFERENCES categorias(id)"
                 + ")";

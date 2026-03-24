@@ -97,7 +97,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="buscarButton" mnemonicParsing="false" text="Buscar">
+                  <Button fx:id="buscarButton" mnemonicParsing="false" onAction="#importarBd" text="Buscar">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
