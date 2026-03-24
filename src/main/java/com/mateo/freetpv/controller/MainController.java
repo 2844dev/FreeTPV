@@ -18,9 +18,21 @@ public class MainController {
     @FXML private Button ajustesButton;
     @FXML private StackPane contenedor;
 
+    private String panelActual = null;
+
+    @FXML public void initialize() {
+        // Establecemos el panel actual
+        panelActual = "blank-view";
+    }
+
     private void cargarVista(String fxml, Button button) {
         try {
-
+            // Comprobamos que el panel actual no es el mismo ni null
+            if (panelActual == null || panelActual.equals(fxml)) {
+                return;
+            }
+            // Establecemos el panel actual
+            panelActual = fxml;
             // Creamos un fxmlloader con un archivo fxml indicado
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/" + fxml));
 
@@ -30,9 +42,15 @@ public class MainController {
             // Y cargamos el nodo en el contenedor
             contenedor.getChildren().setAll(vista);
 
+            // Reestablecemos todos los botones a su estado por defecto
             ventasButton.setStyle("-fx-background-radius: 0");
             empleadosButton.setStyle("-fx-background-radius: 0");
+            productosButton.setStyle("-fx-background-radius: 0");
+            mesasButton.setStyle("-fx-background-radius: 0");
+            clientesButton.setStyle("-fx-background-radius: 0");
             ajustesButton.setStyle("-fx-background-radius: 0");
+
+            // Establecemos el boton tocado en el color de acento
             button.setStyle("-fx-background-color: -color-accent-4; -fx-background-radius: 0");
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.AjustesController">
    <children>
       <BorderPane fx:id="ajustesPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
          <center>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="40.0" text="Tema:">
+                  <Label alignment="CENTER" graphicTextGap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Tema:">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <graphic>
+                        <FontIcon iconLiteral="fas-paint-brush" />
+                     </graphic>
                   </Label>
                   <ChoiceBox fx:id="temasChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
                </children>
             </HBox>
          </center>
+         <bottom>
+            <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarAjustes" text="Guardar" BorderPane.alignment="CENTER">
+               <graphic>
+                  <FontIcon iconLiteral="fas-save" iconSize="16" />
+               </graphic></Button>
+         </bottom>
       </BorderPane>
    </children>
 </StackPane>

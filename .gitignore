@@ -4,11 +4,11 @@ target/
 !**/src/test/**/target/
 .kotlin
 *.class
-*.iml
 .mvn/
 mvnw
 mvnw.cmd
 *.db
+*.properties
 
 ### IntelliJ IDEA ###
 .idea/
