@@ -1,7 +1,10 @@
 package com.mateo.freetpv.model;
 
-// CLASE MODELO USUARIOS
-
+/**
+ *
+ * Clase modelo para los usuarios
+ *
+ */
 public class Usuario {
     private int id;
     private String nombre;

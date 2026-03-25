@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -14,48 +18,78 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.EmpleadosController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.ProductosController">
    <children>
-      <BorderPane fx:id="productosPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
-         <top>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                     <children>
-                        <Button fx:id="editarButton" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Crear categoria" />
-                        <Button fx:id="editarButton1" mnemonicParsing="false" onAction="#mostrarFormularioEditar" text="Crear producto" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                     <children>
-                        <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Editar categoria" />
-                        <Button fx:id="nuevoButton1" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" text="Editar producto" />
-                     </children>
-                  </VBox>
-                  <ComboBox prefWidth="150.0" promptText="Categoria" />
-                  <TextField fx:id="buscarField" promptText="Buscar..." />
-               </children>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
-            </HBox>
-         </top>
+      <BorderPane fx:id="empleadosPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
          <center>
-            <TableView fx:id="empleadosTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="empleadosTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="990.0" BorderPane.alignment="CENTER">
                <columns>
-                  <TableColumn fx:id="codigoColumn" editable="false" maxWidth="567.0" minWidth="85.0" prefWidth="115.0" resizable="false" text="Código" />
-                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="1049.0" minWidth="490.0" prefWidth="532.0" resizable="false" text="Nombre" />
-                  <TableColumn fx:id="rolColumn" editable="false" maxWidth="295.0" minWidth="57.0" prefWidth="162.0" resizable="false" text="Rol" />
-                  <TableColumn fx:id="fechaColumn" editable="false" maxWidth="442.0" minWidth="149.0" prefWidth="180.0" resizable="false" text="Fecha creación" />
+                  <TableColumn fx:id="codigoColumn" editable="false" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" resizable="false" text="Código" />
+                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="370.0" minWidth="370.0" prefWidth="370.0" resizable="false" text="Nombre" />
+                  <TableColumn fx:id="precioColumn" editable="false" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="Precio (€)" />
+                  <TableColumn fx:id="ivaColumn" editable="false" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" resizable="false" text="IVA (%)" />
+                  <TableColumn fx:id="estadoColumn" editable="false" maxWidth="80.0" minWidth="80.0" resizable="false" text="Activo" />
+                  <TableColumn fx:id="favoritoColumn" editable="false" maxWidth="80.0" minWidth="80.0" resizable="false" text="Favorito" />
+                  <TableColumn fx:id="editarColumn" editable="false" maxWidth="80.0" minWidth="80.0" resizable="false" />
                </columns>
+               <styleClass>
+                  <String fx:value="bordered" />
+                  <String fx:value="striped" />
+               </styleClass>
             </TableView>
          </center>
+         <top>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="990.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="BOTTOM_RIGHT" spacing="40.0">
+                     <children>
+                        <Button graphicTextGap="8.0" mnemonicParsing="false" text="Editar categoría">
+                           <graphic>
+                              <FontIcon iconLiteral="far-edit" iconSize="16" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="button-outlined" />
+                              <String fx:value="accent" />
+                           </styleClass>
+                        </Button>
+                        <Button graphicTextGap="8.0" mnemonicParsing="false" styleClass="accent" text="Crear categoría">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-folder-plus" iconSize="16" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_RIGHT" spacing="40.0">
+                     <children>
+                        <MenuButton fx:id="filtrarMenu" graphicTextGap="8.0" mnemonicParsing="false" text="Filtrar">
+                           <items>
+                              <CheckMenuItem fx:id="todosMenuItem" mnemonicParsing="false" text="Todos" />
+                              <CheckMenuItem fx:id="activosMenuItem" mnemonicParsing="false" selected="true" text="Activos" />
+                              <CheckMenuItem fx:id="noactivosMenuItem" mnemonicParsing="false" text="No activos" />
+                           </items>
+                           <graphic>
+                              <FontIcon iconLiteral="fas-filter" iconSize="16" />
+                           </graphic>
+                        </MenuButton>
+                        <ComboBox prefWidth="150.0" promptText="Categoria" />
+                        <TextField fx:id="buscarField" promptText="Buscar..." />
+                        <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="accent" text="Nuevo producto">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-plus" iconSize="16" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </VBox>
+         </top>
       </BorderPane>
-      <BorderPane fx:id="nuevoproductoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: #FFFFFF;" visible="false">
+      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: -color-bg-subtle;" visible="false">
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
@@ -71,19 +105,73 @@
                               <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
                            </children>
                         </VBox>
-                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?" />
+                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?">
+                           <HBox.margin>
+                              <Insets top="17.0" />
+                           </HBox.margin>
+                        </CheckBox>
                      </children>
                   </HBox>
                   <Label fx:id="errorLabel" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button fx:id="guardarButton" mnemonicParsing="false" onAction="#guardarFormulario" text="Guardar" />
-                        <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
+                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" style="-fx-background-color: -color-success-4;" text="Guardar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-save" iconSize="16" />
+                           </graphic></Button>
+                        <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" style="-fx-background-color: -color-danger-4;" text="Cancelar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-times" iconSize="16" />
+                           </graphic></Button>
                      </children>
                   </HBox>
                </children>
             </VBox>
          </center>
+         <styleClass>
+            <String fx:value="elevated-2" />
+         </styleClass>
+      </BorderPane>
+      <BorderPane fx:id="categoriaPane" maxHeight="320.0" maxWidth="630.0" prefHeight="320.0" prefWidth="630.0">
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Nombre" />
+                  <TextField fx:id="usuarioField1" maxWidth="250.0" promptText="Azusa Nakano" />
+                  <Label fx:id="errorLabel1" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <Button fx:id="guardarButton1" graphicTextGap="8.0" mnemonicParsing="false" styleClass="success" text="Guardar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-save" iconSize="16" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="cancelarButton1" graphicTextGap="8.0" mnemonicParsing="false" text="Cancelar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-times" iconSize="16" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="button-outlined" />
+                              <String fx:value="danger" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="cancelarButton11" graphicTextGap="8.0" mnemonicParsing="false" styleClass="danger">
+                           <graphic>
+                              <FontIcon iconLiteral="far-trash-alt" iconSize="16" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <styleClass>
+            <String fx:value="bg-subtle" />
+            <String fx:value="elevated-2" />
+         </styleClass>
       </BorderPane>
    </children>
 </StackPane>

@@ -70,7 +70,7 @@
                         </HBox>
                      </graphic>
                   </Button>
-                  <Button fx:id="productosButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Productos">
+                  <Button fx:id="productosButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mostrarProductos" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Productos">
                      <graphic>
                         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="250.0" spacing="25.0">
                            <children>

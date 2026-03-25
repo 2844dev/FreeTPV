@@ -130,15 +130,12 @@ public class EmpleadosController {
         editarColumn.setCellFactory(param -> new TableCell<>() {
 
             // Creamos un atributo boton
-            private Button editarButton = new Button("");
+            private Button editarButton = new Button(null, new FontIcon("fas-edit"));
 
             // Bloque inicializador
             {
                 // Configuramos como se vera el boton
-                FontIcon icon = new FontIcon();
-                icon.setIconLiteral("fas-edit");
-                editarButton.setGraphic(icon);
-                editarButton.setStyle("-fx-padding: 4;");
+                editarButton.getStyleClass().addAll(Styles.BUTTON_ICON, Styles.BUTTON_OUTLINED);
                 editarButton.setOnAction(e -> {
                     mostrarFormularioEditar(getTableView().getItems().get(getIndex()));
                 });
