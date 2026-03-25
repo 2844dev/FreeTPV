@@ -26,8 +26,10 @@ public class EmpleadosController {
     // Panel principal de empleados
     @FXML
     private BorderPane empleadosPane;
-    @FXML
-    private CheckBox filtroCheckBox;
+    @FXML private MenuButton filtrarMenu;
+    @FXML private CheckMenuItem todosMenuItem;
+    @FXML private CheckMenuItem activosMenuItem;
+    @FXML private CheckMenuItem noactivosMenuItem;
     @FXML
     private Button nuevoButton;
     @FXML
@@ -71,6 +73,7 @@ public class EmpleadosController {
 
     final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
+    private List<CheckMenuItem> filtros;
     /**
      *
      * Inicializa la pantalla de gestión de empleados
@@ -85,6 +88,11 @@ public class EmpleadosController {
         // Nos aseguramos que no tiene texto
         errorLabel.setText("");
 
+        // Indicamos los campos que son filtros
+        filtros = List.of(activosMenuItem, noactivosMenuItem);
+        // Nos aseguramos que esta seleccionado
+        activosMenuItem.setSelected(true);
+        // Añadimos un listener al campo buscar para que se actualize
         buscarField.textProperty().addListener((observable, oldValue, newValue) -> actualizarUsuarios());
 
         // Indicamos a cada columna que atributo de usuario mostrar
@@ -274,9 +282,31 @@ public class EmpleadosController {
         empleadosPane.setDisable(false);
     }
 
-    public void cargarUsuarios() {
+    @FXML
+    public void filtrarUsuarios() {
+        int n = 0;
+        for (CheckMenuItem i : filtros) {
+            if (i.isSelected()) n++;
+        }
+        if (n == filtros.size()) {
+            todosMenuItem.setSelected(true);
+            filtrosTodos();
+        } else {
+            todosMenuItem.setSelected(false);
+        }
+        actualizarUsuarios();
+    }
+
+    @FXML public void filtrosTodos() {
+        for (CheckMenuItem i : filtros) {
+            i.setSelected(todosMenuItem.isSelected());
+        }
+        actualizarUsuarios();
+    }
+
+    private void cargarUsuarios() {
         // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), !filtroCheckBox.isSelected());
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), activosMenuItem.isSelected(), noactivosMenuItem.isSelected());
 
         // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
         empleadosTable.setItems(FXCollections.observableList(usuarios));
@@ -284,7 +314,7 @@ public class EmpleadosController {
 
     @FXML public void actualizarUsuarios() {
         // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), !filtroCheckBox.isSelected());
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), activosMenuItem.isSelected(), noactivosMenuItem.isSelected());
 
         // Convertimos la lista a una observableList, y ponemos los items con los nuevos
         empleadosTable.getItems().setAll(FXCollections.observableList(usuarios));

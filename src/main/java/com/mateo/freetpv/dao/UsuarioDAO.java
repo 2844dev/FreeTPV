@@ -77,32 +77,33 @@ public class UsuarioDAO {
     /**
      * Recupera una lista de tipo {@link Usuario} con todos los datos de todos los usuarios.
      *
-     * @param filtro 0 -> devuelve todos los usuarios 1 -> Devuelve solo los activos
+     * @param activo Devuelve o no devuelve los usuarios activos
+     * @param noactivo Devuelve o no devuelve los usuarios no activos
      *
      * @return Devuelve una {@code List<Usuario>} con todos los Usuarios
      * guardados en la base de datos. Devuelve una lista vacia en caso de
      * que no hubiera resultados o {@code null} en caso de error.
      */
-    public List<Usuario> obtenerUsuarios(String buscar, boolean filtro) {
-        boolean where = false;
+    public List<Usuario> obtenerUsuarios(String buscar, boolean activo, boolean noactivo) {
+        // Comprobamos que hay al menos un filtro puesto
+        if (!activo && !noactivo) return new ArrayList<>();
         // Consulta por defecto
-        String sql = "SELECT * FROM usuarios";
+        StringBuilder sql = new StringBuilder("SELECT * FROM usuarios WHERE 1=1");
+        // Comprobamos si buscamos
         if (buscar != null && !buscar.isEmpty()) {
-            sql += " WHERE nombre LIKE ? COLLATE NOCASE";
-            where = true;
+            sql.append(" AND nombre LIKE ? COLLATE NOCASE");
         }
-        // Comprobamos si filtramos o no
-        if (filtro) {
-            if (where) {
-                sql += " AND estado = 1";
-            } else {
-                sql += " WHERE estado = 1";
-            }
+        // Comprobamos si filtramos o no (OR)
+        if (activo && !noactivo) {
+            sql.append(" AND estado = 1");
+        }
+        if (!activo && noactivo) {
+            sql.append(" AND estado = 0");
         }
 
         // Nos conectamos a la base de datos
         try (var connection = db.getConnection();
-            var stmt = connection.prepareStatement(sql)) {
+            var stmt = connection.prepareStatement(sql.toString())) {
             if (buscar != null && !buscar.isEmpty()) {
                 stmt.setString(1, "%" + buscar + "%");
             }

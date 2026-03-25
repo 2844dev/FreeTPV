@@ -4,8 +4,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -22,14 +24,16 @@
          <top>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <CheckBox fx:id="filtroCheckBox" mnemonicParsing="false" onAction="#actualizarUsuarios" text="Ver usuarios inactivos">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets bottom="6.0" />
-                     </HBox.margin>
-                  </CheckBox>
+                  <MenuButton fx:id="filtrarMenu" graphicTextGap="8.0" mnemonicParsing="false" text="Filtrar">
+                    <items>
+                        <CheckMenuItem fx:id="todosMenuItem" mnemonicParsing="false" onAction="#filtrosTodos" text="Todos" />
+                        <CheckMenuItem fx:id="activosMenuItem" mnemonicParsing="false" onAction="#filtrarUsuarios" selected="true" text="Activos" />
+                        <CheckMenuItem fx:id="noactivosMenuItem" mnemonicParsing="false" onAction="#filtrarUsuarios" text="No activos" />
+                    </items>
+                     <graphic>
+                        <FontIcon iconLiteral="fas-filter" iconSize="16" />
+                     </graphic>
+                  </MenuButton>
                   <TextField fx:id="buscarField" promptText="Buscar..." />
                   <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" style="-fx-background-color: -color-accent-4;" text="Nuevo usuario">
                      <graphic>

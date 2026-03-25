@@ -31,8 +31,6 @@ public class MainController {
             if (panelActual == null || panelActual.equals(fxml)) {
                 return;
             }
-            // Establecemos el panel actual
-            panelActual = fxml;
             // Creamos un fxmlloader con un archivo fxml indicado
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/" + fxml));
 
@@ -52,6 +50,8 @@ public class MainController {
 
             // Establecemos el boton tocado en el color de acento
             button.setStyle("-fx-background-color: -color-accent-4; -fx-background-radius: 0");
+            // Establecemos el panel actual
+            panelActual = fxml;
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
