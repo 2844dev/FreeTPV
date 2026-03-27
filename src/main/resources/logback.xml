@@ -1,0 +1,28 @@
+<configuration>
+
+    <!-- Appender para fichero -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/.freetpv/logs/freetpv.log</file>
+
+        <!-- Rota el log cada dia y guarda maximo 30 dias -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.home}/.freetpv/logs/archivo/freetpv.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%-5level] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Codigo propio desde info -->
+    <logger name="com.mateo.freetpv" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <!-- Mensajes de librerias solo error -->
+    <root level="ERROR">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

@@ -3,6 +3,8 @@ package com.mateo.freetpv.dao;
 import com.mateo.freetpv.model.Usuario;
 import com.mateo.freetpv.util.DatabaseConnection;
 import com.mateo.freetpv.util.HashUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +21,7 @@ import java.util.List;
  * @since 01/03/2026
  */
 public class UsuarioDAO {
+    private static final Logger log = LoggerFactory.getLogger(UsuarioDAO.class);
     final private HashUtil hashUtil = new HashUtil();
     private final DatabaseConnection db = DatabaseConnection.getInstancia();
 
@@ -38,7 +41,7 @@ public class UsuarioDAO {
            ResultSet rs = stmt.executeQuery();
            return rs.next();
        } catch (SQLException e) {
-           System.out.println(e.getMessage());
+           log.error("Error al comprobar si el usuario existe", e);
            return true;
        }
     }
@@ -69,7 +72,7 @@ public class UsuarioDAO {
             }
             return nombres;
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            log.error("Error al obtener los nombres de usuarios", e);
             return null;
         }
     }
@@ -129,7 +132,7 @@ public class UsuarioDAO {
             }
             return usuarios;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al obtener todos los datos de usuarios", e);
             return new ArrayList<>();
         }
     }
@@ -182,8 +185,9 @@ public class UsuarioDAO {
                 stmt.setInt(4, id);
             }
             stmt.executeUpdate();
+            log.info("Usuario editado: {}", nombre);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al actualizar los datos de usuarios", e);
         }
     }
 
@@ -219,8 +223,9 @@ public class UsuarioDAO {
             stmt.setInt(5, estado_int);
             stmt.setString(6, fecha_creacion);
             stmt.executeUpdate();
+            log.info("Usuario creado: {} con rol {}", nombre, rol);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al crear un usuario", e);
         }
     }
 
@@ -243,33 +248,34 @@ public class UsuarioDAO {
             ResultSet rs = stmt.executeQuery();
 
             // Comprobamos si hay resultados
-            if (rs.next()) {
-                String hashAlmacenado = rs.getString("hash");
-                String saltAlmacenado = rs.getString("salt");
-
-                // Comparamos el hash de la base de datos con el hash insertado
-                String hashInsertado = hashUtil.hashPin(pin, saltAlmacenado);
-
-                // Si coincide hacemos consultas y creamos un objeto usuario
-                if (hashAlmacenado.equals(hashInsertado)) {
-                    int id  = rs.getInt("id");
-                    String rol = rs.getString("rol");
-
-                    // Pasamos el estado a un boolean
-                    int estado_int = rs.getInt("estado");
-                    boolean estado = intBoolean(estado_int);
-
-                    // Creamos el usuario validado
-                    String fecha_creacion = rs.getString("fecha_creacion");
-                    return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, estado, fecha_creacion);
-                } else  {
-                    return null;
-                }
-            } else {
+            if (!rs.next()) {
+                log.error("Usuario {} no encontrado", nombre);
                 return null;
             }
+            String hashAlmacenado = rs.getString("hash");
+            String saltAlmacenado = rs.getString("salt");
+
+            // Comparamos el hash de la base de datos con el hash insertado
+            String hashInsertado = hashUtil.hashPin(pin, saltAlmacenado);
+
+            // Si coincide hacemos consultas y creamos un objeto usuario
+            if (!hashAlmacenado.equals(hashInsertado)) {
+                log.error("Intento de login fallido: {}", nombre);
+                return null;
+            }
+            int id = rs.getInt("id");
+            String rol = rs.getString("rol");
+
+            // Pasamos el estado a un boolean
+            int estado_int = rs.getInt("estado");
+            boolean estado = intBoolean(estado_int);
+
+            // Creamos el usuario validado
+            String fecha_creacion = rs.getString("fecha_creacion");
+            log.info("Intento de login correcto: {}", nombre);
+            return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, estado, fecha_creacion);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al validar login: {}", nombre, e);
             return null;
         }
     }

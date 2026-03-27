@@ -7,11 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MainController {
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
     @FXML private Button ventasButton;
     @FXML private Button empleadosButton;
     @FXML private Button productosButton;
@@ -51,7 +54,7 @@ public class MainController {
             button.getStyleClass().add(Styles.ACCENT);
             panelActual = fxml;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al cargar vista", e);
         }
     }
 

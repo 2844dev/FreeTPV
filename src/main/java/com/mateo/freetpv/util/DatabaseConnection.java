@@ -3,16 +3,20 @@ package com.mateo.freetpv.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseConnection {
 
     private static DatabaseConnection instancia;
 
+    private static final Logger log = LoggerFactory.getLogger(DatabaseConnection.class);
+
     // Cojemos el directorio del cual se esta ejecutando
-    private String path = System.getProperty("user.dir");
+    private String path = System.getProperty("user.home");
 
     // Añadimos al directorio el archivo .db
-    private String url = "jdbc:sqlite:" + path + "/freetpv.db";
+    private String url = "jdbc:sqlite:" + path + "/.freetpv/freetpv.db";
 
     // Ponemos el constructor privado para Singleton
     private DatabaseConnection() {}
@@ -28,9 +32,10 @@ public class DatabaseConnection {
     // Conectarse a la bd en otras clases
     public Connection getConnection() {
         try {
+            log.info("Base de datos conectada");
             return DriverManager.getConnection(url);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al conectar a la base de datos", e);
             return null;
         }
     }
@@ -38,9 +43,9 @@ public class DatabaseConnection {
     // Conexion a base de datos
     public void connect() {
         try (var connection = DriverManager.getConnection(url)) {
-            System.out.println("Base de datos conectada");
+            log.info("Base de datos inicializada");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al conectar a la base de datos.", e);
         }
     }
 
@@ -150,7 +155,7 @@ public class DatabaseConnection {
             stmt.execute(tabla_clientes);
             stmt.execute(tabla_caja);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al crear tablas de la base de datos.", e);
         }
     }
 }

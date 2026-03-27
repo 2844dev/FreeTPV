@@ -1,5 +1,8 @@
 package com.mateo.freetpv.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,6 +17,8 @@ import java.util.Base64;
  * @since 01/03/2026
  */
 public class HashUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(HashUtil.class);
 
     /**
      * Genera un salt aleatorio de 32 bytes
@@ -58,7 +63,7 @@ public class HashUtil {
             // Pasamos el hash a string
             hashedPassword_string = Base64.getEncoder().encodeToString(hashedPassword);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
+            log.error("Error al crear un hash.", e);
         }
         return hashedPassword_string;
     }

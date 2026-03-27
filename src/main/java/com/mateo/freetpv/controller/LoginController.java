@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +52,8 @@ public class LoginController {
     private Button buscarButton; // Boton para buscar BD
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @FXML
     public void initialize() {
@@ -104,7 +108,7 @@ public class LoginController {
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     stage.setScene(scene);
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
+                    log.error("Error al cargar el view principal", e);
                 }
             } else {
                 errorLabel.setVisible(true);
@@ -178,7 +182,7 @@ public class LoginController {
                 // Recargamos la pantalla
                 initialize();
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                log.error("Error al copiar base de datos importada", e);
             }
         }
     }
