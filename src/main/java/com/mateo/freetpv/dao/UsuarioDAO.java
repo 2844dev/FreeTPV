@@ -73,7 +73,7 @@ public class UsuarioDAO {
             return nombres;
         } catch (SQLException e){
             log.error("Error al obtener los nombres de usuarios", e);
-            return null;
+            return new ArrayList<>();
         }
     }
 

@@ -202,14 +202,14 @@ public class EmpleadosController {
             usuarioDAO.crearUsuario(nombre, pin, rol);
             infoAlert.setTitle("Crear Usuario");
             infoAlert.setHeaderText("Usuario creado correctamente");
-            infoAlert.setContentText("Usuario " + usuarioField.getText() + " creado.");
+            infoAlert.setContentText("Usuario " + nombre + " creado.");
             infoAlert.showAndWait();
             // Editamos un usuario
         } else {
             usuarioDAO.editarUsuario(usuarioEditando, nombre, pin, rol, estado);
             infoAlert.setTitle("Editar Usuario");
             infoAlert.setHeaderText("Usuario editado correctamente");
-            infoAlert.setContentText("Usuario " + usuarioField.getText() + " editado.");
+            infoAlert.setContentText("Usuario " + nombre + " editado.");
             infoAlert.showAndWait();
         }
         actualizarUsuarios();

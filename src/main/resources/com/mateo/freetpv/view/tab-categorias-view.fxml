@@ -48,10 +48,10 @@
                <children>
                   <Label text="Nombre" />
                   <TextField fx:id="usuarioField" maxWidth="250.0" promptText="Azusa Nakano" />
-                  <Label fx:id="errorLabel" />
+                  <Label fx:id="errorLabel" styleClass="danger" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="success" text="Guardar">
+                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarCategoria" styleClass="success" text="Guardar">
                            <graphic>
                               <FontIcon iconLiteral="fas-save" iconSize="16" />
                            </graphic>
