@@ -35,7 +35,7 @@
                      </graphic>
                   </MenuButton>
                   <TextField fx:id="buscarField" promptText="Buscar..." />
-                  <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" style="-fx-background-color: -color-accent-4;" text="Nuevo usuario">
+                  <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" styleClass="accent" text="Nuevo usuario">
                      <graphic>
                         <FontIcon iconLiteral="fas-plus" iconSize="16" />
                      </graphic></Button>
@@ -65,7 +65,7 @@
             </TableView>
          </center>
       </BorderPane>
-      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" style="-fx-background-color: -color-bg-subtle;" visible="false">
+      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" visible="false">
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
@@ -91,11 +91,11 @@
                   <Label fx:id="errorLabel" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarFormulario" style="-fx-background-color: -color-success-4;" text="Guardar">
+                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarFormulario" styleClass="success" text="Guardar">
                            <graphic>
                               <FontIcon iconLiteral="fas-save" iconSize="16" />
                            </graphic></Button>
-                        <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarFormulario" style="-fx-background-color: -color-danger-4;" text="Cancelar">
+                        <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarFormulario" styleClass="accent" text="Cancelar">
                            <graphic>
                               <FontIcon iconLiteral="fas-times" iconSize="16" />
                            </graphic></Button>
@@ -105,6 +105,7 @@
             </VBox>
          </center>
          <styleClass>
+            <String fx:value="bg-subtle" />
             <String fx:value="elevated-2" />
          </styleClass>
       </BorderPane>

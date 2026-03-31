@@ -1,5 +1,6 @@
 package com.mateo.freetpv.util;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class DatabaseConnection {
 
-    private static DatabaseConnection instancia;
+    private static final DatabaseConnection instancia = new DatabaseConnection();
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseConnection.class);
 
@@ -19,33 +20,22 @@ public class DatabaseConnection {
     private String url = "jdbc:sqlite:" + path + "/.freetpv/freetpv.db";
 
     // Ponemos el constructor privado para Singleton
-    private DatabaseConnection() {}
+    private DatabaseConnection() {
+        new File(path + "/.freetpv").mkdirs();
+    }
 
     // Creamos metodo para coger instancia desde otras clases
     public static DatabaseConnection getInstancia() {
-        if (instancia == null) {
-            instancia = new DatabaseConnection();
-        }
         return instancia;
     }
 
     // Conectarse a la bd en otras clases
     public Connection getConnection() {
         try {
-            log.info("Base de datos conectada");
             return DriverManager.getConnection(url);
         } catch (SQLException e) {
             log.error("Error al conectar a la base de datos", e);
             return null;
-        }
-    }
-
-    // Conexion a base de datos
-    public void connect() {
-        try (var connection = DriverManager.getConnection(url)) {
-            log.info("Base de datos inicializada");
-        } catch (SQLException e) {
-            log.error("Error al conectar a la base de datos.", e);
         }
     }
 
@@ -108,7 +98,6 @@ public class DatabaseConnection {
         var tabla_mesas = "CREATE TABLE IF NOT EXISTS mesas ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "numero INTEGER NOT NULL,"
-                + "estado INTEGER NOT NULL," // 0 LIBRE, 1 OCUPADA
                 + "zona_id INTEGER NOT NULL,"
                 + "pedido_id INTEGER UNIQUE," // NULL si la mesa está libre
                 + "FOREIGN KEY (zona_id) REFERENCES zonas(id)"
@@ -121,7 +110,7 @@ public class DatabaseConnection {
                 + "estado TEXT NOT NULL," // Abierto, Pagado
                 + "metodo_pago TEXT NULL," // Efectivo, Tarjeta o todavia no se ha cobrado
                 + "usuario_id INTEGER NOT NULL,"
-                + "mesa_id INTEGER NOT NULL,"
+                + "mesa_id INTEGER,"
                 + "caja_id INTEGER NOT NULL,"
                 + "cliente_id INTEGER,"
                 + "FOREIGN KEY (usuario_id) REFERENCES usuarios(id),"
@@ -132,6 +121,7 @@ public class DatabaseConnection {
 
         var tabla_lineas_pedidos = "CREATE TABLE IF NOT EXISTS lineas_pedidos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "nombre_producto TEXT NOT NULL,"
                 + "cantidad INTEGER NOT NULL,"
                 + "precio_unitario REAL NOT NULL,"
                 + "iva INTEGER NOT NULL,"
@@ -154,6 +144,7 @@ public class DatabaseConnection {
             stmt.execute(tabla_lineas_pedidos);
             stmt.execute(tabla_clientes);
             stmt.execute(tabla_caja);
+            log.info("Base de datos creada correctamente");
         } catch (SQLException e) {
             log.error("Error al crear tablas de la base de datos.", e);
         }

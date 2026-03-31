@@ -13,7 +13,6 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstancia();
-        db.connect();
         db.initDatabase();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/login-view.fxml"));
         AjustesDAO ajustesDAO = new AjustesDAO();
