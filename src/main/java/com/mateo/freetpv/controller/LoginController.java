@@ -4,6 +4,7 @@ import com.mateo.freetpv.HelloApplication;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
 import com.mateo.freetpv.util.NombreUtil;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -107,6 +108,9 @@ public class LoginController {
                     // Conseguir stage desde el un objeto
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     stage.setScene(scene);
+
+                    // Ajustamos la sesion al usuario logeado
+                    SesionActual.getInstancia().setUsuario(user);
                 } catch (IOException e) {
                     log.error("Error al cargar el view principal", e);
                 }

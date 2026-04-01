@@ -17,7 +17,7 @@ public class Producto {
     private int categoria_id;
 
     // CONSTRUCTOR
-    public Producto(int categoria_id, boolean favorito, boolean estado, int iva, int precio, String imagen, String nombre_ticket, String nombre, int id) {
+    public Producto(int id, String nombre, String nombre_ticket, String imagen, int precio, int iva, boolean estado, boolean favorito, int categoria_id) {
         this.categoria_id = categoria_id;
         this.favorito = favorito;
         this.estado = estado;
@@ -34,7 +34,7 @@ public class Producto {
     public String getNombre() { return nombre; }
     public String getNombre_ticket() { return nombre_ticket; }
     public String getImagen() { return imagen; }
-    public double getPrecio() { return precio; }
+    public int getPrecio() { return precio; }
     public int getIva() { return iva; }
     public boolean isEstado() { return estado; }
     public boolean isFavorito() { return favorito; }

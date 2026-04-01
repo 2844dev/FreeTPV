@@ -4,6 +4,7 @@ import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -70,6 +71,8 @@ public class EmpleadosController {
     final private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     private Usuario usuarioEditando = null;
+
+    private Usuario usuarioActual = SesionActual.getInstancia().getUsuario();
 
     final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
@@ -227,12 +230,13 @@ public class EmpleadosController {
     // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario
     @FXML
     public void mostrarFormularioNuevo() {
-        empleadosPane.setDisable(true);
-        nuevoempleadoPane.setVisible(true);
 
         // Forzamos que un usuario este habilitado por defecto
         estadoCheckBox.setSelected(true);
         estadoCheckBox.setDisable(true);
+
+        empleadosPane.setDisable(true);
+        nuevoempleadoPane.setVisible(true);
     }
 
     private void mostrarFormularioEditar(Usuario usuario) {
@@ -259,9 +263,13 @@ public class EmpleadosController {
             }
 
             // Habilitamos la edición del estado y lo seleccionamos acorde a su estado
-            estadoCheckBox.setDisable(false);
             estadoCheckBox.setSelected(usuarioEditando.getEstado());
 
+            // Si el usuario editado es el actual prevenimos que se degrade de rol o se desactive
+            if (usuarioEditando.getId() == usuarioActual.getId()) {
+                rolChoiceBox.setDisable(true);
+                estadoCheckBox.setDisable(true);
+            }
             // Hacemos visible el panel
             empleadosPane.setDisable(true);
             nuevoempleadoPane.setVisible(true);
@@ -279,6 +287,10 @@ public class EmpleadosController {
         pinField.clear();
         rolChoiceBox.getSelectionModel().clearSelection();
         errorLabel.setText("");
+
+        // Habilitamos los modulos deshabilitados
+        rolChoiceBox.setDisable(false);
+        estadoCheckBox.setDisable(false);
 
         // Reestablecemos el usuario editado
         usuarioEditando = null;

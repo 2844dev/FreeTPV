@@ -4,7 +4,6 @@ import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.model.Categoria;
-import com.mateo.freetpv.model.Usuario;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

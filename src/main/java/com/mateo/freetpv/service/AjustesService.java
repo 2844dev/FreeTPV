@@ -1,4 +1,4 @@
-package com.mateo.freetpv.dao;
+package com.mateo.freetpv.service;
 
 import atlantafx.base.theme.*;
 import com.mateo.freetpv.util.AjustesUtil;
@@ -6,7 +6,7 @@ import javafx.application.Application;
 
 import java.util.Properties;
 
-public class AjustesDAO {
+public class AjustesService {
 
     private AjustesUtil ajustesUtil = new AjustesUtil();
 

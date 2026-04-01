@@ -1,8 +1,6 @@
 package com.mateo.freetpv.controller;
 
-import atlantafx.base.theme.*;
-import com.mateo.freetpv.dao.AjustesDAO;
-import javafx.application.Application;
+import com.mateo.freetpv.service.AjustesService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,15 +15,15 @@ public class AjustesController {
     @FXML private ChoiceBox<String> temasChoiceBox;
     @FXML private Button guardarButton;
 
-    private AjustesDAO ajustesDAO = new AjustesDAO();
+    private AjustesService ajustesService = new AjustesService();
 
     @FXML public void initialize() {
         temasChoiceBox.setItems(FXCollections.observableArrayList("Primer Light", "Primer Dark", "Nord Light", "Nord Dark", "Cupertino Light", "Cupertino Dark", "Dracula"));
-        temasChoiceBox.getSelectionModel().select(ajustesDAO.getTema());
+        temasChoiceBox.getSelectionModel().select(ajustesService.getTema());
     }
     @FXML public void guardarAjustes() {
-        ajustesDAO.setTema(temasChoiceBox.getSelectionModel().getSelectedItem());
-        ajustesDAO.loadTema();
-        log.info("Tema cargado: {}", ajustesDAO.getTema());
+        ajustesService.setTema(temasChoiceBox.getSelectionModel().getSelectedItem());
+        ajustesService.loadTema();
+        log.info("Tema cargado: {}", ajustesService.getTema());
     }
 }

@@ -1,6 +1,6 @@
 package com.mateo.freetpv;
 
-import com.mateo.freetpv.dao.AjustesDAO;
+import com.mateo.freetpv.service.AjustesService;
 import com.mateo.freetpv.util.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +15,8 @@ public class HelloApplication extends Application {
         DatabaseConnection db = DatabaseConnection.getInstancia();
         db.initDatabase();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/login-view.fxml"));
-        AjustesDAO ajustesDAO = new AjustesDAO();
-        ajustesDAO.loadTema();
+        AjustesService ajustesService = new AjustesService();
+        ajustesService.loadTema();
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("FreeTPV");
         stage.setScene(scene);
