@@ -175,7 +175,7 @@ public class LoginController {
         // Si se ha escogido un archivo
         if (bd != null) {
             // Establecemos el destino hasta donde tiene que estar el archivo
-            Path destino = Path.of(System.getProperty("user.dir") + "/freetpv.db");
+            Path destino = Path.of(System.getProperty("user.home") + "/.freetpv/freetpv.db");
             try {
                 // Copiamos el archivo en el destino reemplazando el existente
                 Files.copy(bd.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
