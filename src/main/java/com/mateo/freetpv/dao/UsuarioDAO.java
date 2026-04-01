@@ -150,7 +150,7 @@ public class UsuarioDAO {
      * @param rol Admin, Camarero
      * @param estado Activo o no activo (true, false)
      */
-    public void editarUsuario(Usuario usuario, String nombre, String pin, String rol, boolean estado) {
+    public boolean editarUsuario(Usuario usuario, String nombre, String pin, String rol, boolean estado) {
         int id = usuario.getId();
         int estado_int = booleanInt(estado);
 
@@ -184,10 +184,12 @@ public class UsuarioDAO {
                 stmt.setInt(3, estado_int);
                 stmt.setInt(4, id);
             }
-            stmt.executeUpdate();
+            int filas = stmt.executeUpdate();
             log.info("Usuario editado: {}", nombre);
+            return filas > 0;
         } catch (SQLException e) {
             log.error("Error al actualizar los datos de usuarios", e);
+            return false;
         }
     }
 
@@ -200,7 +202,7 @@ public class UsuarioDAO {
      * @param pin Pin del usuario
      * @param rol Rol del usuario
      */
-    public void crearUsuario(String nombre, String pin, String rol) {
+    public boolean crearUsuario(String nombre, String pin, String rol) {
         String salt = hashUtil.generarSalt();
         String hash = hashUtil.hashPin(pin, salt);
 
@@ -222,10 +224,12 @@ public class UsuarioDAO {
             stmt.setString(4, rol);
             stmt.setInt(5, estado_int);
             stmt.setString(6, fecha_creacion);
-            stmt.executeUpdate();
+            int filas = stmt.executeUpdate();
             log.info("Usuario creado: {} con rol {}", nombre, rol);
+            return filas > 0;
         } catch (SQLException e) {
             log.error("Error al crear un usuario", e);
+            return false;
         }
     }
 

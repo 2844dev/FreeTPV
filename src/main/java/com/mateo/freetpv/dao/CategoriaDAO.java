@@ -27,28 +27,32 @@ public class CategoriaDAO {
         }
     }
 
-    public void crearCategoria(String nombre) {
+    public boolean crearCategoria(String nombre) {
         String sql = "INSERT INTO categorias (nombre) VALUES (?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
-            stmt.executeUpdate();
+            int filas = stmt.executeUpdate();
             log.info("Categoria {} creada correctamente", nombre);
+            return filas > 0;
         } catch (SQLException e) {
             log.error("Error al crear categoria", e);
+            return false;
         }
     }
 
-    public void editarCategoria(Categoria categoria, String nombre) {
+    public boolean editarCategoria(Categoria categoria, String nombre) {
         String sql = "UPDATE categorias SET nombre = ? WHERE id = ?";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
             stmt.setInt(2, categoria.getId());
-            stmt.executeUpdate();
+            int filas = stmt.executeUpdate();
             log.info("Categoria editada: {}", nombre);
+            return filas > 0;
         } catch (SQLException e) {
             log.error("Error al editar categoria", e);
+            return false;
         }
     }
 

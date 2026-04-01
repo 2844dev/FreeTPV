@@ -199,18 +199,26 @@ public class EmpleadosController {
         }
         // Creamos un usuario
         if (usuarioEditando == null) {
-            usuarioDAO.crearUsuario(nombre, pin, rol);
-            infoAlert.setTitle("Crear Usuario");
-            infoAlert.setHeaderText("Usuario creado correctamente");
-            infoAlert.setContentText("Usuario " + nombre + " creado.");
-            infoAlert.showAndWait();
+            if (usuarioDAO.crearUsuario(nombre, pin, rol)) {
+                infoAlert.setTitle("Crear Usuario");
+                infoAlert.setHeaderText("Usuario creado correctamente");
+                infoAlert.setContentText("Usuario " + nombre + " creado.");
+                infoAlert.showAndWait();
+            } else {
+                errorLabel.setText("No se pudo crear el usuario");
+                return;
+            }
             // Editamos un usuario
         } else {
-            usuarioDAO.editarUsuario(usuarioEditando, nombre, pin, rol, estado);
-            infoAlert.setTitle("Editar Usuario");
-            infoAlert.setHeaderText("Usuario editado correctamente");
-            infoAlert.setContentText("Usuario " + nombre + " editado.");
-            infoAlert.showAndWait();
+            if (usuarioDAO.editarUsuario(usuarioEditando, nombre, pin, rol, estado)) {
+                infoAlert.setTitle("Editar Usuario");
+                infoAlert.setHeaderText("Usuario editado correctamente");
+                infoAlert.setContentText("Usuario " + nombre + " editado.");
+                infoAlert.showAndWait();
+            } else {
+                errorLabel.setText("No se pudo editar el usuario");
+                return;
+            }
         }
         actualizarUsuarios();
         cerrarFormulario();

@@ -98,17 +98,25 @@ public class CategoriasController {
             return;
         }
         if (categoriaEditando == null) {
-            categoriaDAO.crearCategoria(nombre);
-            infoAlert.setTitle("Crear Categoria");
-            infoAlert.setHeaderText("Categoria creada correctamente");
-            infoAlert.setContentText("Categoria " + nombre + " creada.");
-            infoAlert.showAndWait();
+            if (categoriaDAO.crearCategoria(nombre)) {
+                infoAlert.setTitle("Crear Categoria");
+                infoAlert.setHeaderText("Categoria creada correctamente");
+                infoAlert.setContentText("Categoria " + nombre + " creada.");
+                infoAlert.showAndWait();
+            } else {
+                errorLabel.setText("No se puedo crear la categoria");
+                return;
+            }
         } else {
-            categoriaDAO.editarCategoria(categoriaEditando, nombre);
-            infoAlert.setTitle("Editar Categoria");
-            infoAlert.setHeaderText("Categoria editada correctamente");
-            infoAlert.setContentText("Categoria " + nombre + " editada.");
-            infoAlert.showAndWait();
+            if (categoriaDAO.editarCategoria(categoriaEditando, nombre)) {
+                infoAlert.setTitle("Editar Categoria");
+                infoAlert.setHeaderText("Categoria editada correctamente");
+                infoAlert.setContentText("Categoria " + nombre + " editada.");
+                infoAlert.showAndWait();
+            } else {
+                errorLabel.setText("No se pudo editar la categoria");
+                return;
+            }
         }
 
         actualizarCategorias();
