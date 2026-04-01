@@ -10,14 +10,14 @@ public class Producto {
     private String nombre;
     private String nombre_ticket;
     private String imagen;
-    private double precio;
+    private int precio;
     private int iva;
     private boolean estado;
     private boolean favorito;
     private int categoria_id;
 
     // CONSTRUCTOR
-    public Producto(int categoria_id, boolean favorito, boolean estado, int iva, double precio, String imagen, String nombre_ticket, String nombre, int id) {
+    public Producto(int categoria_id, boolean favorito, boolean estado, int iva, int precio, String imagen, String nombre_ticket, String nombre, int id) {
         this.categoria_id = categoria_id;
         this.favorito = favorito;
         this.estado = estado;
@@ -45,7 +45,7 @@ public class Producto {
     public void setFavorito(boolean favorito) { this.favorito = favorito; }
     public void setEstado(boolean estado) { this.estado = estado; }
     public void setIva(int iva) { this.iva = iva; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public void setPrecio(int precio) { this.precio = precio; }
     public void setImagen(String imagen) { this.imagen = imagen; }
     public void setNombre_ticket(String nombre_ticket) { this.nombre_ticket = nombre_ticket; }
     public void setNombre(String nombre) { this.nombre = nombre; }

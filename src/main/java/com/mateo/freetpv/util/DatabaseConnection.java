@@ -73,7 +73,7 @@ public class DatabaseConnection {
                 + "nombre TEXT NOT NULL,"
                 + "nombre_ticket TEXT NOT NULL,"
                 + "imagen TEXT,"
-                + "precio REAL NOT NULL,"
+                + "precio INTEGER NOT NULL,"
                 + "iva INTEGER NOT NULL,"
                 + "estado INTEGER NOT NULL,"
                 + "favorito INTEGER NOT NULL,"
@@ -94,11 +94,11 @@ public class DatabaseConnection {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "fecha_apertura TEXT NOT NULL,"
                 + "fecha_cierre TEXT," // NULL hasta que se cierre
-                + "fondo_inicial REAL NOT NULL,"
-                + "total_efectivo_esperado REAL NOT NULL,"
-                + "total_efectivo_real REAL NOT NULL,"
-                + "total_tarjeta REAL NOT NULL,"
-                + "descuadre REAL NOT NULL"
+                + "fondo_inicial INTEGER NOT NULL,"
+                + "total_efectivo_esperado INTEGER NOT NULL,"
+                + "total_efectivo_real INTEGER NOT NULL,"
+                + "total_tarjeta INTEGER NOT NULL,"
+                + "descuadre INTEGER NOT NULL"
                 + ")";
 
         var tabla_mesas = "CREATE TABLE IF NOT EXISTS mesas ("
@@ -112,7 +112,7 @@ public class DatabaseConnection {
         var tabla_pedidos = "CREATE TABLE IF NOT EXISTS pedidos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "fecha TEXT NOT NULL,"
-                + "total REAL NOT NULL,"
+                + "total INTEGER NOT NULL,"
                 + "estado TEXT NOT NULL," // Abierto, Pagado
                 + "metodo_pago TEXT NULL," // Efectivo, Tarjeta o todavia no se ha cobrado
                 + "usuario_id INTEGER NOT NULL,"
@@ -129,9 +129,9 @@ public class DatabaseConnection {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "nombre_producto TEXT NOT NULL,"
                 + "cantidad INTEGER NOT NULL,"
-                + "precio_unitario REAL NOT NULL,"
+                + "precio_unitario INTEGER NOT NULL,"
                 + "iva INTEGER NOT NULL,"
-                + "subtotal REAL NOT NULL,"
+                + "subtotal INTEGER NOT NULL,"
                 + "pedido_id INTEGER NOT NULL,"
                 + "producto_id INTEGER NOT NULL,"
                 + "FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,"
