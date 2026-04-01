@@ -32,9 +32,15 @@ public class DatabaseConnection {
     // Conectarse a la bd en otras clases
     public Connection getConnection() {
         try {
-            return DriverManager.getConnection(url);
+            Connection connection = DriverManager.getConnection(url);
+
+            // Activamos las FK en cada conexión
+            try (var stmt = connection.createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = ON");
+            }
+            return connection;
         } catch (SQLException e) {
-            log.error("Error al conectar a la base de datos", e);
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -133,7 +139,7 @@ public class DatabaseConnection {
                 + ")";
 
         // Intentar conexion y ejecutar todas las consultas sql
-        try (var connection = DriverManager.getConnection(url)) {
+        try (var connection = getConnection()) {
             var stmt = connection.createStatement();
             stmt.execute(tabla_usuarios);
             stmt.execute(tabla_categorias);
@@ -144,7 +150,7 @@ public class DatabaseConnection {
             stmt.execute(tabla_lineas_pedidos);
             stmt.execute(tabla_clientes);
             stmt.execute(tabla_caja);
-            log.info("Base de datos creada correctamente");
+            log.info("Base de datos creada/cargada correctamente");
         } catch (SQLException e) {
             log.error("Error al crear tablas de la base de datos.", e);
         }
