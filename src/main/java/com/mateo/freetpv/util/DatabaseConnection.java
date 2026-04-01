@@ -30,19 +30,14 @@ public class DatabaseConnection {
     }
 
     // Conectarse a la bd en otras clases
-    public Connection getConnection() {
-        try {
-            Connection connection = DriverManager.getConnection(url);
+    public Connection getConnection() throws SQLException {
+        Connection connection = DriverManager.getConnection(url);
 
-            // Activamos las FK en cada conexión
-            try (var stmt = connection.createStatement()) {
-                stmt.execute("PRAGMA foreign_keys = ON");
-            }
-            return connection;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
+        // Activamos las FK en cada conexión
+        try (var stmt = connection.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON");
         }
+        return connection;
     }
 
     // Creamos las tablas si no existen
