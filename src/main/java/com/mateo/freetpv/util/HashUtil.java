@@ -1,14 +1,6 @@
 package com.mateo.freetpv.util;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 /**
  *
@@ -19,31 +11,13 @@ import java.util.Base64;
  */
 public class HashUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(HashUtil.class);
-
-//    /**
-//     * Genera un salt aleatorio de 32 bytes
-//     *
-//     * @return Devuelve un {@code String} de un salt aleatorio
-//     */
-//    public String generarSalt(){
-//
-//        // Generamos un salt
-//        SecureRandom random = new SecureRandom();
-//        byte[] salt = new byte[32];
-//        random.nextBytes(salt);
-//
-//        // Convertimos el salt a un string y lo devolvemos
-//        return Base64.getEncoder().encodeToString(salt);
-//    }
-
     /**
      *
-     * Calcula un hash dependiendo del pin y el salt
+     * Calcula un hash dependiendo del pin
      *
      * @param pin Contraseña introducida
      * @return Devolvemos un hash en {@code String} calculado
-     *          con un pin y un salt.
+     *          desde un pin
      */
     public String hashPin(String pin) {
 
@@ -51,6 +25,14 @@ public class HashUtil {
         return BCrypt.withDefaults().hashToString(12, pin.toCharArray());
     }
 
+    /**
+     *
+     * Verifica si el pin insertado y el guardado son iguales
+     *
+     * @param pin
+     * @param hashAlmacenado
+     * @return Devuelve un {@code Boolean} dependiendo de si es correcto o no
+     */
     public boolean verificarPin(String pin, String hashAlmacenado) {
         return BCrypt.verifyer().verify(pin.toCharArray(), hashAlmacenado).verified;
     }

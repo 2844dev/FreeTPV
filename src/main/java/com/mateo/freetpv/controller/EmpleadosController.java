@@ -4,6 +4,7 @@ import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
+import com.mateo.freetpv.util.NombreUtil;
 import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -75,6 +76,8 @@ public class EmpleadosController {
     private Usuario usuarioActual = SesionActual.getInstancia().getUsuario();
 
     final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+
+    final private NombreUtil nombreUtil = new NombreUtil();
 
     private List<CheckMenuItem> filtros;
     /**
@@ -230,6 +233,9 @@ public class EmpleadosController {
     // Mostramos el formulario vacio si le damos al boton de Nuevo Usuario
     @FXML
     public void mostrarFormularioNuevo() {
+
+        // Ponemos de prompt
+        usuarioField.setPromptText(nombreUtil.getNombre());
 
         // Forzamos que un usuario este habilitado por defecto
         estadoCheckBox.setSelected(true);

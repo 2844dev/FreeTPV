@@ -71,8 +71,9 @@ public class LoginController {
         // Comprobamos que la lista no esta vacia
         if (!usuarios.isEmpty()) {
             usuarioComboBox.setItems(FXCollections.observableList(usuarios));
-        } else {
-
+            return;
+        }
+        if (!usuarioDAO.existenUsuarios()) {
             // Si la lista esta vacia mostramos para crear el primer usuario o importar
 
             // Cojemos un nombre aleatorio de NombreUtil y lo usamos de prompt
@@ -83,7 +84,6 @@ public class LoginController {
             loginPane.setDisable(true);
             firstPane.setVisible(true);
         }
-
     }
 
     @FXML
@@ -133,7 +133,12 @@ public class LoginController {
         String usuario = newusuarioField.getText();
         String pin = newpinField.getText();
         newerrorLabel.setText("");
-
+        // Comprobamos que en la base de datos no existen usuarios
+        if (usuarioDAO.existenUsuarios()) {
+            newerrorLabel.setText("La base de datos ya tiene usuarios.");
+            newerrorLabel.setVisible(true);
+            return;
+        }
         // Comprobamos que haya pin y nombre escrito
         if (usuario.isEmpty() || pin.isEmpty()) {
             newerrorLabel.setText("Inserte un usuario y pin.");

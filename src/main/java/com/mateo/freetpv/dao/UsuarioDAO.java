@@ -46,6 +46,19 @@ public class UsuarioDAO {
        }
     }
 
+    public boolean existenUsuarios() {
+        String sql = "SELECT COUNT(*) FROM usuarios";
+        try (var connection = db.getConnection()) {
+            var stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            log.error("Error al comprobar si existen usuarios", e);
+            return false;
+        }
+    }
+
     /**
      * Recupera una lista con los nombres de todos los usuarios que
      * tienen un estado activo en la base de datos.
