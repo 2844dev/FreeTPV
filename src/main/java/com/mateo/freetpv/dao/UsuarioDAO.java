@@ -48,8 +48,8 @@ public class UsuarioDAO {
 
     public boolean existenUsuarios() {
         String sql = "SELECT COUNT(*) FROM usuarios";
-        try (var connection = db.getConnection()) {
-            var stmt = connection.createStatement();
+        try (var connection = db.getConnection();
+            var stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             rs.next();
             return rs.getInt(1) > 0;
@@ -72,8 +72,8 @@ public class UsuarioDAO {
 
         // Seleccionamos todos los valores de la columna nombres de la tabla usuarios que tengan estado 1 (Activos)
         String sql = "SELECT nombre FROM usuarios WHERE estado = 1";
-        try (var connection = db.getConnection()) {
-            var stmt = connection.createStatement();
+        try (var connection = db.getConnection();
+            var stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
 
             // Creamos una lista de arrays de string y añadimos todos a ella

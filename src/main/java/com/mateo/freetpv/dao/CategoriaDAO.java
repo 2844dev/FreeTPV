@@ -58,8 +58,8 @@ public class CategoriaDAO {
 
     public List<String> obtenerNombresCategorias() {
         String sql = "SELECT nombre FROM categorias";
-        try (var connection = db.getConnection()) {
-            var stmt = connection.createStatement();
+        try (var connection = db.getConnection();
+            var stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             List<String> nombres = new ArrayList<>();
             while (rs.next()) {
