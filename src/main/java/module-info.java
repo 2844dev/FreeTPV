@@ -8,6 +8,7 @@ module com.mateo.freetpv {
     requires org.kordamp.ikonli.fontawesome5;
     requires org.slf4j;
     requires ch.qos.logback.classic;
+    requires bcrypt;
 
     opens com.mateo.freetpv.model to javafx.base;
     opens  com.mateo.freetpv.controller to javafx.fxml;

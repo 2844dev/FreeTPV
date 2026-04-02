@@ -107,10 +107,11 @@ public class LoginController {
 
                     // Conseguir stage desde el un objeto
                     Stage stage = (Stage) loginButton.getScene().getWindow();
-                    stage.setScene(scene);
 
                     // Ajustamos la sesion al usuario logeado
                     SesionActual.getInstancia().setUsuario(user);
+
+                    stage.setScene(scene);
                 } catch (IOException e) {
                     log.error("Error al cargar el view principal", e);
                 }

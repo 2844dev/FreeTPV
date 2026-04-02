@@ -9,26 +9,21 @@ public class Usuario {
     private int id;
     private String nombre;
     private String hash;
-    private String salt;
     private String rol;
     private boolean estado; // 0 (false) no activo, 1 (true) activo
     private String fecha_creacion;
 
     // Constructor
-    public Usuario(int id, String nombre, String hash, String salt, String rol, boolean estado, String fecha_creacion) {
+    public Usuario(int id, String nombre, String hash, String rol, boolean estado, String fecha_creacion) {
         this.id = id;
         this.nombre = nombre;
         this.hash = hash;
-        this.salt = salt;
         this.rol = rol;
         this.estado = estado;
         this.fecha_creacion = fecha_creacion;
     }
 
     // Setters
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
     public void setHash(String hash) {
         this.hash = hash;
     }
@@ -56,9 +51,6 @@ public class Usuario {
     }
     public String getHash() {
         return hash;
-    }
-    public String getSalt() {
-        return salt;
     }
     public String getRol() {
         return rol;

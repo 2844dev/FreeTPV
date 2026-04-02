@@ -120,14 +120,13 @@ public class UsuarioDAO {
                 int id = rs.getInt("id");
                 String nombre = rs.getString("nombre");
                 String hash = rs.getString("hash");
-                String salt = rs.getString("salt");
                 String rol = rs.getString("rol");
                 String fecha_creacion = rs.getString("fecha_creacion");
 
                 // Pasamos el estado de un int a un boolean
                 boolean estado = intBoolean(rs.getInt("estado"));
 
-                Usuario usuario = new Usuario(id, nombre, hash, salt, rol, estado, fecha_creacion);
+                Usuario usuario = new Usuario(id, nombre, hash, rol, estado, fecha_creacion);
                 usuarios.add(usuario);
             }
             return usuarios;
@@ -142,7 +141,7 @@ public class UsuarioDAO {
      * Edita los valores de un usuario acorde a los parametros
      * y los guarda en la BD
      * <p>
-     * Genera un nuevo salt y hash si se cambia el pin.
+     * Genera un nuevo hash si se cambia el pin.
      *
      * @param usuario Usuario que editaremos
      * @param nombre Nuevo nombre de usuario
@@ -156,26 +155,23 @@ public class UsuarioDAO {
 
         // Escribimos el caso default si no tiene que cambiar el pin
         String sql = "UPDATE usuarios SET nombre = ?, rol = ?, estado = ? WHERE id = ?";
-        String salt = null;
         String hash = null;
 
-        // Si el pin se cambia generamos nuevo hash y salt y cambiamos la consulta
+        // Si el pin se cambia generamos nuevo hash y cambiamos la consulta
         if (pin != null && !pin.isEmpty()) {
-            salt = hashUtil.generarSalt();
-            hash = hashUtil.hashPin(pin, salt);
-            sql = "UPDATE usuarios SET nombre = ?, hash = ?, salt = ?, rol = ?, estado = ? WHERE id = ?";
+            hash = hashUtil.hashPin(pin);
+            sql = "UPDATE usuarios SET nombre = ?, hash = ?, rol = ?, estado = ? WHERE id = ?";
         }
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
 
             // En el caso de que se cambie el pin ponemos los datos en su orden
-            if (hash != null && salt != null) {
+            if (hash != null) {
                 stmt.setString(1, nombre);
                 stmt.setString(2, hash);
-                stmt.setString(3, salt);
-                stmt.setString(4, rol);
-                stmt.setInt(5, estado_int);
-                stmt.setInt(6, id);
+                stmt.setString(3, rol);
+                stmt.setInt(4, estado_int);
+                stmt.setInt(5, id);
 
                 // Si no se cambia el pin ponemos los datos en el orden del caso default
             } else {
@@ -195,7 +191,7 @@ public class UsuarioDAO {
 
     /**
      *
-     * Crea un nuevo usuario con hash y salt y lo guarda
+     * Crea un nuevo usuario con hash y lo guarda
      * en la base de datos
      *
      * @param nombre Nombre de usuario
@@ -203,8 +199,7 @@ public class UsuarioDAO {
      * @param rol Rol del usuario
      */
     public boolean crearUsuario(String nombre, String pin, String rol) {
-        String salt = hashUtil.generarSalt();
-        String hash = hashUtil.hashPin(pin, salt);
+        String hash = hashUtil.hashPin(pin);
 
         // Cogemos la fecha actual y la ponemos automaticamente en la base de datos
         LocalDate fecha = LocalDate.now();
@@ -215,15 +210,14 @@ public class UsuarioDAO {
         int estado_int = 1;
 
         // Utilizamos prepareStatement para evitar SQL injection
-        String sql = "INSERT INTO usuarios (nombre, hash, salt, rol, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nombre, hash, rol, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
             stmt.setString(2, hash);
-            stmt.setString(3, salt);
-            stmt.setString(4, rol);
-            stmt.setInt(5, estado_int);
-            stmt.setString(6, fecha_creacion);
+            stmt.setString(3, rol);
+            stmt.setInt(4, estado_int);
+            stmt.setString(5, fecha_creacion);
             int filas = stmt.executeUpdate();
             log.info("Usuario creado: {} con rol {}", nombre, rol);
             return filas > 0;
@@ -257,13 +251,9 @@ public class UsuarioDAO {
                 return null;
             }
             String hashAlmacenado = rs.getString("hash");
-            String saltAlmacenado = rs.getString("salt");
-
-            // Comparamos el hash de la base de datos con el hash insertado
-            String hashInsertado = hashUtil.hashPin(pin, saltAlmacenado);
 
             // Si coincide hacemos consultas y creamos un objeto usuario
-            if (!hashAlmacenado.equals(hashInsertado)) {
+            if (!hashUtil.verificarPin(pin, hashAlmacenado)) {
                 log.error("Intento de login fallido: {}", nombre);
                 return null;
             }
@@ -277,7 +267,7 @@ public class UsuarioDAO {
             // Creamos el usuario validado
             String fecha_creacion = rs.getString("fecha_creacion");
             log.info("Intento de login correcto: {}", nombre);
-            return new Usuario(id, nombre, hashAlmacenado, saltAlmacenado, rol, estado, fecha_creacion);
+            return new Usuario(id, nombre, hashAlmacenado, rol, estado, fecha_creacion);
         } catch (SQLException e) {
             log.error("Error al validar login: {}", nombre, e);
             return null;
