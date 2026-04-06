@@ -2,6 +2,7 @@ package com.mateo.freetpv.controller;
 
 import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
+import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
 import com.mateo.freetpv.util.NombreUtil;
@@ -12,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
@@ -54,6 +57,8 @@ public class EmpleadosController {
     // Panel extra de edicion y creacion de empleados
     @FXML
     private BorderPane nuevoempleadoPane;
+    @FXML private Text nuevoText;
+    @FXML private Text usuarioText;
     @FXML
     private TextField usuarioField;
     @FXML
@@ -61,7 +66,7 @@ public class EmpleadosController {
     @FXML
     private ChoiceBox<String> rolChoiceBox;
     @FXML
-    private CheckBox estadoCheckBox;
+    private ToggleButton estadoButton;
     @FXML
     private Button guardarButton;
     @FXML
@@ -100,6 +105,17 @@ public class EmpleadosController {
         activosMenuItem.setSelected(true);
         // Añadimos un listener al campo buscar para que se actualize
         buscarField.textProperty().addListener((observable, oldValue, newValue) -> actualizarUsuarios());
+
+        // Añadimos un listener para que el botón de estado cambie acorde a su estado
+        estadoButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (estadoButton.isSelected()) {
+                estadoButton.setText("Activo");
+                estadoButton.setGraphic(new FontIcon("fas-check"));
+            } else {
+                estadoButton.setText("No activo");
+                estadoButton.setGraphic(new FontIcon("fas-times"));
+            }
+        });
 
         // Indicamos a cada columna que atributo de usuario mostrar
         codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -178,7 +194,7 @@ public class EmpleadosController {
         String nombre = usuarioField.getText();
         String rol = rolChoiceBox.getSelectionModel().getSelectedItem();
         String pin = pinField.getText();
-        boolean estado = estadoCheckBox.isSelected();
+        boolean estado = estadoButton.isSelected();
 
         // Comprobamos que tenga pin un usuario nuevo
         if (usuarioEditando == null && pin.isEmpty()) {
@@ -234,15 +250,21 @@ public class EmpleadosController {
     @FXML
     public void mostrarFormularioNuevo() {
 
-        // Ponemos de prompt
+        // Ponemos de prompt un nombre aleatorio
         usuarioField.setPromptText(nombreUtil.getNombre());
 
+        nuevoText.setText("Creando nuevo usuario");
+        usuarioText.setVisible(false);
+
         // Forzamos que un usuario este habilitado por defecto
-        estadoCheckBox.setSelected(true);
-        estadoCheckBox.setDisable(true);
+        estadoButton.setSelected(true);
+        estadoButton.setDisable(true);
 
         empleadosPane.setDisable(true);
         nuevoempleadoPane.setVisible(true);
+
+        var animation = Animations.fadeIn(nuevoempleadoPane, Duration.seconds(0.5));
+        animation.playFromStart();
     }
 
     private void mostrarFormularioEditar(Usuario usuario) {
@@ -252,6 +274,11 @@ public class EmpleadosController {
 
         // Comprobamos que haya un usuario seleccionado
         if (usuarioEditando != null) {
+
+            nuevoText.setText("Editando usuario: ");
+            usuarioText.setVisible(true);
+            usuarioText.setText(usuario.getNombre());
+
             // Ponemos los datos del usuario en el formulario
             usuarioField.setText(usuarioEditando.getNombre());
 
@@ -269,17 +296,19 @@ public class EmpleadosController {
             }
 
             // Habilitamos la edición del estado y lo seleccionamos acorde a su estado
-            estadoCheckBox.setSelected(usuarioEditando.getEstado());
+            estadoButton.setSelected(usuarioEditando.getEstado());
 
             // Si el usuario editado es el actual prevenimos que se degrade de rol o se desactive
             if (usuarioEditando.getId() == usuarioActual.getId()) {
                 rolChoiceBox.setDisable(true);
-                estadoCheckBox.setDisable(true);
+                estadoButton.setDisable(true);
             }
             // Hacemos visible el panel
             empleadosPane.setDisable(true);
             nuevoempleadoPane.setVisible(true);
 
+            var animation = Animations.fadeIn(nuevoempleadoPane, Duration.seconds(0.5));
+            animation.playFromStart();
         }
     }
 
@@ -296,7 +325,7 @@ public class EmpleadosController {
 
         // Habilitamos los modulos deshabilitados
         rolChoiceBox.setDisable(false);
-        estadoCheckBox.setDisable(false);
+        estadoButton.setDisable(false);
 
         // Reestablecemos el usuario editado
         usuarioEditando = null;

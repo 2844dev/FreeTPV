@@ -13,6 +13,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mateo.freetpv.util.ConversionUtil.booleanInt;
+import static com.mateo.freetpv.util.ConversionUtil.intBoolean;
+
 /**
  * Clase DAO, permite acceder a la base de datos para hacer operaciones CRU y consultas
  * relacionadas con los objetos {@link Usuario}.
@@ -214,7 +217,7 @@ public class UsuarioDAO {
     public boolean crearUsuario(String nombre, String pin, String rol) {
         String hash = hashUtil.hashPin(pin);
 
-        // Cogemos la fecha actual y la ponemos automaticamente en la base de datos
+        // Cogemos la fecha actual y la ponemos automáticamente en la base de datos
         LocalDate fecha = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fecha_creacion = fecha.format(formato);
@@ -242,10 +245,10 @@ public class UsuarioDAO {
 
     /**
      *
-     * Valida un login comparando hashes
+     * Válida un login comparando hashes
      *
-     * @param nombre
-     * @param pin
+     * @param nombre Nombre del usuario
+     * @param pin Pin introducido
      * @return Si el hash calculado es igual al guardado devolvemos un {@code Usuario}
      * del tipo {@link Usuario}, si no es igual o da error devolvemos {@code null}
      */
@@ -287,28 +290,5 @@ public class UsuarioDAO {
         }
     }
 
-    /**
-     *
-     * Convierte un int a un boolean
-     *
-     * @param i Int que convertir a boolean
-     * @return Devuelve {@code true} si llega {@code 1},
-     *         si no, devuelve {@code false}
-     */
-    private boolean intBoolean(int i) {
-        return i == 1;
-    }
 
-    /**
-     *
-     * Convierte un boolean a un int
-     *
-     * @param i Boolean que convertir a int
-     * @return Devuelve {@code 1} si llega {@code True},
-     *         si no, devuelve {@code 0}
-     */
-    private int booleanInt(boolean i) {
-        if (i) return 1;
-        return 0;
-    }
 }

@@ -9,10 +9,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CategoriaDAO {
     private static final Logger log = LoggerFactory.getLogger(CategoriaDAO.class);
     private final DatabaseConnection db = DatabaseConnection.getInstancia();
+
+    public Optional<Integer> categoriaNombreId(String nombre) {
+        String sql = "SELECT id FROM categorias WHERE nombre = ?";
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return Optional.of(rs.getInt("id"));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            log.error("Error al obtener el id de categoria", e);
+            return Optional.empty();
+        }
+    }
 
     public boolean existeCategoria(String nombre) {
         String sql = "SELECT nombre FROM categorias WHERE nombre = ?";

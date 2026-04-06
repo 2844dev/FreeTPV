@@ -4,18 +4,18 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TabPane maxHeight="720.0" maxWidth="990.0" prefHeight="720.0" prefWidth="990.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Productos">
              <content>
-                <fx:include fx:id="productosTab" source="tab-productos-view.fxml"/>
+                <fx:include fx:id="productosTab" source="tab-productos-view.fxml" />
              </content>
           </Tab>
           <Tab text="Categorias">
              <content>
-                <fx:include fx:id="categoriasTab" source="tab-categorias-view.fxml"/>
+                <fx:include fx:id="categoriasTab" source="tab-categorias-view.fxml" />
              </content>
           </Tab>
         </tabs>

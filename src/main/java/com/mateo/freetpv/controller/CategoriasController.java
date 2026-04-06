@@ -2,6 +2,7 @@ package com.mateo.freetpv.controller;
 
 import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
+import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.model.Categoria;
 import javafx.application.Platform;
@@ -10,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
@@ -26,6 +29,8 @@ public class CategoriasController {
 
     // Panel para editar y crear categorias
     @FXML private BorderPane nuevacategoriaPane;
+    @FXML private Text nuevoText;
+    @FXML private Text categoriaText;
     @FXML private TextField usuarioField;
     @FXML private Label errorLabel;
     @FXML private Button guardarButton;
@@ -124,8 +129,14 @@ public class CategoriasController {
 
     @FXML public void mostrarformularioNuevo() {
         errorLabel.setText("");
+        nuevoText.setText("Creando nueva categoría ");
+        categoriaText.setVisible(false);
+
         categoriasPane.setDisable(true);
         nuevacategoriaPane.setVisible(true);
+
+        var animation = Animations.fadeIn(nuevacategoriaPane, Duration.seconds(0.5));
+        animation.playFromStart();
     }
 
     private void mostrarFormularioEditar(Categoria categoria) {
@@ -133,6 +144,10 @@ public class CategoriasController {
         categoriaEditando = categoria;
 
         if  (categoriaEditando != null) {
+
+            nuevoText.setText("Editando categoría: ");
+            categoriaText.setText(categoria.getNombre());
+            categoriaText.setVisible(true);
 
             usuarioField.setText(categoriaEditando.getNombre());
 
@@ -144,6 +159,9 @@ public class CategoriasController {
         errorLabel.setText("");
         categoriasPane.setDisable(true);
         nuevacategoriaPane.setVisible(true);
+
+        var animation = Animations.fadeIn(nuevacategoriaPane, Duration.seconds(0.5));
+        animation.playFromStart();
     }
 
     @FXML public void cerrarFormulario() {

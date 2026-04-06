@@ -3,26 +3,30 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.EmpleadosController">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.EmpleadosController">
    <children>
-      <BorderPane fx:id="empleadosPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
+      <BorderPane fx:id="empleadosPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <top>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
+            <HBox alignment="BOTTOM_RIGHT" fillHeight="false" spacing="30.0" BorderPane.alignment="CENTER">
                <children>
                   <MenuButton fx:id="filtrarMenu" graphicTextGap="8.0" mnemonicParsing="false" text="Filtrar">
                     <items>
@@ -33,81 +37,163 @@
                      <graphic>
                         <FontIcon iconLiteral="fas-filter" iconSize="16" />
                      </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </MenuButton>
-                  <TextField fx:id="buscarField" promptText="Buscar..." />
+                  <TextField fx:id="buscarField" promptText="Buscar...">
+                     <font>
+                        <Font size="18.0" />
+                     </font></TextField>
                   <Button fx:id="nuevoButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#mostrarFormularioNuevo" styleClass="accent" text="Nuevo usuario">
                      <graphic>
                         <FontIcon iconLiteral="fas-plus" iconSize="16" />
-                     </graphic></Button>
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
                </children>
                <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <padding>
                   <Insets bottom="20.0" />
-               </padding>
+               </BorderPane.margin>
             </HBox>
          </top>
          <center>
-            <TableView fx:id="empleadosTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="990.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="empleadosTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
               <columns>
                   <TableColumn fx:id="codigoColumn" editable="false" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" resizable="false" text="Código" />
-                  <TableColumn fx:id="nombreColumn" editable="false" maxWidth="424.0" minWidth="424.0" prefWidth="424.0" resizable="false" text="Nombre" />
+                 <TableColumn fx:id="nombreColumn" editable="false" maxWidth="10000.0" minWidth="200.0" prefWidth="400.0" resizable="true" text="Nombre" />
                   <TableColumn fx:id="rolColumn" editable="false" maxWidth="147.0" minWidth="147.0" prefWidth="147.0" resizable="false" text="Rol" />
                   <TableColumn fx:id="fechaColumn" editable="false" maxWidth="152.0" minWidth="152.0" prefWidth="152.0" resizable="false" text="Fecha creación" />
-                  <TableColumn fx:id="estadoColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="Activo" />
-                  <TableColumn fx:id="editarColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" />
+                  <TableColumn fx:id="estadoColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Activo" />
+                  <TableColumn fx:id="editarColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" />
               </columns>
                <styleClass>
                   <String fx:value="bordered" />
                   <String fx:value="striped" />
                </styleClass>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS" />
+               </columnResizePolicy>
             </TableView>
          </center>
+         <StackPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </StackPane.margin>
       </BorderPane>
-      <BorderPane fx:id="nuevoempleadoPane" maxHeight="520.0" maxWidth="830.0" prefHeight="520.0" prefWidth="830.0" visible="false">
+      <BorderPane fx:id="nuevoempleadoPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="480.0" visible="false">
          <center>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <VBox spacing="15.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Usuario" />
-                  <TextField fx:id="usuarioField" maxWidth="250.0" promptText="Azusa Nakano" />
-                  <Label text="Pin" />
-                  <PasswordField fx:id="pinField" maxWidth="250.0" promptText="1234" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                  <VBox spacing="5.0">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <Label text="Usuario">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="usuarioField" maxWidth="1.7976931348623157E308" promptText="Azusa Nakano">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Pin">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <PasswordField fx:id="pinField" maxWidth="1.7976931348623157E308" promptText="1234">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </PasswordField>
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Rol">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="30.0">
                            <children>
-                              <Label text="Rol" />
-                              <ChoiceBox fx:id="rolChoiceBox" prefWidth="150.0" />
+                              <ChoiceBox fx:id="rolChoiceBox" />
+                              <ToggleButton fx:id="estadoButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="button-outlined" text="Activo">
+                                 <graphic>
+                                    <FontIcon iconLiteral="fas-check" iconSize="16" />
+                                 </graphic>
+                              </ToggleButton>
                            </children>
-                        </VBox>
-                        <CheckBox fx:id="estadoCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="¿Esta activo?">
-                           <HBox.margin>
-                              <Insets top="17.0" />
-                           </HBox.margin>
-                        </CheckBox>
+                        </HBox>
                      </children>
-                  </HBox>
-                  <Label fx:id="errorLabel" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-                     <children>
-                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarFormulario" styleClass="success" text="Guardar">
-                           <graphic>
-                              <FontIcon iconLiteral="fas-save" iconSize="16" />
-                           </graphic></Button>
-                        <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarFormulario" styleClass="accent" text="Cancelar">
-                           <graphic>
-                              <FontIcon iconLiteral="fas-times" iconSize="16" />
-                           </graphic></Button>
-                     </children>
-                  </HBox>
+                  </VBox>
+                  <Label fx:id="errorLabel" alignment="CENTER" styleClass="danger">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
                </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
             </VBox>
          </center>
          <styleClass>
             <String fx:value="bg-subtle" />
             <String fx:value="elevated-2" />
          </styleClass>
+         <bottom>
+            <VBox spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Separator prefWidth="200.0" />
+                  <HBox alignment="CENTER_RIGHT" fillHeight="false" spacing="15.0">
+                     <children>
+                        <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
+                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarFormulario" styleClass="success" text="Guardar">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-save" iconSize="16" />
+                           </graphic>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets right="30.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </bottom>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <padding>
+            <Insets bottom="30.0" top="30.0" />
+         </padding>
+         <top>
+            <TextFlow BorderPane.alignment="CENTER">
+               <children>
+                  <Text fx:id="nuevoText" strokeType="OUTSIDE" strokeWidth="0.0" text="Creando nuevo usuario ">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="usuarioText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="accent">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="30.0" right="30.0" />
+               </BorderPane.margin>
+            </TextFlow>
+         </top>
       </BorderPane>
    </children>
 </StackPane>

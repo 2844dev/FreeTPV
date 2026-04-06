@@ -103,7 +103,7 @@ public class LoginController {
                 try {
                     // Cargar ventana principal
                     FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/main-view.fxml"));
-                    Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+                    Scene scene = new Scene(fxmlLoader.load());
 
                     // Conseguir stage desde el un objeto
                     Stage stage = (Stage) loginButton.getScene().getWindow();

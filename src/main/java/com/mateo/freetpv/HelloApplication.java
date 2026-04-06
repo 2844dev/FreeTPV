@@ -17,9 +17,11 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/login-view.fxml"));
         AjustesService ajustesService = new AjustesService();
         ajustesService.loadTema();
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("FreeTPV");
         stage.setScene(scene);
+        stage.setMinWidth(1280);
+        stage.setMinHeight(720);
         stage.show();
     }
 }

@@ -67,7 +67,7 @@ public class DatabaseConnection {
                 + "nombre TEXT NOT NULL,"
                 + "nombre_ticket TEXT NOT NULL,"
                 + "imagen TEXT,"
-                + "precio INTEGER NOT NULL,"
+                + "precio INTEGER NOT NULL," // Guardado en centimos
                 + "iva INTEGER NOT NULL,"
                 + "estado INTEGER NOT NULL,"
                 + "favorito INTEGER NOT NULL,"
@@ -108,7 +108,7 @@ public class DatabaseConnection {
                 + "fecha TEXT NOT NULL,"
                 + "total INTEGER NOT NULL,"
                 + "estado TEXT NOT NULL," // Abierto, Pagado
-                + "metodo_pago TEXT NULL," // Efectivo, Tarjeta o todavia no se ha cobrado
+                + "metodo_pago TEXT," // Efectivo, Tarjeta o todavia no se ha cobrado
                 + "usuario_id INTEGER NOT NULL,"
                 + "mesa_id INTEGER,"
                 + "caja_id INTEGER NOT NULL,"
