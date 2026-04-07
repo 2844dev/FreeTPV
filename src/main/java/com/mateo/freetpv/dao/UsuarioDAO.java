@@ -105,14 +105,14 @@ public class UsuarioDAO {
      */
     public List<Usuario> obtenerUsuarios(String buscar, boolean activo, boolean noactivo) {
         // Comprobamos que hay al menos un filtro puesto
-        if (!activo && !noactivo) return new ArrayList<>();
+
         // Consulta por defecto
         StringBuilder sql = new StringBuilder("SELECT * FROM usuarios WHERE 1=1");
         // Comprobamos si buscamos
         if (buscar != null && !buscar.isEmpty()) {
             sql.append(" AND nombre LIKE ? COLLATE NOCASE");
         }
-        // Comprobamos si filtramos o no (OR)
+        // Comprobamos si filtramos por estado (OR)
         if (activo && !noactivo) {
             sql.append(" AND estado = 1");
         }
@@ -128,7 +128,7 @@ public class UsuarioDAO {
             }
             ResultSet rs = stmt.executeQuery();
 
-            // Creamos una lista de usuarios y todos los atributos que tiene un usuario
+            // Creamos una lista de usuarios
             List<Usuario> usuarios = new ArrayList<>();
 
             // Probamos a crear usuarios hasta que no haya mas usuarios

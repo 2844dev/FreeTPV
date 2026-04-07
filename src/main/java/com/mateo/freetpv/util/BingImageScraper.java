@@ -20,7 +20,7 @@ public class BingImageScraper {
 
     public record ImagenResultado(String turl, String murl) {}
 
-    public static List<ImagenResultado> buscar(String query) {
+    public static List<ImagenResultado> buscar(String query, int num_resultados) {
 
         // Establecemos la URL para buscar, la query la codificamos con UTF-8 y imagen al final para asegurar resultados
         String url = "https://www.bing.com/images/search?q=" + URLEncoder.encode(query, StandardCharsets.UTF_8) + " imagen";
@@ -35,8 +35,8 @@ public class BingImageScraper {
                 String turl = json.getString("turl"); // Resolución miniatura
                 String murl = json.getString("murl"); // Resolución completa
                 resultados.add(new ImagenResultado(turl, murl));
-                // Limitamos a 30 resultados
-                if (resultados.size() >= 30) break;
+                // Limitamos resultados
+                if (resultados.size() >= num_resultados) break;
             }
             return resultados;
         } catch (IOException e) {

@@ -1,9 +1,12 @@
 package com.mateo.freetpv.controller;
 
+import atlantafx.base.util.Animations;
+import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
 import com.mateo.freetpv.model.Categoria;
 import com.mateo.freetpv.model.Producto;
 import com.mateo.freetpv.util.BingImageScraper;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -20,7 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.List;
 
@@ -71,18 +74,23 @@ public class ProductosController {
 
     private final ProductoDAO productoDAO = new ProductoDAO();
 
+    private final CategoriaDAO categoriaDAO = new CategoriaDAO();
+
     private Producto productoEditando = null;
 
     private String imagenSeleccionada = null;
 
     @FXML public void initialize() {
-
+        categoriaComboBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenertodasCategorias()));
     }
 
     @FXML public void mostrarformularioNuevo() {
         errorLabel.setText("");
         productosPane.setDisable(true);
         nuevoproductoPane.setVisible(true);
+
+        var animation = Animations.fadeIn(nuevoproductoPane, Duration.seconds(0.5));
+        animation.playFromStart();
     }
 
     @FXML public void cerrarFormulario() {
@@ -99,6 +107,9 @@ public class ProductosController {
     @FXML public void mostrareditarImagen() {
         nuevoproductoPane.setDisable(true);
         imagenPane.setVisible(true);
+
+        var animation = Animations.fadeInUp(imagenPane, Duration.seconds(0.5));
+        animation.playFromStart();
     }
 
     @FXML public void guardarImagen() {
@@ -120,7 +131,7 @@ public class ProductosController {
         Task<List<BingImageScraper.ImagenResultado>> tarea = new Task<>() {
             // En un nuevo hilo diferente del de JavaFX ejecutamos la búsqueda de imágenes
             @Override protected List<BingImageScraper.ImagenResultado> call() {
-                return BingImageScraper.buscar(buscarImagenField.getText());
+                return BingImageScraper.buscar(buscarImagenField.getText(), 50);
             }
         };
         // En el hilo de JavaFX ya creamos los botones
@@ -128,17 +139,17 @@ public class ProductosController {
             List<BingImageScraper.ImagenResultado> urls = tarea.getValue();
             // Pasamos por todas las urls conseguidas
             for (BingImageScraper.ImagenResultado i : urls) {
-                // Creamos una imagen con una url (turl de miniatura) y que pueda cargar en el fondo y limitamos a 80x80px dentro de un ImageView
-                ImageView iv = new ImageView(new Image(i.turl(), 80, 80, false, false, true));
+                // Creamos una imagen con una url (turl de miniatura) y que pueda cargar en el fondo y limitamos a 100x100px dentro de un ImageView
+                ImageView iv = new ImageView(new Image(i.turl(), 100, 100, false, false, true));
                 // Creamos el botón con el grafico de la ImageView
                 Button btn = new Button(null, iv);
-                // Establecemos que el tamaño maximo del boton sean 100px
-                btn.setMinSize(100, 100);
-                btn.setPrefSize(100, 100);
-                btn.setMaxSize(100, 100);
+                // Establecemos que el tamaño maximo del boton sean 110px
+                btn.setMinSize(110, 110);
+                btn.setPrefSize(110, 110);
+                btn.setMaxSize(110, 110);
                 btn.setOnAction(x -> {
                     imagenSeleccionada = i.murl();
-                    imagenImageView.setImage(new Image(imagenSeleccionada, 200, 200, false, true, true));
+                    imagenImageView.setImage(new Image(imagenSeleccionada, 300, 300, false, true, true));
                 });
 
                 bingimagesFlowPane.getChildren().add(btn);
@@ -148,5 +159,11 @@ public class ProductosController {
 
         // Lanzamos el hilo
         new Thread(tarea).start();
+    }
+
+    @FXML public void actualizarProductos() {
+        int categoria_id = categoriaComboBox.getSelectionModel().getSelectedItem().getId();
+        List<Producto> productos = productoDAO.obtenerProductos(buscarField.getText(), categoria_id, activosMenuItem.isSelected(), noactivosMenuItem.isSelected());
+        productosTable.getItems().setAll(FXCollections.observableList(productos));
     }
 }

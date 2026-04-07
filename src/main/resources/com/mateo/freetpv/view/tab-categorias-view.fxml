@@ -61,7 +61,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </StackPane.margin>
       </BorderPane>
-      <BorderPane fx:id="nuevacategoriaPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="480.0">
+      <BorderPane fx:id="nuevacategoriaPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="480.0" visible="false">
          <center>
             <VBox spacing="15.0" BorderPane.alignment="CENTER">
                <children>

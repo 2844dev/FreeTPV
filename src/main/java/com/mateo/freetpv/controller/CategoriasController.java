@@ -82,7 +82,7 @@ public class CategoriasController {
             }
         });
 
-        cargarCategorias();
+        actualizarCategorias();
     }
 
     @FXML public void guardarCategoria() {
@@ -169,14 +169,6 @@ public class CategoriasController {
         nuevacategoriaPane.setVisible(false);
         categoriasPane.setDisable(false);
         categoriaEditando = null;
-    }
-
-    private void cargarCategorias() {
-        // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Categoria> categorias = categoriaDAO.obtenerCategorias(buscarField.getText());
-
-        // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
-        categoriasTable.setItems(FXCollections.observableList(categorias));
     }
 
     @FXML public void actualizarCategorias() {
