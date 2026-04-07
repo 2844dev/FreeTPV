@@ -31,7 +31,7 @@ public class CategoriasController {
     @FXML private BorderPane nuevacategoriaPane;
     @FXML private Text nuevoText;
     @FXML private Text categoriaText;
-    @FXML private TextField usuarioField;
+    @FXML private TextField nombreField;
     @FXML private Label errorLabel;
     @FXML private Button guardarButton;
     @FXML private Button cancelarButton;
@@ -87,7 +87,7 @@ public class CategoriasController {
 
     @FXML public void guardarCategoria() {
 
-        String nombre = usuarioField.getText();
+        String nombre = nombreField.getText();
 
         if (nombre.isEmpty()) {
             errorLabel.setText("Debe ingresar un nombre");
@@ -130,6 +130,7 @@ public class CategoriasController {
     @FXML public void mostrarformularioNuevo() {
         errorLabel.setText("");
         nuevoText.setText("Creando nueva categoría ");
+        categoriaText.setText("");
         categoriaText.setVisible(false);
 
         categoriasPane.setDisable(true);
@@ -149,7 +150,7 @@ public class CategoriasController {
             categoriaText.setText(categoria.getNombre());
             categoriaText.setVisible(true);
 
-            usuarioField.setText(categoriaEditando.getNombre());
+            nombreField.setText(categoriaEditando.getNombre());
 
             // Deseleccionamos el campo despues de renderizarlo
             Platform.runLater(() -> guardarButton.requestFocus());
@@ -165,7 +166,7 @@ public class CategoriasController {
     }
 
     @FXML public void cerrarFormulario() {
-        usuarioField.clear();
+        nombreField.clear();
         nuevacategoriaPane.setVisible(false);
         categoriasPane.setDisable(false);
         categoriaEditando = null;

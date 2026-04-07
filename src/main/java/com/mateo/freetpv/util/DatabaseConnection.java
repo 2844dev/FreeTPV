@@ -14,10 +14,10 @@ public class DatabaseConnection {
     private static final Logger log = LoggerFactory.getLogger(DatabaseConnection.class);
 
     // Cojemos el directorio del cual se esta ejecutando
-    private String path = System.getProperty("user.home");
+    private final String path = System.getProperty("user.home");
 
     // Añadimos al directorio el archivo .db
-    private String url = "jdbc:sqlite:" + path + "/.freetpv/freetpv.db";
+    private final String url = "jdbc:sqlite:" + path + "/.freetpv/freetpv.db";
 
     // Ponemos el constructor privado para Singleton
     private DatabaseConnection() {
@@ -133,8 +133,8 @@ public class DatabaseConnection {
                 + ")";
 
         // Intentar conexion y ejecutar todas las consultas sql
-        try (var connection = getConnection()) {
-            var stmt = connection.createStatement();
+        try (var connection = getConnection();
+            var stmt = connection.createStatement()) {
             stmt.execute(tabla_usuarios);
             stmt.execute(tabla_categorias);
             stmt.execute(tabla_zonas);

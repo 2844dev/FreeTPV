@@ -175,7 +175,7 @@ public class EmpleadosController {
         });
 
         // Actualizamos la tabla con los usuarios
-        cargarUsuarios();
+        actualizarUsuarios();
 
         // Añadimos los roles al choicebox para elegir
         rolChoiceBox.setItems(FXCollections.observableArrayList("Admin", "Camarero"));
@@ -254,6 +254,7 @@ public class EmpleadosController {
         usuarioField.setPromptText(nombreUtil.getNombre());
 
         nuevoText.setText("Creando nuevo usuario");
+        usuarioText.setText("");
         usuarioText.setVisible(false);
 
         // Forzamos que un usuario este habilitado por defecto
@@ -354,14 +355,6 @@ public class EmpleadosController {
             i.setSelected(todosMenuItem.isSelected());
         }
         actualizarUsuarios();
-    }
-
-    private void cargarUsuarios() {
-        // Creamos una lista de usuarios llamando al metodo de UsuarioDAO
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios(buscarField.getText(), activosMenuItem.isSelected(), noactivosMenuItem.isSelected());
-
-        // Convertimos la lista a una observableList y lo ponemos como los items en la tabla
-        empleadosTable.setItems(FXCollections.observableList(usuarios));
     }
 
     @FXML public void actualizarUsuarios() {

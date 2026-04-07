@@ -1,6 +1,13 @@
 package com.mateo.freetpv.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
+
 public class ConversionUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(ConversionUtil.class);
 
     /**
      *
@@ -21,4 +28,23 @@ public class ConversionUtil {
      *         si no, devuelve {@code 0}
      */
     public static int booleanInt(boolean i) { return i ? 1 : 0; }
+
+    /**
+     *
+     * Convierte los euros de un formulario a centimos
+     *
+     * @return
+     */
+    public static Optional<Integer> eurosCentimos(String dinero) {
+        if (!dinero.contains("," || !dinero.contains(",")))
+        String regex = "[,\\.]";
+        String[] total = dinero.split(regex);
+        try {
+            int euros = Integer.parseInt(total[0]);
+            int centimos = Integer.parseInt(total[1]);
+        } catch (NumberFormatException e) {
+            log.error("Error al pasar de euros a centimos", e);
+            return Optional.empty();
+        }
+    }
 }

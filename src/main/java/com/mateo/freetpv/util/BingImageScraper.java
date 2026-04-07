@@ -34,6 +34,8 @@ public class BingImageScraper {
                 JSONObject json = new JSONObject(el.attr("m"));
                 String turl = json.getString("turl"); // Resolución miniatura
                 String murl = json.getString("murl"); // Resolución completa
+                // Nos aseguramos que no contienen imagenes .webp (No soportado por JavaFX)
+                if (murl.contains(".webp") || turl.contains(".webp")) { continue; }
                 resultados.add(new ImagenResultado(turl, murl));
                 // Limitamos resultados
                 if (resultados.size() >= num_resultados) break;

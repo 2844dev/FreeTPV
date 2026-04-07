@@ -3,7 +3,6 @@ package com.mateo.freetpv.controller;
 import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
-import com.mateo.freetpv.model.Categoria;
 import com.mateo.freetpv.model.Producto;
 import com.mateo.freetpv.util.BingImageScraper;
 import javafx.collections.FXCollections;
@@ -26,6 +25,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ProductosController {
 
@@ -46,7 +46,7 @@ public class ProductosController {
     @FXML private CheckMenuItem activosMenuItem;
     @FXML private CheckMenuItem noactivosMenuItem;
 
-    @FXML private ComboBox<Categoria> categoriaComboBox;
+    @FXML private ComboBox<String> categoriaComboBox;
     @FXML private TextField buscarField;
     @FXML private Button nuevoProductoButton;
 
@@ -56,7 +56,7 @@ public class ProductosController {
     @FXML private TextField nombreTicketField;
     @FXML private TextField precioField;
     @FXML private ChoiceBox<Integer> ivaChoiceBox;
-    @FXML private ChoiceBox<Categoria> categoriaChoiceBox;
+    @FXML private ChoiceBox<String> categoriaChoiceBox;
     @FXML private Button imagenButton;
     @FXML private ToggleButton favoritoToggleButton;
     @FXML private ToggleButton estadoToggleButton;
@@ -81,7 +81,18 @@ public class ProductosController {
     private String imagenSeleccionada = null;
 
     @FXML public void initialize() {
-        categoriaComboBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenertodasCategorias()));
+
+        // Añadimos las categorías creadas a los filtros
+        categoriaComboBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
+        categoriaComboBox.getItems().addFirst("Todas");
+        // seleccionamos por defecto la primera opción
+        categoriaComboBox.getSelectionModel().selectFirst();
+
+        // Añadimos las categorías a la creación del producto
+        categoriaChoiceBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
+        // Añadimos los IVA a la creación del producto
+        ivaChoiceBox.setItems(FXCollections.observableArrayList(21, 10, 4, 0));
+        actualizarProductos();
     }
 
     @FXML public void mostrarformularioNuevo() {
@@ -162,7 +173,7 @@ public class ProductosController {
     }
 
     @FXML public void actualizarProductos() {
-        int categoria_id = categoriaComboBox.getSelectionModel().getSelectedItem().getId();
+        Optional<Integer> categoria_id = categoriaDAO.categoriaNombreId(categoriaComboBox.getSelectionModel().getSelectedItem());
         List<Producto> productos = productoDAO.obtenerProductos(buscarField.getText(), categoria_id, activosMenuItem.isSelected(), noactivosMenuItem.isSelected());
         productosTable.getItems().setAll(FXCollections.observableList(productos));
     }

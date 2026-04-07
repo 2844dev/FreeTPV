@@ -73,17 +73,15 @@ public class CategoriaDAO {
         }
     }
 
-    public List<Categoria> obtenertodasCategorias() {
-        String sql = "SELECT * FROM categorias";
+    public List<String> obtenerNombreCategorias() {
+        String sql = "SELECT nombre FROM categorias";
         try (var connection = db.getConnection();
             var stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
-            List<Categoria> categorias = new ArrayList<>();
+            List<String> categorias = new ArrayList<>();
             while (rs.next()) {
-                int id = rs.getInt("id");
                 String nombre = rs.getString("nombre");
-                Categoria categoria = new Categoria(id, nombre);
-                categorias.add(categoria);
+                categorias.add(nombre);
             }
             return categorias;
         } catch (SQLException e) {

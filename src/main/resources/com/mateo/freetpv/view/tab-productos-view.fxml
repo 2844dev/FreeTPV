@@ -87,7 +87,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </StackPane.margin>
       </BorderPane>
-      <BorderPane fx:id="nuevoproductoPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="680.0" visible="false">
+      <BorderPane fx:id="nuevoproductoPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="680.0">
          <bottom>
             <VBox BorderPane.alignment="CENTER">
                <children>
@@ -139,7 +139,7 @@
                      <children>
                         <VBox spacing="5.0">
                            <children>
-                              <Label text="Precio">
+                              <Label text="Precio (C/IVA)">
                                  <font>
                                     <Font size="18.0" />
                                  </font></Label>
@@ -155,7 +155,7 @@
                                  <font>
                                     <Font size="18.0" />
                                  </font></Label>
-                              <ChoiceBox fx:id="ivaChoiceBox" maxHeight="1.7976931348623157E308" minHeight="39.0" />
+                              <ChoiceBox fx:id="ivaChoiceBox" maxHeight="1.7976931348623157E308" />
                            </children>
                         </VBox>
                         <VBox spacing="5.0">
@@ -164,7 +164,7 @@
                                  <font>
                                     <Font size="18.0" />
                                  </font></Label>
-                              <ChoiceBox fx:id="categoriaChoiceBox" maxHeight="1.7976931348623157E308" minHeight="39.0" />
+                              <ChoiceBox fx:id="categoriaChoiceBox" maxHeight="1.7976931348623157E308" />
                            </children>
                         </VBox>
                      </children>
@@ -323,13 +323,13 @@
                   <Separator prefWidth="200.0" />
                   <HBox alignment="CENTER_RIGHT" spacing="15.0">
                      <children>
-                        <Button fx:id="guardarButton11" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarImagen" text="Cancelar" />
-                        <Button fx:id="guardarButton1" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarImagen" styleClass="success" text="Guardar imagen">
+                        <Button fx:id="cancelarImagenButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarImagen" text="Cancelar" />
+                        <Button fx:id="guardarImagenButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarImagen" styleClass="success" text="Guardar imagen">
                            <graphic>
                               <FontIcon iconLiteral="fas-save" iconSize="16" />
                            </graphic>
                         </Button>
-                        <Button fx:id="guardarButton111" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarImagen" styleClass="danger">
+                        <Button fx:id="eliminarImagenButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="danger">
                            <graphic>
                               <FontIcon iconLiteral="fas-trash" iconSize="16" />
                            </graphic>

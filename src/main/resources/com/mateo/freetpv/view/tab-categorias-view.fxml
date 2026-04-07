@@ -72,7 +72,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="usuarioField" maxWidth="1.7976931348623157E308" promptText="Categoría chula">
+                        <TextField fx:id="nombreField" maxWidth="1.7976931348623157E308" promptText="Categoría chula">
                            <font>
                               <Font size="18.0" />
                            </font>

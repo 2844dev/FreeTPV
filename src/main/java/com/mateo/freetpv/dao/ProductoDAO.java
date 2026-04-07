@@ -50,7 +50,7 @@ public class ProductoDAO {
 //
 //    }
 //
-    public List<Producto> obtenerProductos(String buscar, int categoria, boolean activo, boolean noactivo) {
+    public List<Producto> obtenerProductos(String buscar, Optional<Integer> categoria, boolean activo, boolean noactivo) {
         if (!activo && !noactivo) return new ArrayList<>();
 
         // Consulta por defecto
@@ -70,7 +70,12 @@ public class ProductoDAO {
 
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql.toString())) {
-            stmt.setInt(1, categoria);
+            int cat_int = categoria.orElse(0);
+            if (cat_int == 0) {
+                stmt.setString(1, "*");
+            } else {
+                stmt.setInt(1, cat_int);
+            }
             if (buscar != null && !buscar.isEmpty()) {
                 stmt.setString(2, "%" + buscar + "%");
             }
