@@ -43,11 +43,6 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
       - name: Install WiX 5
         shell: pwsh
         run: |
@@ -73,7 +68,7 @@ jobs:
       - name: Build with Maven Wrapper
         shell: pwsh
         run: |
-          .\mvnw.cmd -B clean package
+          .\mvnw.cmd -B -ntp clean package
 
       - name: Resolve Maven metadata
         id: meta
