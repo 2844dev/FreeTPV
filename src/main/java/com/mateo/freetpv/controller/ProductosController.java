@@ -1,5 +1,7 @@
 package com.mateo.freetpv.controller;
 
+import atlantafx.base.theme.Styles;
+import atlantafx.base.theme.Tweaks;
 import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
@@ -8,24 +10,20 @@ import com.mateo.freetpv.util.BingImageScraper;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.mateo.freetpv.util.ConversionUtil.centimosEuros;
+import static com.mateo.freetpv.util.ConversionUtil.eurosCentimos;
 
 public class ProductosController {
 
@@ -58,6 +56,7 @@ public class ProductosController {
     @FXML private ChoiceBox<Integer> ivaChoiceBox;
     @FXML private ChoiceBox<String> categoriaChoiceBox;
     @FXML private Button imagenButton;
+    @FXML private ImageView imagenActualImageView;
     @FXML private ToggleButton favoritoToggleButton;
     @FXML private ToggleButton estadoToggleButton;
     @FXML private Label errorLabel;
@@ -78,20 +77,110 @@ public class ProductosController {
 
     private Producto productoEditando = null;
 
-    private String imagenSeleccionada = null;
+    private String imagenSeleccionada = "";
+
+    final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
     @FXML public void initialize() {
 
         // Añadimos las categorías creadas a los filtros
         categoriaComboBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
         categoriaComboBox.getItems().addFirst("Todas");
-        // seleccionamos por defecto la primera opción
+        // Seleccionamos por defecto la primera opción
         categoriaComboBox.getSelectionModel().selectFirst();
+
+        categoriaComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> actualizarProductos());
+
 
         // Añadimos las categorías a la creación del producto
         categoriaChoiceBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
+
         // Añadimos los IVA a la creación del producto
         ivaChoiceBox.setItems(FXCollections.observableArrayList(21, 10, 4, 0));
+
+        codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        precioColumn.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+        precioColumn.setCellFactory(column -> new TableCell<Producto, Integer>() {
+            @Override
+            protected void updateItem(Integer precioCentimos, boolean empty) {
+                super.updateItem(precioCentimos, empty);
+
+                if (empty || precioCentimos == null) {
+                    setText(null);
+                } else {
+                    String texto = centimosEuros(precioCentimos).orElse("0,00");
+                    setText(texto + " €");
+
+                }
+            }
+        });
+        ivaColumn.setCellValueFactory(new PropertyValueFactory<>("iva"));
+
+        estadoColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
+        estadoColumn.setCellFactory(param -> new TableCell<>() {
+            private FontIcon icon = new FontIcon();
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    icon.getStyleClass().removeAll(Styles.SUCCESS, Styles.DANGER);
+                    if (getTableView().getItems().get(getIndex()).getEstado()) {
+                        icon.setIconLiteral("fas-user-check");
+                        icon.getStyleClass().add(Styles.SUCCESS);
+                    } else {
+                        icon.setIconLiteral("fas-user-minus");
+                        icon.getStyleClass().add(Styles.DANGER);
+                    }
+                    setGraphic(icon);
+                }
+            }
+        });
+
+        favoritoColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
+        favoritoColumn.setCellFactory(param -> new TableCell<>() {
+            private FontIcon icon = new FontIcon();
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    icon.getStyleClass().add(Styles.DANGER);
+                    if (getTableView().getItems().get(getIndex()).getFavorito()) {
+                        icon.setIconLiteral("fas-heart");
+                    } else {
+                        icon.setIconLiteral("far-heart");
+                    }
+                    setGraphic(icon);
+                }
+            }
+        });
+
+        editarColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
+
+        editarColumn.setCellFactory(param -> new TableCell<>() {
+            private Button editarButton = new Button(null, new FontIcon("fas-edit"));
+            {
+                editarButton.getStyleClass().addAll(Styles.BUTTON_ICON, Styles.BUTTON_OUTLINED);
+                editarButton.setOnAction(e -> {
+                    mostrarFormularioEditar(getTableView().getItems().get(getIndex()));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(editarButton);
+                }
+            }
+        });
+
         actualizarProductos();
     }
 
@@ -104,6 +193,85 @@ public class ProductosController {
         animation.playFromStart();
     }
 
+    private void mostrarFormularioEditar(Producto producto) {
+        productoEditando = producto;
+
+        if (productoEditando != null) {
+            nombreField.setText(producto.getNombre());
+            nombreTicketField.setText(producto.getNombre_ticket());
+            Optional<String> precioOpt = centimosEuros(producto.getPrecio());
+            if (precioOpt.isPresent()) {
+                precioField.setText(precioOpt.get());
+            }
+            ivaChoiceBox.getSelectionModel().select(producto.getIva());
+            Optional<String> categoriaOpt = categoriaDAO.categoriaIdNombre(producto.getCategoria_id());
+            if (categoriaOpt.isPresent()) {
+                categoriaChoiceBox.getSelectionModel().select(categoriaOpt.get());
+            }
+            if (!producto.getImagen().isEmpty()) {
+                Image imagen = new Image(producto.getImagen());
+                imagenActualImageView.setImage(imagen);
+            }
+            favoritoToggleButton.setSelected(producto.getFavorito());
+            estadoToggleButton.setSelected(producto.getEstado());
+
+            errorLabel.setText("");
+            productosPane.setDisable(true);
+            nuevoproductoPane.setVisible(true);
+
+            var animation = Animations.fadeIn(nuevoproductoPane, Duration.seconds(0.5));
+            animation.playFromStart();
+        }
+    }
+
+    @FXML public void guardarProducto() {
+        String nombre = nombreField.getText().trim();
+        String nombreTicket = nombreTicketField.getText().trim();
+        String precioRaw = precioField.getText().trim();
+
+        if (nombre.isEmpty() || nombreTicket.isEmpty() || precioRaw.isEmpty() || ivaChoiceBox.getSelectionModel().isEmpty() || categoriaChoiceBox.getSelectionModel().isEmpty()) {
+            errorLabel.setText("Debe rellenar todos los campos");
+            return;
+        }
+
+        Optional<Integer> precioOpt = eurosCentimos(precioRaw);
+        if (precioOpt.isEmpty()) {
+            errorLabel.setText("El precio no tiene un formato válido");
+            return;
+        }
+
+        Optional<Integer> categoriaIdOpt = categoriaDAO.categoriaNombreId(categoriaChoiceBox.getSelectionModel().getSelectedItem());
+        if (categoriaIdOpt.isEmpty()) {
+            errorLabel.setText("La categoría seleccionada no es válida");
+            return;
+        }
+
+        if (nombre.length() > 35) {
+            errorLabel.setText("El nombre debe tener menos de 35 caracteres");
+            return;
+        }
+        if (productoDAO.existeProducto(nombre) && (productoEditando == null || !nombre.equals(productoEditando.getNombre()))) {
+            errorLabel.setText("Ya existe un producto con ese nombre");
+            return;
+        }
+        if (productoEditando == null) {
+            int precioFinal = precioOpt.get();
+            int categoriaIdFinal = categoriaIdOpt.get();
+            int ivaFinal = ivaChoiceBox.getSelectionModel().getSelectedItem();
+            if (productoDAO.crearProducto(nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, favoritoToggleButton.isSelected(), categoriaIdFinal)) {
+                infoAlert.setTitle("Crear producto");
+                infoAlert.setHeaderText("Producto creado correctamente");
+                infoAlert.setContentText("Producto " + nombre + " creado.");
+                infoAlert.showAndWait();
+            } else {
+                errorLabel.setText("No se pudo crear el producto");
+                return;
+            }
+        }
+        cerrarFormulario();
+        actualizarProductos();
+    }
+
     @FXML public void cerrarFormulario() {
         nombreField.clear();
         nombreTicketField.clear();
@@ -113,6 +281,7 @@ public class ProductosController {
         nuevoproductoPane.setVisible(false);
         productosPane.setDisable(false);
         productoEditando = null;
+        imagenSeleccionada = "";
     }
 
     @FXML public void mostrareditarImagen() {

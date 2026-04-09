@@ -87,7 +87,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </StackPane.margin>
       </BorderPane>
-      <BorderPane fx:id="nuevoproductoPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="680.0">
+      <BorderPane fx:id="nuevoproductoPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="680.0" visible="false">
          <bottom>
             <VBox BorderPane.alignment="CENTER">
                <children>
@@ -95,7 +95,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
                      <children>
                         <Button fx:id="cancelarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#cerrarFormulario" text="Cancelar" />
-                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="success" text="Guardar">
+                        <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarProducto" styleClass="success" text="Guardar">
                            <graphic>
                               <FontIcon iconLiteral="fas-save" iconSize="16" />
                            </graphic>
@@ -171,12 +171,12 @@
                   </HBox>
                   <HBox spacing="15.0">
                      <children>
-                        <ToggleButton fx:id="favoritoButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="flat" text="Favorito">
+                        <ToggleButton fx:id="favoritoToggleButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="flat" text="Favorito">
                            <graphic>
                               <FontIcon iconLiteral="far-heart" iconSize="16" />
                            </graphic>
                         </ToggleButton>
-                        <ToggleButton fx:id="estadoButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="flat" text="Activo">
+                        <ToggleButton fx:id="estadoToggleButton" graphicTextGap="8.0" mnemonicParsing="false" styleClass="flat" text="Activo">
                            <graphic>
                               <FontIcon iconLiteral="fas-check" iconSize="16" />
                            </graphic>
@@ -212,12 +212,32 @@
                               <String fx:value="text-italic" />
                            </styleClass>
                         </Label>
-                        <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagenActualImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </StackPane>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Button fx:id="subirImagenButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Subir imagen">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-file-image" iconSize="16" />
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="pegarImagenButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="8.0" mnemonicParsing="false">
+                           <graphic>
+                              <FontIcon iconLiteral="fas-paste" iconSize="16" />
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
                <BorderPane.margin>
                   <Insets left="30.0" right="10.0" />
@@ -275,14 +295,6 @@
                <children>
                   <HBox alignment="BOTTOM_RIGHT" spacing="20.0">
                      <children>
-                        <Button fx:id="subirImagenButton" graphicTextGap="8.0" mnemonicParsing="false" text="Subir imagen">
-                           <graphic>
-                              <FontIcon iconLiteral="fas-file-image" iconSize="16" />
-                           </graphic>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
                         <TextField fx:id="buscarImagenField">
                            <font>
                               <Font size="14.0" />
@@ -342,9 +354,6 @@
                </children>
             </VBox>
          </bottom>
-         <center>
-            <Separator orientation="VERTICAL" prefHeight="200.0" BorderPane.alignment="CENTER" />
-         </center>
          <styleClass>
             <String fx:value="bg-subtle" />
             <String fx:value="elevated-2" />

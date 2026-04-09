@@ -53,9 +53,11 @@ public class ProductoDAO {
     public List<Producto> obtenerProductos(String buscar, Optional<Integer> categoria, boolean activo, boolean noactivo) {
         if (!activo && !noactivo) return new ArrayList<>();
 
-        // Consulta por defecto
-        StringBuilder sql = new StringBuilder("SELECT * FROM productos WHERE 1=1 AND categoria_id = ?");
+        StringBuilder sql = new StringBuilder("SELECT * FROM productos WHERE 1=1");
 
+        if (categoria.isPresent()) {
+            sql.append(" AND categoria_id = ?");
+        }
         // Comprobamos si buscamos
         if (buscar != null && !buscar.isEmpty()) {
             sql.append(" AND nombre LIKE ? COLLATE NOCASE");
@@ -70,14 +72,12 @@ public class ProductoDAO {
 
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql.toString())) {
-            int cat_int = categoria.orElse(0);
-            if (cat_int == 0) {
-                stmt.setString(1, "*");
-            } else {
-                stmt.setInt(1, cat_int);
+            int i = 1;
+            if (categoria.isPresent()) {
+                stmt.setInt(i++, categoria.get());
             }
             if (buscar != null && !buscar.isEmpty()) {
-                stmt.setString(2, "%" + buscar + "%");
+                stmt.setString(i++, "%" + buscar + "%");
             }
             ResultSet rs = stmt.executeQuery();
 
@@ -103,8 +103,17 @@ public class ProductoDAO {
             return new ArrayList<>();
         }
     }
-//
-//    public boolean existeProducto(String nombre) {
-//
-//    }
+
+    public boolean existeProducto(String nombre) {
+        String sql = "SELECT nombre FROM productos WHERE nombre = ?";
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            log.error("Error al comprobar si existe un producto", e);
+            return true;
+        }
+    }
 }

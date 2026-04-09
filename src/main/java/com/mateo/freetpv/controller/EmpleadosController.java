@@ -253,6 +253,8 @@ public class EmpleadosController {
         // Ponemos de prompt un nombre aleatorio
         usuarioField.setPromptText(nombreUtil.getNombre());
 
+        Platform.runLater(() -> guardarButton.requestFocus());
+
         nuevoText.setText("Creando nuevo usuario");
         usuarioText.setText("");
         usuarioText.setVisible(false);

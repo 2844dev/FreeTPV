@@ -3,6 +3,8 @@ package com.mateo.freetpv.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 public class ConversionUtil {
@@ -36,14 +38,27 @@ public class ConversionUtil {
      * @return
      */
     public static Optional<Integer> eurosCentimos(String dinero) {
-        if (!dinero.contains("," || !dinero.contains(",")))
-        String regex = "[,\\.]";
-        String[] total = dinero.split(regex);
+
+        String dineroFormat = dinero.trim().replace(",", ".");
+
         try {
-            int euros = Integer.parseInt(total[0]);
-            int centimos = Integer.parseInt(total[1]);
-        } catch (NumberFormatException e) {
-            log.error("Error al pasar de euros a centimos", e);
+            BigDecimal dineroDecimal = new BigDecimal(dineroFormat);
+            // Convertimos el BigDecimal a un int utilizando intValueExact para que no permita .5
+            int dineroFinal = dineroDecimal.multiply(new BigDecimal(100)).intValueExact();
+            return Optional.of(dineroFinal);
+        } catch (Exception e) {
+            log.error("Error al convertir a centimos" ,e);
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<String> centimosEuros(int centimos) {
+        try {
+            BigDecimal centimosDecimal = new BigDecimal(centimos);
+            BigDecimal euros = centimosDecimal.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+            return Optional.of(euros.toString().replace(".", ","));
+        } catch (Exception e) {
+            log.error("Error al convertir a euros", e);
             return Optional.empty();
         }
     }

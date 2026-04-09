@@ -31,6 +31,22 @@ public class CategoriaDAO {
         }
     }
 
+    public Optional<String> categoriaIdNombre(int id) {
+        String sql = "SELECT nombre FROM categorias WHERE id = ?";
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return Optional.of(rs.getString("nombre"));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            log.error("Error al obtener el nombre de categoria", e);
+            return Optional.empty();
+        }
+    }
+
     public boolean existeCategoria(String nombre) {
         String sql = "SELECT nombre FROM categorias WHERE nombre = ?";
         try (var connection = db.getConnection();

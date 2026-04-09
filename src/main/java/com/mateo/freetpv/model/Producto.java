@@ -36,8 +36,8 @@ public class Producto {
     public String getImagen() { return imagen; }
     public int getPrecio() { return precio; }
     public int getIva() { return iva; }
-    public boolean isEstado() { return estado; }
-    public boolean isFavorito() { return favorito; }
+    public boolean getEstado() { return estado; }
+    public boolean getFavorito() { return favorito; }
     public int getCategoria_id() { return categoria_id; }
 
     // SETTERS
