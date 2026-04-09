@@ -118,6 +118,7 @@ jobs:
             --input target `
             --main-jar "${{ steps.meta.outputs.jarName }}" `
             --main-class "${{ env.MAIN_CLASS }}" `
+            --icon src/main/resources/icon/freetpv.ico `
             --java-options "--enable-native-access=org.xerial.sqlitejdbc" `
             --java-options "--enable-native-access=javafx.graphics" `
             --jlink-options "--strip-debug --no-header-files --no-man-pages --bind-services" `
