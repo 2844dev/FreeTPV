@@ -1,0 +1,149 @@
+name: Build and Release Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  JAVA_VERSION: '25'
+  DOTNET_VERSION: '8.0.x'
+  WIX_VERSION: '7.0.0'
+  APP_NAME: 'FreeTPV'
+  APP_VENDOR: 'Mateo'
+  APP_DESCRIPTION: 'TPV de escritorio para hostelería'
+  MAIN_CLASS: 'com.mateo.freetpv.Launcher'
+  WIN_UPGRADE_UUID: '0606bb5d-a450-4e6d-8071-fd80911820f6'
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install WiX 7
+        shell: pwsh
+        run: |
+          dotnet tool install --global wix --version $env:WIX_VERSION
+          "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Install WiX extensions
+        shell: pwsh
+        run: |
+          wix extension add --global WixToolset.Util.wixext/$env:WIX_VERSION
+          wix extension add --global WixToolset.UI.wixext/$env:WIX_VERSION
+
+      - name: Verify toolchain
+        shell: pwsh
+        run: |
+          java -version
+          dotnet --version
+          wix --version
+          wix extension list --global
+          jpackage --version
+          gh --version
+
+      - name: Build with Maven Wrapper
+        shell: pwsh
+        run: |
+          .\mvnw.cmd -B clean package
+
+      - name: Resolve Maven metadata
+        id: meta
+        shell: pwsh
+        run: |
+          $artifactId = .\mvnw.cmd -q help:evaluate -Dexpression=project.artifactId -DforceStdout
+          $version = .\mvnw.cmd -q help:evaluate -Dexpression=project.version -DforceStdout
+          $jarName = "$artifactId-$version.jar"
+
+          if (-not (Test-Path "target\$jarName")) {
+            throw "No encuentro target\$jarName"
+          }
+
+          "artifactId=$artifactId" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "jarName=$jarName" >> $env:GITHUB_OUTPUT
+
+      - name: Calculate app version
+        id: appver
+        shell: pwsh
+        run: |
+          $appVersion = "${{ steps.meta.outputs.version }}".Replace("-SNAPSHOT", "")
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $appVersion = "${{ github.ref_name }}".TrimStart("v")
+          }
+          "appVersion=$appVersion" >> $env:GITHUB_OUTPUT
+
+      - name: Package EXE
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+
+          jpackage `
+            --type exe `
+            --name "${{ env.APP_NAME }}" `
+            --app-version "${{ steps.appver.outputs.appVersion }}" `
+            --vendor "${{ env.APP_VENDOR }}" `
+            --description "${{ env.APP_DESCRIPTION }}" `
+            --dest dist `
+            --input target `
+            --main-jar "${{ steps.meta.outputs.jarName }}" `
+            --main-class "${{ env.MAIN_CLASS }}" `
+            --java-options "--enable-native-access=org.xerial.sqlitejdbc" `
+            --java-options "--enable-native-access=javafx.graphics" `
+            --jlink-options "--strip-debug --no-header-files --no-man-pages --bind-services" `
+            --win-upgrade-uuid "${{ env.WIN_UPGRADE_UUID }}" `
+            --win-shortcut `
+            --win-menu `
+            --win-menu-group "${{ env.APP_NAME }}" `
+            --win-dir-chooser
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: FreeTPV-windows-exe
+          path: dist/*.exe
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Create or update GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $exe = Get-ChildItem dist\*.exe | Select-Object -First 1
+
+          if (-not $exe) {
+            throw "No se generó ningún .exe en dist"
+          }
+
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $exe.FullName --clobber
+          } else {
+            gh release create $tag $exe.FullName `
+              --title "${{ env.APP_NAME }} $tag" `
+              --generate-notes
+          }

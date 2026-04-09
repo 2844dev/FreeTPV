@@ -1,12 +1,10 @@
 target/
+dist/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
 *.class
-.mvn/
-mvnw
-mvnw.cmd
 *.db
 *.properties
 
