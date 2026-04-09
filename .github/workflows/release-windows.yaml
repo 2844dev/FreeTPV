@@ -78,11 +78,18 @@ jobs:
         id: meta
         shell: pwsh
         run: |
-          $artifactId = .\mvnw.cmd -q help:evaluate -Dexpression=project.artifactId -DforceStdout
-          $version = .\mvnw.cmd -q help:evaluate -Dexpression=project.version -DforceStdout
+          [xml]$pom = Get-Content "pom.xml"
+
+          $ns = New-Object System.Xml.XmlNamespaceManager($pom.NameTable)
+          $ns.AddNamespace("m", "http://maven.apache.org/POM/4.0.0")
+
+          $artifactId = $pom.SelectSingleNode("/m:project/m:artifactId", $ns).InnerText
+          $version = $pom.SelectSingleNode("/m:project/m:version", $ns).InnerText
           $jarName = "$artifactId-$version.jar"
 
           if (-not (Test-Path "target\$jarName")) {
+            Write-Host "Archivos JAR encontrados en target:"
+            Get-ChildItem "target\*.jar" | ForEach-Object { Write-Host $_.Name }
             throw "No encuentro target\$jarName"
           }
 
