@@ -70,7 +70,6 @@ public class UsuarioDAO {
      *         Devuelve una lista vacía si no hay usuarios activos o {@code null}
      *         si ocurre un error durante la conexión o la consulta.
      */
-    // Descripción hecha por modo IA de Google.
     public List<String> obtenerNombres() {
 
         // Seleccionamos todos los valores de la columna nombres de la tabla usuarios que tengan estado 1 (Activos)

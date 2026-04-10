@@ -46,10 +46,34 @@ public class ProductoDAO {
         }
     }
 
-//    public boolean editarProducto(Producto producto, String nombre, String nombre_ticket, String imagen, int precio, int iva, boolean estado, boolean favorito, int categoria_id) {
-//
-//    }
-//
+    public boolean editarProducto(Producto producto, String nombre, String nombre_ticket, String imagen, int precio, int iva, boolean estado, boolean favorito, int categoria_id) {
+        int id = producto.getId();
+        int estadoInt = booleanInt(estado);
+        int favoritoInt = booleanInt(favorito);
+
+        String sql = "UPDATE productos SET nombre = ?, nombre_ticket = ?, imagen = ?, precio = ?, iva = ?, estado = ?, favorito = ?, categoria_id = ? WHERE id = ?";
+
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            stmt.setString(2, nombre_ticket);
+            stmt.setString(3, imagen);
+            stmt.setInt(4, precio);
+            stmt.setInt(5, iva);
+            stmt.setInt(6, estadoInt);
+            stmt.setInt(7, favoritoInt);
+            stmt.setInt(8, categoria_id);
+            stmt.setInt(9, id);
+
+            int filas = stmt.executeUpdate();
+            log.info("Producto editado: {}", nombre);
+            return filas > 0;
+        } catch (SQLException e) {
+            log.error("Error al editar un producto", e);
+            return false;
+        }
+    }
+
     public List<Producto> obtenerProductos(String buscar, Optional<Integer> categoria, boolean activo, boolean noactivo) {
         if (!activo && !noactivo) return new ArrayList<>();
 

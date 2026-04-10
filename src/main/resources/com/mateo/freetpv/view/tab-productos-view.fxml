@@ -220,7 +220,7 @@
                   </StackPane>
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button fx:id="subirImagenButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Subir imagen">
+                        <Button fx:id="subirImagenButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cargarImagen" text="Subir imagen">
                            <graphic>
                               <FontIcon iconLiteral="fas-file-image" iconSize="16" />
                            </graphic>

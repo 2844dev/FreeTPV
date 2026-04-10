@@ -16,9 +16,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +33,7 @@ import static com.mateo.freetpv.util.ConversionUtil.eurosCentimos;
 
 public class ProductosController {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductosController.class);
     // Panel principal productos
     @FXML private BorderPane productosPane;
 
@@ -129,10 +136,10 @@ public class ProductosController {
                 } else {
                     icon.getStyleClass().removeAll(Styles.SUCCESS, Styles.DANGER);
                     if (getTableView().getItems().get(getIndex()).getEstado()) {
-                        icon.setIconLiteral("fas-user-check");
+                        icon.setIconLiteral("fas-check-circle");
                         icon.getStyleClass().add(Styles.SUCCESS);
                     } else {
-                        icon.setIconLiteral("fas-user-minus");
+                        icon.setIconLiteral("fas-times-circle");
                         icon.getStyleClass().add(Styles.DANGER);
                     }
                     setGraphic(icon);
@@ -209,7 +216,8 @@ public class ProductosController {
                 categoriaChoiceBox.getSelectionModel().select(categoriaOpt.get());
             }
             if (!producto.getImagen().isEmpty()) {
-                Image imagen = new Image(producto.getImagen());
+                File img = new File(producto.getImagen());
+                Image imagen = new Image(img.toURI().toString());
                 imagenActualImageView.setImage(imagen);
             }
             favoritoToggleButton.setSelected(producto.getFavorito());
@@ -254,10 +262,12 @@ public class ProductosController {
             errorLabel.setText("Ya existe un producto con ese nombre");
             return;
         }
+
+        int precioFinal = precioOpt.get();
+        int categoriaIdFinal = categoriaIdOpt.get();
+        int ivaFinal = ivaChoiceBox.getSelectionModel().getSelectedItem();
+
         if (productoEditando == null) {
-            int precioFinal = precioOpt.get();
-            int categoriaIdFinal = categoriaIdOpt.get();
-            int ivaFinal = ivaChoiceBox.getSelectionModel().getSelectedItem();
             if (productoDAO.crearProducto(nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, favoritoToggleButton.isSelected(), categoriaIdFinal)) {
                 infoAlert.setTitle("Crear producto");
                 infoAlert.setHeaderText("Producto creado correctamente");
@@ -265,6 +275,17 @@ public class ProductosController {
                 infoAlert.showAndWait();
             } else {
                 errorLabel.setText("No se pudo crear el producto");
+                return;
+            }
+
+        } else {
+            if (productoDAO.editarProducto(productoEditando, nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, estadoToggleButton.isSelected(), favoritoToggleButton.isSelected(), categoriaIdFinal)) {
+                infoAlert.setTitle("Editar producto");
+                infoAlert.setHeaderText("Producto editado correctamente");
+                infoAlert.setContentText("Producto " + nombre + " editado.");
+                infoAlert.showAndWait();
+            } else {
+                errorLabel.setText("No se pudo editar el producto");
                 return;
             }
         }
@@ -301,6 +322,23 @@ public class ProductosController {
         nuevoproductoPane.setDisable(false);
         imagenPane.setVisible(false);
         imagenSeleccionada = null;
+    }
+
+    @FXML public void cargarImagen() {
+        FileChooser selector = new FileChooser();
+
+        selector.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.jpg", "*.png", "*.gif", "*.jpeg"));
+
+        Stage stage = (Stage) nuevoproductoPane.getScene().getWindow();
+        File img = selector.showOpenDialog(stage);
+
+        if (img != null) {
+            imagenSeleccionada = img.getAbsolutePath();
+
+            Image imagen = new Image(img.toURI().toString(), 300, 300, false, true, false);
+
+            imagenActualImageView.setImage(imagen);
+        }
     }
 
     @FXML public void buscarImagenes() {
