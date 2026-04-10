@@ -118,7 +118,7 @@ jobs:
             --input target `
             --main-jar "${{ steps.meta.outputs.jarName }}" `
             --main-class "${{ env.MAIN_CLASS }}" `
-            --icon C:\Users\Mateo\Desktop\FreeTPV TFG\FreeTPV\src\main\resources\com\mateo\freetpv\icon\freetpv_icon.ico `
+            --icon "src/main/resources/com/mateo/freetpv/icon/freetpv_icon.ico" `
             --java-options "--enable-native-access=org.xerial.sqlitejdbc" `
             --java-options "--enable-native-access=javafx.graphics" `
             --jlink-options "--strip-debug --no-header-files --no-man-pages --bind-services" `
