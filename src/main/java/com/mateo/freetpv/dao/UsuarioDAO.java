@@ -104,6 +104,7 @@ public class UsuarioDAO {
      */
     public List<Usuario> obtenerUsuarios(String buscar, boolean activo, boolean noactivo) {
         // Comprobamos que hay al menos un filtro puesto
+        if (!activo && !noactivo) return new ArrayList<>();
 
         // Consulta por defecto
         StringBuilder sql = new StringBuilder("SELECT * FROM usuarios WHERE 1=1");

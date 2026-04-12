@@ -127,7 +127,8 @@ public class CategoriasController {
         cerrarFormulario();
     }
 
-    @FXML public void mostrarformularioNuevo() {
+    @FXML
+    public void mostrarFormularioNuevo() {
         errorLabel.setText("");
         nuevoText.setText("Creando nueva categoría ");
         categoriaText.setText("");

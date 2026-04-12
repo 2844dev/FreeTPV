@@ -6,16 +6,14 @@ import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
 import com.mateo.freetpv.model.Producto;
-import com.mateo.freetpv.util.BingImageScraper;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -24,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,26 +54,27 @@ public class ProductosController {
 
     // Panel para crear y editar productos
     @FXML private BorderPane nuevoproductoPane;
+    @FXML
+    private Text nuevoText;
+    @FXML
+    private Text productoText;
     @FXML private TextField nombreField;
     @FXML private TextField nombreTicketField;
     @FXML private TextField precioField;
     @FXML private ChoiceBox<Integer> ivaChoiceBox;
     @FXML private ChoiceBox<String> categoriaChoiceBox;
-    @FXML private Button imagenButton;
+    @FXML
+    private Button subirImagenButton;
+    @FXML
+    private Button pegarImagenButton;
+    @FXML
+    private Button borrarImagenButton;
     @FXML private ImageView imagenActualImageView;
     @FXML private ToggleButton favoritoToggleButton;
     @FXML private ToggleButton estadoToggleButton;
     @FXML private Label errorLabel;
     @FXML private Button guardarButton;
     @FXML private Button cancelarButton;
-
-    // Panel para escoger imagen de producto
-    @FXML private BorderPane imagenPane;
-    @FXML private ImageView imagenImageView;
-    @FXML private Button subirImagenButton;
-    @FXML private TextField buscarImagenField;
-    @FXML private Button buscarImagenButton;
-    @FXML private FlowPane bingimagesFlowPane;
 
     private final ProductoDAO productoDAO = new ProductoDAO();
 
@@ -191,7 +189,8 @@ public class ProductosController {
         actualizarProductos();
     }
 
-    @FXML public void mostrarformularioNuevo() {
+    @FXML
+    public void mostrarFormularioNuevo() {
         errorLabel.setText("");
         productosPane.setDisable(true);
         nuevoproductoPane.setVisible(true);
@@ -305,25 +304,6 @@ public class ProductosController {
         imagenSeleccionada = "";
     }
 
-    @FXML public void mostrareditarImagen() {
-        nuevoproductoPane.setDisable(true);
-        imagenPane.setVisible(true);
-
-        var animation = Animations.fadeInUp(imagenPane, Duration.seconds(0.5));
-        animation.playFromStart();
-    }
-
-    @FXML public void guardarImagen() {
-        nuevoproductoPane.setDisable(false);
-        imagenPane.setVisible(false);
-    }
-
-    @FXML public void cerrarImagen() {
-        nuevoproductoPane.setDisable(false);
-        imagenPane.setVisible(false);
-        imagenSeleccionada = null;
-    }
-
     @FXML public void cargarImagen() {
         FileChooser selector = new FileChooser();
 
@@ -341,43 +321,6 @@ public class ProductosController {
         }
     }
 
-    @FXML public void buscarImagenes() {
-        // Limpiamos el panel
-        bingimagesFlowPane.getChildren().clear();
-
-
-        Task<List<BingImageScraper.ImagenResultado>> tarea = new Task<>() {
-            // En un nuevo hilo diferente del de JavaFX ejecutamos la búsqueda de imágenes
-            @Override protected List<BingImageScraper.ImagenResultado> call() {
-                return BingImageScraper.buscar(buscarImagenField.getText(), 50);
-            }
-        };
-        // En el hilo de JavaFX ya creamos los botones
-        tarea.setOnSucceeded(e -> {
-            List<BingImageScraper.ImagenResultado> urls = tarea.getValue();
-            // Pasamos por todas las urls conseguidas
-            for (BingImageScraper.ImagenResultado i : urls) {
-                // Creamos una imagen con una url (turl de miniatura) y que pueda cargar en el fondo y limitamos a 100x100px dentro de un ImageView
-                ImageView iv = new ImageView(new Image(i.turl(), 100, 100, false, false, true));
-                // Creamos el botón con el grafico de la ImageView
-                Button btn = new Button(null, iv);
-                // Establecemos que el tamaño maximo del boton sean 110px
-                btn.setMinSize(110, 110);
-                btn.setPrefSize(110, 110);
-                btn.setMaxSize(110, 110);
-                btn.setOnAction(x -> {
-                    imagenSeleccionada = i.murl();
-                    imagenImageView.setImage(new Image(imagenSeleccionada, 300, 300, false, true, true));
-                });
-
-                bingimagesFlowPane.getChildren().add(btn);
-            }
-
-        });
-
-        // Lanzamos el hilo
-        new Thread(tarea).start();
-    }
 
     @FXML public void actualizarProductos() {
         Optional<Integer> categoria_id = categoriaDAO.categoriaNombreId(categoriaComboBox.getSelectionModel().getSelectedItem());
