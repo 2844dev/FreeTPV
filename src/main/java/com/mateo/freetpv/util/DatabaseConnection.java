@@ -13,18 +13,18 @@ public class DatabaseConnection {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseConnection.class);
 
-    // Cojemos el directorio del cual se esta ejecutando
-    private final String path = System.getProperty("user.home");
+    // Cogemos el directorio del cual se está ejecutando
+    private final String path = System.getProperty("user.home") + "/.freetpv";
 
     // Añadimos al directorio el archivo .db
-    private final String url = "jdbc:sqlite:" + path + "/.freetpv/freetpv.db";
+    private final String url = "jdbc:sqlite:" + path + "/freetpv.db";
 
     // Ponemos el constructor privado para Singleton
     private DatabaseConnection() {
         new File(path + "/.freetpv").mkdirs();
     }
 
-    // Creamos metodo para coger instancia desde otras clases
+    // Creamos método para coger instancia desde otras clases
     public static DatabaseConnection getInstancia() {
         return instancia;
     }
@@ -108,7 +108,7 @@ public class DatabaseConnection {
                 + "fecha TEXT NOT NULL,"
                 + "total INTEGER NOT NULL,"
                 + "estado TEXT NOT NULL," // Abierto, Pagado
-                + "metodo_pago TEXT," // Efectivo, Tarjeta o todavia no se ha cobrado
+                + "metodo_pago TEXT," // Efectivo, Tarjeta o todavía no se ha cobrado
                 + "usuario_id INTEGER NOT NULL,"
                 + "mesa_id INTEGER,"
                 + "caja_id INTEGER NOT NULL,"
@@ -132,17 +132,18 @@ public class DatabaseConnection {
                 + "FOREIGN KEY (producto_id) REFERENCES productos(id)"
                 + ")";
 
-        // Intentar conexion y ejecutar todas las consultas sql
+        // Intentar conexión y ejecutar todas las consultas sql
         try (var connection = getConnection();
             var stmt = connection.createStatement()) {
             stmt.execute(tabla_usuarios);
             stmt.execute(tabla_categorias);
             stmt.execute(tabla_zonas);
+            stmt.execute(tabla_clientes);
+
             stmt.execute(tabla_productos);
             stmt.execute(tabla_mesas);
             stmt.execute(tabla_pedidos);
             stmt.execute(tabla_lineas_pedidos);
-            stmt.execute(tabla_clientes);
             stmt.execute(tabla_caja);
             log.info("Base de datos creada/cargada correctamente");
         } catch (SQLException e) {
