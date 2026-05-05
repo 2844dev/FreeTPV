@@ -56,7 +56,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="newusuarioField1" maxWidth="1.7976931348623157E308">
+                        <TextField fx:id="newUsuarioField" maxWidth="1.7976931348623157E308">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -66,17 +66,22 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="newpinField1" maxWidth="1.7976931348623157E308" promptText="1234">
+                        <PasswordField fx:id="newPinField" maxWidth="1.7976931348623157E308" promptText="1234">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </PasswordField>
+                        <Label fx:id="errorLabel" styleClass="danger">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
                      </children>
                      <padding>
                         <Insets bottom="10.0" />
                      </padding>
                   </VBox>
-                  <Button fx:id="newguardarButton1" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="accent" text="Crear administrador">
+                  <Button fx:id="crearButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#crearAdministrador" styleClass="accent" text="Crear administrador">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -113,19 +118,19 @@
                         </Text>
                      </children>
                   </HBox>
-                  <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Seleccionar archivo .tpv">
+                  <Button fx:id="seleccionarButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Seleccionar archivo .tpv">
                      <graphic>
                         <FontIcon iconLiteral="far-folder" iconSize="16" />
                      </graphic>
                   </Button>
-                  <TableView prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="importarTableView" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn minWidth="150.0" prefWidth="150.0" resizable="false" />
-                      <TableColumn prefWidth="75.0" resizable="false" text="Cantidad" />
-                        <TableColumn prefWidth="75.0" resizable="false" />
+                      <TableColumn fx:id="resultadoTableColumn" minWidth="150.0" prefWidth="150.0" resizable="false" />
+                      <TableColumn fx:id="cantidadTableColumn" prefWidth="75.0" resizable="false" text="Cantidad" />
+                        <TableColumn fx:id="verTableColumn" prefWidth="75.0" resizable="false" />
                     </columns>
                   </TableView>
-                  <Button fx:id="newguardarButton11" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="accent" text="Importar copia">
+                  <Button fx:id="importarButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="accent" text="Importar copia">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
