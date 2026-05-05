@@ -21,7 +21,7 @@ public class DatabaseConnection {
 
     // Ponemos el constructor privado para Singleton
     private DatabaseConnection() {
-        new File(path + "/.freetpv").mkdirs();
+        new File(path).mkdirs();
     }
 
     // Creamos método para coger instancia desde otras clases

@@ -9,19 +9,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class FreeTPVApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstancia();
         db.initDatabase();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FreeTPVApplication.class.getResource("view/load-view.fxml"));
         AjustesService ajustesService = new AjustesService();
         ajustesService.loadTema();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("FreeTPV");
         stage.setScene(scene);
-        stage.setMinWidth(1280);
-        stage.setMinHeight(720);
+        stage.setMinWidth(850);
+        stage.setMinHeight(500);
+        stage.setResizable(false);
         stage.show();
     }
 }

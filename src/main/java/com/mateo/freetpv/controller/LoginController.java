@@ -1,6 +1,6 @@
 package com.mateo.freetpv.controller;
 
-import com.mateo.freetpv.HelloApplication;
+import com.mateo.freetpv.FreeTPVApplication;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.model.Usuario;
 import com.mateo.freetpv.util.NombreUtil;
@@ -102,7 +102,7 @@ public class LoginController {
             if (user != null) {
                 try {
                     // Cargar ventana principal
-                    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/main-view.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(FreeTPVApplication.class.getResource("view/main-view.fxml"));
                     Scene scene = new Scene(fxmlLoader.load());
 
                     // Conseguir stage desde el un objeto
