@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class ProductoDAO {
     private final DatabaseConnection db = DatabaseConnection.getInstancia();
     private final CategoriaDAO categoriaDAO = new CategoriaDAO();
 
-    public boolean crearProducto(String nombre, String nombre_ticket, String imagen, int precio, int iva, boolean favorito, int categoria_id) {
+    public Optional<Integer> crearProducto(String nombre, String nombre_ticket, String imagen, int precio, int iva, boolean favorito, int categoria_id) {
 
         String sql = "INSERT INTO productos (nombre, nombre_ticket, imagen, precio, iva, estado, favorito, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -28,7 +29,7 @@ public class ProductoDAO {
         int estado = 1;
         int favorito_int = booleanInt(favorito);
         try (var connection = db.getConnection();
-             var stmt = connection.prepareStatement(sql)) {
+             var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, nombre);
             stmt.setString(2, nombre_ticket);
             stmt.setString(3, imagen);
@@ -37,12 +38,16 @@ public class ProductoDAO {
             stmt.setInt(6, estado);
             stmt.setInt(7, favorito_int);
             stmt.setInt(8, categoria_id);
-            int filas = stmt.executeUpdate();
+            stmt.executeUpdate();
             log.info("Producto creado: {}", nombre);
-            return filas > 0;
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return Optional.of(rs.getInt(1));
+            }
+            return Optional.empty();
         } catch (SQLException e) {
             log.error("Error al crear un producto", e);
-            return false;
+            return Optional.empty();
         }
     }
 
@@ -71,6 +76,19 @@ public class ProductoDAO {
         } catch (SQLException e) {
             log.error("Error al editar un producto", e);
             return false;
+        }
+    }
+
+    public void actualizarImagen(int id, String imagen) {
+        String sql = "UPDATE productos SET imagen = ? WHERE id = ?";
+
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, imagen);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error("Error al actualizar una imagen", e);
         }
     }
 

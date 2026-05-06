@@ -9,9 +9,13 @@ import com.mateo.freetpv.model.Producto;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -21,7 +25,14 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +97,10 @@ public class ProductosController {
 
     final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
+    private List<CheckMenuItem> filtros;
+
+    private final String path = System.getProperty("user.home") + "/.freetpv";
+
     @FXML public void initialize() {
 
         // Añadimos las categorías creadas a los filtros
@@ -102,6 +117,10 @@ public class ProductosController {
 
         // Añadimos los IVA a la creación del producto
         ivaChoiceBox.setItems(FXCollections.observableArrayList(21, 10, 4, 0));
+
+        filtros = List.of(activosMenuItem, noactivosMenuItem);
+
+        buscarField.textProperty().addListener((observable, oldValue, newValue) -> actualizarProductos());
 
         codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -194,6 +213,9 @@ public class ProductosController {
         errorLabel.setText("");
         productosPane.setDisable(true);
         nuevoproductoPane.setVisible(true);
+        favoritoToggleButton.setSelected(false);
+        estadoToggleButton.setSelected(true); // activo por defecto al crear
+        estadoToggleButton.setDisable(true);
 
         var animation = Animations.fadeIn(nuevoproductoPane, Duration.seconds(0.5));
         animation.playFromStart();
@@ -209,15 +231,16 @@ public class ProductosController {
             if (precioOpt.isPresent()) {
                 precioField.setText(precioOpt.get());
             }
-            ivaChoiceBox.getSelectionModel().select(producto.getIva());
+            ivaChoiceBox.getSelectionModel().select(Integer.valueOf(producto.getIva()));
             Optional<String> categoriaOpt = categoriaDAO.categoriaIdNombre(producto.getCategoria_id());
             if (categoriaOpt.isPresent()) {
                 categoriaChoiceBox.getSelectionModel().select(categoriaOpt.get());
             }
-            if (!producto.getImagen().isEmpty()) {
+            if (producto.getImagen() != null && !producto.getImagen().isEmpty()) {
                 File img = new File(producto.getImagen());
                 Image imagen = new Image(img.toURI().toString());
                 imagenActualImageView.setImage(imagen);
+                imagenSeleccionada = producto.getImagen();
             }
             favoritoToggleButton.setSelected(producto.getFavorito());
             estadoToggleButton.setSelected(producto.getEstado());
@@ -267,17 +290,94 @@ public class ProductosController {
         int ivaFinal = ivaChoiceBox.getSelectionModel().getSelectedItem();
 
         if (productoEditando == null) {
-            if (productoDAO.crearProducto(nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, favoritoToggleButton.isSelected(), categoriaIdFinal)) {
-                infoAlert.setTitle("Crear producto");
-                infoAlert.setHeaderText("Producto creado correctamente");
-                infoAlert.setContentText("Producto " + nombre + " creado.");
-                infoAlert.showAndWait();
-            } else {
+            Optional<Integer> idOpt = productoDAO.crearProducto(nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, favoritoToggleButton.isSelected(), categoriaIdFinal);
+            if (idOpt.isEmpty()) {
                 errorLabel.setText("No se pudo crear el producto");
                 return;
             }
+            int id = idOpt.get();
+
+            if (!imagenSeleccionada.isEmpty()) {
+                if (imagenSeleccionada.startsWith("http")) {
+                    try {
+                        Path destino = Path.of(path + "/img/productos/");
+                        Files.createDirectories(destino);
+                        Path imagenFinal = destino.resolve("producto_" + id + ".png");
+                        BufferedImage original = ImageIO.read(new java.net.URL(imagenSeleccionada));
+                        BufferedImage resized = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D g = resized.createGraphics();
+                        g.drawImage(original.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+                        g.dispose();
+                        ImageIO.write(resized, "png", imagenFinal.toFile());
+                        productoDAO.actualizarImagen(id, imagenFinal.toString());
+                    } catch (IOException e) {
+                        log.error("Error al guardar imagen desde URL", e);
+                        errorLabel.setText("No se pudo descargar la imagen");
+                    }
+                } else {
+                    try {
+                        Path origen = Path.of(imagenSeleccionada);
+                        Path destino = Path.of(path + "/img/productos/");
+                        Files.createDirectories(destino);
+                        Path imagenFinal = destino.resolve("producto_" + id + ".png");
+                        BufferedImage original = ImageIO.read(origen.toFile());
+                        BufferedImage resized = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D g = resized.createGraphics();
+                        g.drawImage(original.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+                        g.dispose();
+                        ImageIO.write(resized, "png", imagenFinal.toFile());
+                        productoDAO.actualizarImagen(id, imagenFinal.toString());
+                    } catch (IOException e) {
+                        log.error("Error al guardar imagen", e);
+                        errorLabel.setText("No se pudo guardar la imagen");
+                    }
+                }
+            }
+
+            infoAlert.setTitle("Crear producto");
+            infoAlert.setHeaderText("Producto creado correctamente");
+            infoAlert.setContentText("Producto " + nombre + " creado.");
+            infoAlert.showAndWait();
 
         } else {
+
+            if (!productoEditando.getImagen().equals(imagenSeleccionada) && !imagenSeleccionada.isEmpty()) {
+                if (imagenSeleccionada.startsWith("http")) {
+                    try {
+                        Path destino = Path.of(path + "/img/productos/");
+                        Files.createDirectories(destino);
+                        Path imagenFinal = destino.resolve("producto_" + productoEditando.getId() + ".png");
+                        BufferedImage original = ImageIO.read(new java.net.URL(imagenSeleccionada));
+                        BufferedImage resized = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D g = resized.createGraphics();
+                        g.drawImage(original.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+                        g.dispose();
+                        ImageIO.write(resized, "png", imagenFinal.toFile());
+                        imagenSeleccionada = imagenFinal.toString();
+                    } catch (IOException e) {
+                        log.error("Error al guardar imagen desde URL", e);
+                        errorLabel.setText("No se pudo descargar la imagen");
+                    }
+                } else {
+                    try {
+                        Path origen = Path.of(imagenSeleccionada);
+                        Path destino = Path.of(path + "/img/productos/");
+                        Files.createDirectories(destino);
+                        Path imagenFinal = destino.resolve("producto_" + productoEditando.getId() + ".png");
+                        BufferedImage original = ImageIO.read(origen.toFile());
+                        BufferedImage resized = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D g = resized.createGraphics();
+                        g.drawImage(original.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+                        g.dispose();
+                        ImageIO.write(resized, "png", imagenFinal.toFile());
+                        imagenSeleccionada = imagenFinal.toString();
+                    } catch (IOException e) {
+                        log.error("Error al guardar imagen", e);
+                        errorLabel.setText("No se pudo guardar la imagen");
+                    }
+                }
+            }
+
             if (productoDAO.editarProducto(productoEditando, nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, estadoToggleButton.isSelected(), favoritoToggleButton.isSelected(), categoriaIdFinal)) {
                 infoAlert.setTitle("Editar producto");
                 infoAlert.setHeaderText("Producto editado correctamente");
@@ -302,6 +402,10 @@ public class ProductosController {
         productosPane.setDisable(false);
         productoEditando = null;
         imagenSeleccionada = "";
+        imagenActualImageView.setImage(null);
+        favoritoToggleButton.setSelected(false);
+        estadoToggleButton.setSelected(false);
+        estadoToggleButton.setDisable(false);
     }
 
     @FXML public void cargarImagen() {
@@ -319,6 +423,81 @@ public class ProductosController {
 
             imagenActualImageView.setImage(imagen);
         }
+    }
+
+    @FXML
+    public void pegarImagen() {
+        Clipboard cb = Clipboard.getSystemClipboard();
+
+        errorLabel.setText("");
+
+        if (cb.hasImage()) {
+            try {
+                java.awt.Image awtImage = (java.awt.Image) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard()
+                        .getData(DataFlavor.imageFlavor);
+
+                BufferedImage buffered = new BufferedImage(
+                        awtImage.getWidth(null),
+                        awtImage.getHeight(null),
+                        BufferedImage.TYPE_INT_RGB
+                );
+                buffered.getGraphics().drawImage(awtImage, 0, 0, null);
+
+                File img = new File(path + "/img", "clipboard_temp.png");
+                ImageIO.write(buffered, "png", img);
+                imagenSeleccionada = img.getAbsolutePath();
+
+                imagenActualImageView.setImage(new Image(img.toURI().toString(), 200, 200, false, true));
+
+            } catch (Exception e) {
+                log.error("Error al pegar imagen del portapapeles", e);
+                errorLabel.setText("No se pudo pegar la imagen");
+            }
+        } else if (cb.hasString()) {
+            String texto = cb.getString().trim();
+            if (texto.startsWith("http")) {
+                Image imagen = new Image(texto, 200, 200, false, true, true);
+                imagen.errorProperty().addListener((obs, old, error) -> {
+                    if (error) errorLabel.setText("No se pudo cargar la imagen desde la URL");
+                });
+                imagenActualImageView.setImage(imagen);
+                imagenSeleccionada = texto;
+            } else {
+                errorLabel.setText("El texto copiado no es una URL válida");
+            }
+        } else {
+            errorLabel.setText("No hay ninguna imagen ni URL en el portapapeles");
+        }
+    }
+
+    @FXML
+    private void borrarImagen() {
+        imagenActualImageView.setImage(null);
+        imagenSeleccionada = "";
+    }
+
+    @FXML
+    public void filtrarProductos() {
+        int n = 0;
+        for (CheckMenuItem i : filtros) {
+            if (i.isSelected()) n++;
+        }
+        if (n == filtros.size()) {
+            todosMenuItem.setSelected(true);
+            filtrarTodos();
+        } else {
+            todosMenuItem.setSelected(false);
+        }
+        actualizarProductos();
+    }
+
+    @FXML
+    public void filtrarTodos() {
+        for (CheckMenuItem i : filtros) {
+            i.setSelected(todosMenuItem.isSelected());
+        }
+        actualizarProductos();
     }
 
 

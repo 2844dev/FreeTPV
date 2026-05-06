@@ -4,9 +4,7 @@ import com.mateo.freetpv.FreeTPVApplication;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.service.AjustesService;
 import com.mateo.freetpv.util.DatabaseConnection;
-import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class LoadController {
 
@@ -58,6 +55,7 @@ public class LoadController {
 
     public void initialize() {
         new File(path).mkdirs();
+        new File(path + "/img").mkdirs();
         File db = new File(path + "/freetpv.db");
         if (!db.exists()) {
             DatabaseConnection.getInstancia().initDatabase();
