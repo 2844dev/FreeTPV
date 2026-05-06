@@ -89,6 +89,34 @@ public class CategoriaDAO {
         }
     }
 
+    public boolean tieneProductos(Categoria categoria) {
+        String sql = "SELECT COUNT(*) FROM productos WHERE categoria_id = ?";
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, categoria.getId());
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            log.error("Error al comprobar productos en categoria", e);
+            return true;
+        }
+    }
+
+    public boolean borrarCategoria(Categoria categoria) {
+        String sql = "DELETE FROM categorias WHERE id = ?";
+        try (var connection = db.getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, categoria.getId());
+            int filas = stmt.executeUpdate();
+            log.info("Categoria borrada: {}", categoria.getNombre());
+            return filas > 0;
+        } catch (SQLException e) {
+            log.error("Error al borrar categoria", e);
+            return false;
+        }
+    }
+
     public List<String> obtenerNombreCategorias() {
         String sql = "SELECT nombre FROM categorias";
         try (var connection = db.getConnection();
