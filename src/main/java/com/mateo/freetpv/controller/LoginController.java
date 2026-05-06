@@ -84,6 +84,8 @@ public class LoginController {
                     SesionActual.getInstancia().setUsuario(user);
 
                     stage.setResizable(true);
+                    stage.setMinWidth(1280);
+                    stage.setMinHeight(720);
                     stage.setScene(scene);
                 } catch (IOException e) {
                     log.error("Error al cargar el view principal", e);
