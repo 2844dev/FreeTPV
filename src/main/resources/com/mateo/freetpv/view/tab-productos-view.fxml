@@ -35,9 +35,12 @@
                <children>
                   <MenuButton fx:id="filtrarMenu" graphicTextGap="8.0" mnemonicParsing="false" text="Filtrar">
                      <items>
-                        <CheckMenuItem fx:id="todosMenuItem" mnemonicParsing="false" text="Todos" />
-                        <CheckMenuItem fx:id="activosMenuItem" mnemonicParsing="false" selected="true" text="Activos" />
-                        <CheckMenuItem fx:id="noactivosMenuItem" mnemonicParsing="false" text="No activos" />
+                         <CheckMenuItem fx:id="todosMenuItem" mnemonicParsing="false" onAction="#filtrarTodos"
+                                        text="Todos"/>
+                         <CheckMenuItem fx:id="activosMenuItem" mnemonicParsing="false" onAction="#filtrarProductos"
+                                        selected="true" text="Activos"/>
+                         <CheckMenuItem fx:id="noactivosMenuItem" mnemonicParsing="false" onAction="#filtrarProductos"
+                                        text="No activos"/>
                      </items>
                      <graphic>
                         <FontIcon iconLiteral="fas-filter" iconSize="16" />
@@ -51,8 +54,8 @@
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
-                  <Button fx:id="nuevoProductoButton" graphicTextGap="8.0" mnemonicParsing="false"
-                          onAction="#mostrarFormularioNuevo" styleClass="accent" text="Nuevo producto">
+                   <Button fx:id="nuevoProductoButton" graphicTextGap="8.0" mnemonicParsing="false"
+                           onAction="#mostrarFormularioNuevo" styleClass="accent" text="Nuevo producto">
                      <graphic>
                         <FontIcon iconLiteral="fas-plus" iconSize="16" />
                      </graphic>
@@ -203,18 +206,19 @@
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="pegarImagenButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="8.0" mnemonicParsing="false">
+                         <Button fx:id="pegarImagenButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="8.0"
+                                 mnemonicParsing="false" onAction="#pegarImagen">
                            <graphic>
                               <FontIcon iconLiteral="fas-paste" iconSize="16" />
                            </graphic>
                            <font>
-                              <Font size="14.0"/>
+                               <Font size="14.0"/>
                            </font>
                         </Button>
-                        <Button fx:id="borrarImagenButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="8.0"
-                                mnemonicParsing="false">
+                         <Button fx:id="borrarImagenButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="8.0"
+                                 mnemonicParsing="false" onAction="#borrarImagen">
                            <graphic>
-                              <FontIcon iconLiteral="fas-trash" iconSize="16"/>
+                               <FontIcon iconLiteral="fas-trash" iconSize="16"/>
                            </graphic>
                            <font>
                               <Font size="14.0" />

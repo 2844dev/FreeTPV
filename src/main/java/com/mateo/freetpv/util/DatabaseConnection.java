@@ -20,9 +20,7 @@ public class DatabaseConnection {
     private final String url = "jdbc:sqlite:" + path + "/freetpv.db";
 
     // Ponemos el constructor privado para Singleton
-    private DatabaseConnection() {
-        new File(path + "/.freetpv").mkdirs();
-    }
+    private DatabaseConnection() { }
 
     // Creamos método para coger instancia desde otras clases
     public static DatabaseConnection getInstancia() {

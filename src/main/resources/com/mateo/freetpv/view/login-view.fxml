@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -74,67 +73,6 @@
                   <Insets bottom="20.0" />
                </BorderPane.margin>
             </Label>
-         </bottom>
-      </BorderPane>
-      <BorderPane fx:id="firstPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1080.0" style="-fx-background-color: -color-bg-subtle" visible="false">
-         <padding>
-            <Insets bottom="20.0" top="30.0" />
-         </padding>
-         <center>
-            <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Usuario" />
-                  <TextField fx:id="newusuarioField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
-                  <Label text="Pin" />
-                  <PasswordField fx:id="newpinField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="1234" />
-                  <Label fx:id="newerrorLabel" />
-                  <Button fx:id="newguardarButton" mnemonicParsing="false" onAction="#crearPrimerUsuario" prefHeight="30.0" prefWidth="80.0" text="Guardar">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Button>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
-            </VBox>
-         </center>
-         <top>
-            <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" text="¿Primera vez utilizando FreeTPV?" textAlignment="CENTER">
-                     <font>
-                        <Font size="32.0" />
-                     </font>
-                  </Label>
-                  <Label text="Configura un usuario administrador.">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-         </top>
-         <bottom>
-            <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" text="¿Ya has usado FreeTPV?" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label text="Importa una base de datos.">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="buscarButton" mnemonicParsing="false" onAction="#importarBd" text="Buscar">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
          </bottom>
       </BorderPane>
    </children>

@@ -1,7 +1,7 @@
 package com.mateo.freetpv.controller;
 
 import atlantafx.base.theme.Styles;
-import com.mateo.freetpv.HelloApplication;
+import com.mateo.freetpv.FreeTPVApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -39,7 +39,7 @@ public class MainController {
                 return;
             }
             // Creamos un fxmlloader con un archivo fxml indicado
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/" + fxml));
+            FXMLLoader fxmlLoader = new FXMLLoader(FreeTPVApplication.class.getResource("view/" + fxml));
 
             // Creamos un nuevo nodo donde cargamos el fxml
             Node vista = fxmlLoader.load();
