@@ -174,6 +174,7 @@ public class ProductosController {
                 if (empty) {
                     setGraphic(null);
                 } else {
+                    icon.getStyleClass().removeAll();
                     icon.getStyleClass().add(Styles.DANGER);
                     if (getTableView().getItems().get(getIndex()).getFavorito()) {
                         icon.setIconLiteral("fas-heart");
@@ -220,12 +221,18 @@ public class ProductosController {
     @FXML
     public void mostrarFormularioNuevo() {
         errorLabel.setText("");
-        productosPane.setDisable(true);
-        nuevoproductoPane.setVisible(true);
+
         favoritoToggleButton.setSelected(false);
         estadoToggleButton.setSelected(true); // activo por defecto al crear
         estadoToggleButton.setDisable(true);
         categoriaChoiceBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
+
+        nuevoText.setText("Creando nuevo producto ");
+        productoText.setText("");
+        productoText.setVisible(false);
+
+        productosPane.setDisable(true);
+        nuevoproductoPane.setVisible(true);
 
         var animation = Animations.fadeIn(nuevoproductoPane, Duration.seconds(0.5));
         animation.playFromStart();
@@ -255,6 +262,10 @@ public class ProductosController {
             }
             favoritoToggleButton.setSelected(producto.getFavorito());
             estadoToggleButton.setSelected(producto.getEstado());
+
+            nuevoText.setText("Editando producto: ");
+            productoText.setText(producto.getNombre());
+            productoText.setVisible(true);
 
             errorLabel.setText("");
             productosPane.setDisable(true);
@@ -474,7 +485,7 @@ public class ProductosController {
 
     @FXML public void actualizarProductos() {
         Optional<Integer> categoria_id = categoriaDAO.categoriaNombreId(categoriaComboBox.getSelectionModel().getSelectedItem());
-        List<Producto> productos = productoDAO.obtenerProductos(buscarField.getText(), categoria_id, activosMenuItem.isSelected(), noactivosMenuItem.isSelected());
+        List<Producto> productos = productoDAO.obtenerProductos(buscarField.getText(), categoria_id, activosMenuItem.isSelected(), noactivosMenuItem.isSelected(), false);
         productosTable.getItems().setAll(FXCollections.observableList(productos));
     }
 
