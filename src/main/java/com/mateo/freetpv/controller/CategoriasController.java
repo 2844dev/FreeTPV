@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CategoriasController {
     // Panel principal categorias
@@ -42,6 +43,8 @@ public class CategoriasController {
     private Categoria categoriaEditando = null;
 
     final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+
+    final private Alert warnAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     @FXML public void initialize() {
         // Nos aseguramos que al cargarlo se ve solo el panel principal
@@ -164,6 +167,28 @@ public class CategoriasController {
 
         var animation = Animations.fadeIn(nuevacategoriaPane, Duration.seconds(0.5));
         animation.playFromStart();
+    }
+
+    @FXML public void borrarCategoria() {
+        if (categoriaEditando != null) {
+            if (categoriaDAO.tieneProductos(categoriaEditando)) {
+                errorLabel.setText("Esta categoria contiene productos.");
+                return;
+            }
+            warnAlert.setTitle("Eliminar Categoria");
+            warnAlert.setHeaderText("Se va a eliminar una categoria!");
+            warnAlert.setContentText("Vas a eliminar la categoria " + categoriaEditando.getNombre() +
+                    " esto no se puede revertir.");
+            Optional<ButtonType> resultado = warnAlert.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                if (categoriaDAO.borrarCategoria(categoriaEditando)) {
+                    cerrarFormulario();
+                    actualizarCategorias();
+                } else {
+                    errorLabel.setText("No se pudo eliminar la categoría");
+                }
+            }
+        }
     }
 
     @FXML public void cerrarFormulario() {

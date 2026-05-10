@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ public class MainController {
     @FXML private Button clientesButton;
     @FXML private Button ajustesButton;
     @FXML private StackPane contenedor;
+    @FXML private VBox sidebar;
 
     private String panelActual = null;
     private List<Button> botones;
@@ -32,7 +34,7 @@ public class MainController {
         botones = List.of(ventasButton, empleadosButton, productosButton, mesasButton, clientesButton, ajustesButton);
     }
 
-    private void cargarVista(String fxml, Button button) {
+    private void cargarVista(String fxml, Button button, boolean mostrarSidebar) {
         try {
             // Comprobamos que el panel actual no es el mismo ni null
             if (panelActual == null || panelActual.equals(fxml)) {
@@ -52,20 +54,20 @@ public class MainController {
                 b.getStyleClass().remove(Styles.ACCENT);
             }
             button.getStyleClass().add(Styles.ACCENT);
+            sidebar.setVisible(mostrarSidebar);
+            sidebar.setManaged(mostrarSidebar);
             panelActual = fxml;
         } catch (IOException e) {
             log.error("Error al cargar vista", e);
         }
     }
 
-    @FXML public void mostrarVentas() {
-        cargarVista("ventas-view.fxml", ventasButton);
-    }
+    @FXML public void mostrarVentas() { cargarVista("ventas-view.fxml", ventasButton, false); }
     @FXML public void mostrarEmpleados() {
-        cargarVista("empleados-view.fxml", empleadosButton);
+        cargarVista("empleados-view.fxml", empleadosButton, true);
     }
-    @FXML public void mostrarProductos() { cargarVista(("productos-view.fxml"), productosButton); }
+    @FXML public void mostrarProductos() { cargarVista(("productos-view.fxml"), productosButton, true); }
     @FXML public void mostrarAjustes() {
-        cargarVista("ajustes-view.fxml", ajustesButton);
+        cargarVista("ajustes-view.fxml", ajustesButton, true);
     }
 }
