@@ -135,7 +135,7 @@ public class ProductosController {
                 if (empty || precioCentimos == null) {
                     setText(null);
                 } else {
-                    String texto = centimosEuros(precioCentimos).orElse("0,00");
+                    String texto = centimosEuros(precioCentimos).orElse("0,00€");
                     setText(texto + " €");
 
                 }
