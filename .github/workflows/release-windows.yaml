@@ -33,7 +33,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
-          distribution: temurin
+          distribution: oracle
           java-version: ${{ env.JAVA_VERSION }}
           check-latest: true
           cache: maven
