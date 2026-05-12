@@ -74,11 +74,15 @@ public class VentasController {
             }
         });
 
-        categoriasTilePane.getChildren().add(crearBotonCategoria("Favoritos", Optional.empty()));
+        // Crear boton favoritos
+        Button botonFavoritos = crearBotonCategoria("Favoritos", Optional.empty());
+        botonFavoritos.getStyleClass().add(Styles.ACCENT);
+        categoriasTilePane.getChildren().add(botonFavoritos);
+
         categoriaDAO.obtenerCategorias("").forEach(c ->
                 categoriasTilePane.getChildren().add(crearBotonCategoria(c.getNombre(), Optional.of(c.getId())))
         );
-        cargarProductos(Optional.empty());
+        cargarProductos(Optional.empty()); // Cargar categoria Favoritos
         actualizarTotales();
     }
 
@@ -102,7 +106,13 @@ public class VentasController {
         botonCategoria.setFont(Font.font(16));
         botonCategoria.setMaxWidth(Double.MAX_VALUE);
         botonCategoria.setMaxHeight(Double.MAX_VALUE);
-        botonCategoria.setOnAction(e -> cargarProductos(categoriaId));
+        botonCategoria.setOnAction(e -> {
+            cargarProductos(categoriaId);
+            categoriasTilePane.getChildren().forEach(node ->
+                    node.getStyleClass().remove(Styles.ACCENT)
+            );
+            botonCategoria.getStyleClass().add(Styles.ACCENT);
+        });
         return botonCategoria;
     }
 
@@ -188,18 +198,18 @@ public class VentasController {
     private void actualizarTotales() {
         int subtotal = ticket.stream().mapToInt(LineaTicket::getSubtotal).sum();
 
-        String subtotalFormat = centimosEuros(subtotal).orElse("0,00€");
+        String subtotalFormat = centimosEuros(subtotal).orElse("0,00");
 
         int iva = ticket.stream().mapToInt(l -> {
             double factor = l.getIva() / 100.0;
             return (int) Math.round(l.getSubtotal() * factor / (1 + factor));
         }).sum();
 
-        String ivaFormat = centimosEuros(iva).orElse("0,00€");
+        String ivaFormat = centimosEuros(iva).orElse("0,00");
 
         subtotalLabel.setText(subtotalFormat + "€");
         ivaLabel.setText(ivaFormat + "€");
-        totalLabel.setText(subtotalLabel.getText());
-        cobrarButton.setText("Cobrar " + totalLabel.getText());
+        totalLabel.setText(subtotalFormat + "€");
+        cobrarButton.setText("Cobrar " + subtotalFormat + "€");
     }
 }

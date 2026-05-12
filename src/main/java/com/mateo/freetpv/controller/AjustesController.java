@@ -1,6 +1,7 @@
 package com.mateo.freetpv.controller;
 
 import com.mateo.freetpv.service.AjustesService;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +23,9 @@ public class AjustesController {
         temasChoiceBox.getSelectionModel().select(ajustesService.getTema());
     }
     @FXML public void guardarAjustes() {
+        if (!SesionActual.getInstancia().esAdmin()) {
+            return;
+        }
         ajustesService.setTema(temasChoiceBox.getSelectionModel().getSelectedItem());
         ajustesService.loadTema();
         log.info("Tema cargado: {}", ajustesService.getTema());

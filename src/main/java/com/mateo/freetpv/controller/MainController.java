@@ -2,6 +2,7 @@ package com.mateo.freetpv.controller;
 
 import atlantafx.base.theme.Styles;
 import com.mateo.freetpv.FreeTPVApplication;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -32,6 +33,11 @@ public class MainController {
         // Establecemos el panel actual
         panelActual = "blank-view";
         botones = List.of(ventasButton, empleadosButton, productosButton, mesasButton, clientesButton, ajustesButton);
+        if (!SesionActual.getInstancia().esAdmin()) {
+            empleadosButton.setDisable(true);
+            productosButton.setDisable(true);
+            ajustesButton.setDisable(true);
+        }
     }
 
     private void cargarVista(String fxml, Button button, boolean mostrarSidebar) {
@@ -64,10 +70,18 @@ public class MainController {
 
     @FXML public void mostrarVentas() { cargarVista("ventas-view.fxml", ventasButton, false); }
     @FXML public void mostrarEmpleados() {
-        cargarVista("empleados-view.fxml", empleadosButton, true);
+        if (SesionActual.getInstancia().esAdmin()) {
+            cargarVista("empleados-view.fxml", empleadosButton, true);
+        }
     }
-    @FXML public void mostrarProductos() { cargarVista(("productos-view.fxml"), productosButton, true); }
+    @FXML public void mostrarProductos() {
+        if (SesionActual.getInstancia().esAdmin()) {
+            cargarVista(("productos-view.fxml"), productosButton, true);
+        }
+    }
     @FXML public void mostrarAjustes() {
-        cargarVista("ajustes-view.fxml", ajustesButton, true);
+        if (SesionActual.getInstancia().esAdmin()) {
+            cargarVista("ajustes-view.fxml", ajustesButton, true);
+        }
     }
 }

@@ -8,9 +8,9 @@ import java.util.Properties;
 
 public class AjustesService {
 
-    private AjustesUtil ajustesUtil = new AjustesUtil();
+    private final AjustesUtil ajustesUtil = new AjustesUtil();
 
-    private Properties ajustes = ajustesUtil.cargarAjustes();
+    private final Properties ajustes = ajustesUtil.cargarAjustes();
 
     public String getTema() {
         return ajustes.getProperty("Tema");
@@ -28,6 +28,8 @@ public class AjustesService {
             case "Cupertino Light" -> Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
             case "Cupertino Dark" -> Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
             case "Dracula" -> Application.setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
+
+            // Igual que Primer Light
             default -> Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
         }
     }

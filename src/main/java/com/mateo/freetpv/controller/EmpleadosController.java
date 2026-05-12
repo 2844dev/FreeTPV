@@ -191,10 +191,15 @@ public class EmpleadosController {
      */
     @FXML
     public void guardarFormulario() {
-        String nombre = usuarioField.getText();
+        String nombre = usuarioField.getText().trim();
         String rol = rolChoiceBox.getSelectionModel().getSelectedItem();
         String pin = pinField.getText();
         boolean estado = estadoButton.isSelected();
+
+        if (!SesionActual.getInstancia().esAdmin()) {
+            errorLabel.setText("Debes ser administrador");
+            return;
+        }
 
         // Comprobamos que tenga pin un usuario nuevo
         if (usuarioEditando == null && pin.isEmpty()) {

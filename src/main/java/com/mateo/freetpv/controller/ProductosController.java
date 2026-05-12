@@ -6,6 +6,7 @@ import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
 import com.mateo.freetpv.model.Producto;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -280,6 +281,11 @@ public class ProductosController {
         String nombre = nombreField.getText().trim();
         String nombreTicket = nombreTicketField.getText().trim();
         String precioRaw = precioField.getText().trim();
+
+        if (!SesionActual.getInstancia().esAdmin()) {
+            errorLabel.setText("Debes ser administrador");
+            return;
+        }
 
         if (nombre.isEmpty() || nombreTicket.isEmpty() || precioRaw.isEmpty() || ivaChoiceBox.getSelectionModel().isEmpty() || categoriaChoiceBox.getSelectionModel().isEmpty()) {
             errorLabel.setText("Debe rellenar todos los campos");

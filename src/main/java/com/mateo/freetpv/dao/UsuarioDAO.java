@@ -255,7 +255,7 @@ public class UsuarioDAO {
     public Usuario validarLogin(String nombre, String pin) {
 
         // Buscamos de la tabla usuarios donde el nombre coincide
-        String sql = "SELECT * FROM usuarios WHERE nombre = ?";
+        String sql = "SELECT * FROM usuarios WHERE nombre = ? AND estado = 1";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);
@@ -263,7 +263,7 @@ public class UsuarioDAO {
 
             // Comprobamos si hay resultados
             if (!rs.next()) {
-                log.error("Usuario {} no encontrado", nombre);
+                log.error("Usuario {} no encontrado o desactivado", nombre);
                 return null;
             }
             String hashAlmacenado = rs.getString("hash");

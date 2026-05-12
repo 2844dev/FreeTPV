@@ -55,7 +55,7 @@ public class LoadController {
 
     public void initialize() {
         new File(path).mkdirs();
-        new File(path + "/img").mkdirs();
+        new File(path + "/img/productos/").mkdirs();
         File db = new File(path + "/freetpv.db");
         if (!db.exists()) {
             DatabaseConnection.getInstancia().initDatabase();
