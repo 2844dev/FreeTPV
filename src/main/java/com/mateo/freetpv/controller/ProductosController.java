@@ -32,7 +32,6 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -318,7 +317,7 @@ public class ProductosController {
         int ivaFinal = ivaChoiceBox.getSelectionModel().getSelectedItem();
 
         if (productoEditando == null) {
-            Optional<Integer> idOpt = productoDAO.crearProducto(nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, favoritoToggleButton.isSelected(), categoriaIdFinal);
+            Optional<Integer> idOpt = productoDAO.crearProducto(nombre, nombreTicket, "", precioFinal, ivaFinal, favoritoToggleButton.isSelected(), categoriaIdFinal);
             if (idOpt.isEmpty()) {
                 errorLabel.setText("No se pudo crear el producto");
                 return;
@@ -326,8 +325,13 @@ public class ProductosController {
             int id = idOpt.get();
 
             if (!imagenSeleccionada.isEmpty()) {
-                guardarImagen(id, imagenSeleccionada.startsWith("http"));
-                productoDAO.actualizarImagen(id, imagenSeleccionada);
+                Optional<String> imagenFinalOpt = guardarImagen(id, imagenSeleccionada);
+
+                if (imagenFinalOpt.isPresent()) {
+                    productoDAO.actualizarImagen(id, imagenFinalOpt.get());
+                } else {
+                    errorLabel.setText("Producto creado, pero no se pudo guardar la imagen");
+                }
             }
 
             infoAlert.setTitle("Crear producto");
@@ -337,11 +341,22 @@ public class ProductosController {
 
         } else {
 
-            if (!imagenSeleccionada.equals(productoEditando.getImagen()) && !imagenSeleccionada.isEmpty()) {
-                guardarImagen(productoEditando.getId(), imagenSeleccionada.startsWith("http"));
+            String imagenParaGuardar = imagenSeleccionada;
+
+            if (!imagenSeleccionada.isEmpty()
+                    && !imagenSeleccionada.equals(productoEditando.getImagen())) {
+
+                Optional<String> imagenFinalOpt = guardarImagen(productoEditando.getId(), imagenSeleccionada);
+
+                if (imagenFinalOpt.isEmpty()) {
+                    errorLabel.setText("No se pudo guardar la imagen");
+                    return;
+                }
+
+                imagenParaGuardar = imagenFinalOpt.get();
             }
 
-            if (productoDAO.editarProducto(productoEditando, nombre, nombreTicket, imagenSeleccionada, precioFinal, ivaFinal, estadoToggleButton.isSelected(), favoritoToggleButton.isSelected(), categoriaIdFinal)) {
+            if (productoDAO.editarProducto(productoEditando, nombre, nombreTicket, imagenParaGuardar, precioFinal, ivaFinal, estadoToggleButton.isSelected(), favoritoToggleButton.isSelected(), categoriaIdFinal)) {
                 infoAlert.setTitle("Editar producto");
                 infoAlert.setHeaderText("Producto editado correctamente");
                 infoAlert.setContentText("Producto " + nombre + " editado.");
@@ -355,28 +370,38 @@ public class ProductosController {
         actualizarProductos();
     }
 
-    private void guardarImagen(int id, boolean url) {
+    private Optional<String> guardarImagen(int id, String imagenOrigen) {
         try {
-
-            Path destino = Path.of(path + "/img/productos/");
+            Path destino = Path.of(path, "img", "productos");
             Files.createDirectories(destino);
+
             Path imagenFinal = destino.resolve("producto_" + id + ".png");
+
             BufferedImage original;
-            if (url) {
-                original = ImageIO.read(new java.net.URL(imagenSeleccionada));
+
+            if (imagenOrigen.startsWith("http")) {
+                original = ImageIO.read(new java.net.URL(imagenOrigen));
             } else {
-                Path origen = Path.of(imagenSeleccionada);
-                original = ImageIO.read(origen.toFile());
+                original = ImageIO.read(Path.of(imagenOrigen).toFile());
             }
+
+            if (original == null) {
+                log.error("Imagen no válida o formato no soportado: {}", imagenOrigen);
+                return Optional.empty();
+            }
+
             BufferedImage resized = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = resized.createGraphics();
             g.drawImage(original.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
             g.dispose();
+
             ImageIO.write(resized, "png", imagenFinal.toFile());
-            imagenSeleccionada = imagenFinal.toString();
-        } catch (IOException e) {
+
+            return Optional.of(imagenFinal.toString());
+
+        } catch (Exception e) {
             log.error("Error al guardar imagen", e);
-            errorLabel.setText("No se pudo guardar la imagen");
+            return Optional.empty();
         }
     }
 

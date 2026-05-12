@@ -10,6 +10,7 @@ module com.mateo.freetpv {
     requires ch.qos.logback.classic;
     requires bcrypt;
     requires java.desktop;
+    requires escpos.coffee;
 
     opens com.mateo.freetpv.model to javafx.base;
     opens  com.mateo.freetpv.controller to javafx.fxml;
