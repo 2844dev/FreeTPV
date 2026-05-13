@@ -150,7 +150,7 @@ public class ProductoDAO {
     }
 
     public boolean existeProducto(String nombre) {
-        String sql = "SELECT nombre FROM productos WHERE nombre = ?";
+        String sql = "SELECT nombre FROM productos WHERE LOWER(nombre) = LOWER(?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);

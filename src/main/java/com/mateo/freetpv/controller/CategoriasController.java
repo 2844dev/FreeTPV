@@ -110,7 +110,7 @@ public class CategoriasController {
             errorLabel.setText("No puedes crear una categoría con ese nombre");
             return;
         }
-        if (categoriaDAO.existeCategoria(nombre) && (categoriaEditando == null || !nombre.equals(categoriaEditando.getNombre()))) {
+        if (categoriaDAO.existeCategoria(nombre) && (categoriaEditando == null || !nombre.equalsIgnoreCase(categoriaEditando.getNombre()))) {
             errorLabel.setText("Ya existe una categoria con ese nombre");
             return;
         }

@@ -48,7 +48,7 @@ public class CategoriaDAO {
     }
 
     public boolean existeCategoria(String nombre) {
-        String sql = "SELECT nombre FROM categorias WHERE nombre = ?";
+        String sql = "SELECT nombre FROM categorias WHERE LOWER(nombre) = LOWER(?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);

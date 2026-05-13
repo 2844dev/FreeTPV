@@ -98,6 +98,8 @@ public class ProductosController {
 
     final private Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
 
+    final private Alert warnAlert = new Alert(Alert.AlertType.WARNING);
+
     private List<CheckMenuItem> filtros;
 
     private final String path = System.getProperty("user.home") + "/.freetpv";
@@ -122,6 +124,9 @@ public class ProductosController {
         filtros = List.of(activosMenuItem, noactivosMenuItem);
 
         buscarField.textProperty().addListener((observable, oldValue, newValue) -> actualizarProductos());
+
+        estadoToggleButton.selectedProperty().addListener((observable, oldValue, newValue) -> actualizarBotonEstadoProducto());
+        favoritoToggleButton.selectedProperty().addListener((observable, oldValue, newValue) -> actualizarBotonFavoritoProducto());
 
         codigoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -222,10 +227,22 @@ public class ProductosController {
     public void mostrarFormularioNuevo() {
         errorLabel.setText("");
 
+        categoriaChoiceBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
+
+        if (categoriaChoiceBox.getItems().isEmpty()) {
+            Alert warning = new Alert(Alert.AlertType.WARNING);
+            warning.setTitle("Crear producto");
+            warning.setHeaderText("No hay categorías creadas");
+            warning.setContentText("Crea una categoría antes de añadir productos.");
+            warning.showAndWait();
+            return;
+        }
+
         favoritoToggleButton.setSelected(false);
         estadoToggleButton.setSelected(true); // activo por defecto al crear
+        actualizarBotonFavoritoProducto();
+        actualizarBotonEstadoProducto();
         estadoToggleButton.setDisable(true);
-        categoriaChoiceBox.setItems(FXCollections.observableArrayList(categoriaDAO.obtenerNombreCategorias()));
 
         nuevoText.setText("Creando nuevo producto ");
         productoText.setText("");
@@ -262,6 +279,8 @@ public class ProductosController {
             }
             favoritoToggleButton.setSelected(producto.getFavorito());
             estadoToggleButton.setSelected(producto.getEstado());
+            actualizarBotonFavoritoProducto();
+            actualizarBotonEstadoProducto();
 
             nuevoText.setText("Editando producto: ");
             productoText.setText(producto.getNombre());
@@ -307,12 +326,24 @@ public class ProductosController {
             errorLabel.setText("El nombre debe tener menos de 35 caracteres");
             return;
         }
-        if (productoDAO.existeProducto(nombre) && (productoEditando == null || !nombre.equals(productoEditando.getNombre()))) {
+
+        if (nombreTicket.length() > 13) {
+            errorLabel.setText("El nombre para ticket debe tener máximo 13 caracteres");
+            return;
+        }
+
+        if (productoDAO.existeProducto(nombre) && (productoEditando == null || !nombre.equalsIgnoreCase(productoEditando.getNombre()))) {
             errorLabel.setText("Ya existe un producto con ese nombre");
             return;
         }
 
         int precioFinal = precioOpt.get();
+
+        if (precioFinal <= 0) {
+            errorLabel.setText("El precio debe ser mayor que 0");
+            return;
+        }
+
         int categoriaIdFinal = categoriaIdOpt.get();
         int ivaFinal = ivaChoiceBox.getSelectionModel().getSelectedItem();
 
@@ -330,7 +361,10 @@ public class ProductosController {
                 if (imagenFinalOpt.isPresent()) {
                     productoDAO.actualizarImagen(id, imagenFinalOpt.get());
                 } else {
-                    errorLabel.setText("Producto creado, pero no se pudo guardar la imagen");
+                    warnAlert.setTitle("Imagen no guardada");
+                    warnAlert.setHeaderText("Producto creado, pero sin imagen");
+                    warnAlert.setContentText("No se pudo guardar la imagen seleccionada.");
+                    warnAlert.showAndWait();
                 }
             }
 
@@ -392,7 +426,7 @@ public class ProductosController {
 
             BufferedImage resized = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = resized.createGraphics();
-            g.drawImage(original.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+            g.drawImage(original, 0, 0, 200, 200, null);
             g.dispose();
 
             ImageIO.write(resized, "png", imagenFinal.toFile());
@@ -403,6 +437,17 @@ public class ProductosController {
             log.error("Error al guardar imagen", e);
             return Optional.empty();
         }
+    }
+
+    private boolean esFormatoImagenSoportado(String ruta) {
+        if (ruta == null || ruta.isBlank()) return false;
+
+        String lower = ruta.toLowerCase();
+
+        return lower.endsWith(".png")
+                || lower.endsWith(".jpg")
+                || lower.endsWith(".jpeg")
+                || lower.endsWith(".gif");
     }
 
     @FXML public void cerrarFormulario() {
@@ -419,6 +464,8 @@ public class ProductosController {
         favoritoToggleButton.setSelected(false);
         estadoToggleButton.setSelected(false);
         estadoToggleButton.setDisable(false);
+        actualizarBotonFavoritoProducto();
+        actualizarBotonEstadoProducto();
     }
 
     @FXML public void cargarImagen() {
@@ -470,6 +517,10 @@ public class ProductosController {
         } else if (cb.hasString()) {
             String texto = cb.getString().trim();
             if (texto.startsWith("http")) {
+                if (!esFormatoImagenSoportado(texto)) {
+                    errorLabel.setText("Formato de imagen no soportado. Usa PNG, JPG, JPEG o GIF.");
+                    return;
+                }
                 Image imagen = new Image(texto, 200, 200, false, true, true);
                 imagen.errorProperty().addListener((obs, old, error) -> {
                     if (error) errorLabel.setText("No se pudo cargar la imagen desde la URL");
@@ -488,6 +539,26 @@ public class ProductosController {
     private void borrarImagen() {
         imagenActualImageView.setImage(null);
         imagenSeleccionada = "";
+    }
+
+    private void actualizarBotonEstadoProducto() {
+        if (estadoToggleButton.isSelected()) {
+            estadoToggleButton.setText("Activo");
+            estadoToggleButton.setGraphic(new FontIcon("fas-check"));
+        } else {
+            estadoToggleButton.setText("No activo");
+            estadoToggleButton.setGraphic(new FontIcon("fas-times"));
+        }
+    }
+
+    private void actualizarBotonFavoritoProducto() {
+        if (favoritoToggleButton.isSelected()) {
+            favoritoToggleButton.setText("Favorito");
+            favoritoToggleButton.setGraphic(new FontIcon("fas-heart"));
+        } else {
+            favoritoToggleButton.setText("Favorito");
+            favoritoToggleButton.setGraphic(new FontIcon("far-heart"));
+        }
     }
 
     @FXML

@@ -89,8 +89,8 @@ public class LoadController {
 
     @FXML
     public void crearAdministrador() {
-        String usuario = newUsuarioField.getText();
-        String pin = newPinField.getText();
+        String usuario = newUsuarioField.getText().trim();
+        String clave = newPinField.getText().trim();
         errorLabel.setText("");
         // Comprobamos que en la base de datos no existen usuarios
         if (usuarioDAO.existenUsuarios()) {
@@ -98,8 +98,13 @@ public class LoadController {
             return;
         }
         // Comprobamos que haya pin y nombre escrito
-        if (usuario.isEmpty() || pin.isEmpty()) {
-            errorLabel.setText("Inserte un usuario y pin.");
+        if (usuario.isEmpty() || clave.isEmpty()) {
+            errorLabel.setText("Inserte un usuario y clave.");
+            return;
+        }
+
+        if (!claveValida(clave)) {
+            errorLabel.setText("La clave debe tener entre 4 y 16 caracteres y no contener espacios");
             return;
         }
 
@@ -116,8 +121,12 @@ public class LoadController {
         }
 
         // Creamos un usuario nuevo Admin
-        usuarioDAO.crearUsuario(usuario, pin, "Admin");
+        usuarioDAO.crearUsuario(usuario, clave, "Admin");
 
         cargarLogin();
+    }
+
+    private boolean claveValida(String clave) {
+        return clave != null && clave.matches("\\S{4,16}");
     }
 }

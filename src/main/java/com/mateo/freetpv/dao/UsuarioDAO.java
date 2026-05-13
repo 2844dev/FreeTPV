@@ -37,7 +37,7 @@ public class UsuarioDAO {
      *         o si da error. Si no, devuelve {@code false}
      */
     public boolean existeUsuario(String nombre) {
-       String sql = "SELECT nombre FROM usuarios WHERE nombre = ?";
+       String sql = "SELECT nombre FROM usuarios WHERE LOWER(nombre) = LOWER(?)";
        try (var connection = db.getConnection();
             var stmt = connection.prepareStatement(sql)) {
            stmt.setString(1, nombre);
