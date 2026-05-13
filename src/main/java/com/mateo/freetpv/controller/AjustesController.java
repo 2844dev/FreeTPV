@@ -245,6 +245,7 @@ public class AjustesController {
         );
 
         ultimoBackupField.setEditable(false);
+        ultimoBackupField.setDisable(true);
         ultimoBackupField.setFocusTraversable(false);
     }
 
