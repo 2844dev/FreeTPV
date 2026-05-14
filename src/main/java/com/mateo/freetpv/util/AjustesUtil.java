@@ -77,7 +77,7 @@ public class AjustesUtil {
         ajustes.setProperty("ticket.mostrarTelefono", "true");
         ajustes.setProperty("ticket.mostrarCif", "true");
         ajustes.setProperty("ticket.mostrarIva", "true");
-        ajustes.setProperty("ticket.mostrarQR", "false");
+        ajustes.setProperty("ticket.mostrarQr", "false");
 
         ajustes.setProperty("impresora.nombre", "");
         ajustes.setProperty("impresora.ancho", "58");

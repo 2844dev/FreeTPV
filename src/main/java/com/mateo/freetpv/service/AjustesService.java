@@ -136,14 +136,28 @@ public class AjustesService {
     }
 
     public void setImpresoraAncho(int ancho) {
+        if (ancho != 58 && ancho != 80) {
+            ancho = 58;
+        }
+
         setInt("impresora.ancho", ancho);
     }
 
     public String getImpresoraCodepage() {
-        return getString("impresora.codepage");
+        String codepage = getString("impresora.codepage");
+
+        if (codepage.isBlank()) {
+            return "CP858_Euro";
+        }
+
+        return codepage;
     }
 
     public void setImpresoraCodepage(String codepage) {
+        if (codepage == null || codepage.isBlank()) {
+            codepage = "CP858_Euro";
+        }
+
         setString("impresora.codepage", codepage);
     }
 
@@ -177,6 +191,22 @@ public class AjustesService {
 
     public void setBackupUltimo(String ultimo) {
         setString("backup.ultimo", ultimo);
+    }
+
+    public String getEmpresaQr() {
+        return getString("empresa.qr");
+    }
+
+    public void setEmpresaQr(String qr) {
+        setString("empresa.qr", qr);
+    }
+
+    public boolean getTicketMostrarQr() {
+        return getBoolean("ticket.mostrarQr");
+    }
+
+    public void setTicketMostrarQr(boolean mostrarQr) {
+        setBoolean("ticket.mostrarQr", mostrarQr);
     }
 
     public void loadTema() {

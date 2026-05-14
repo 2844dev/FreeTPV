@@ -5,10 +5,8 @@ import com.mateo.freetpv.service.AjustesService;
 import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +24,13 @@ public class AjustesController {
     @FXML private BorderPane ajustesPane;
     @FXML private Button guardarButton;
 
+    @FXML private ScrollPane ajustesScrollPane;
 
+    @FXML private Label empresaLabel;
+    @FXML private Label ticketLabel;
+    @FXML private Label impresoraLabel;
+    @FXML private Label aparienciaLabel;
+    @FXML private Label backupsLabel;
 
     // EMPRESA
     @FXML private Tile nombreEmpresaTile;
@@ -76,6 +80,30 @@ public class AjustesController {
         guardarButton.setDisable(true);
     }
 
+    @FXML
+    private void irEmpresa() {
+        scrollHasta(empresaLabel);
+    }
+
+    @FXML
+    private void irTicket() {
+        scrollHasta(ticketLabel);
+    }
+
+    @FXML
+    private void irImpresora() {
+        scrollHasta(impresoraLabel);
+    }
+
+    @FXML
+    private void irApariencia() {
+        scrollHasta(aparienciaLabel);
+    }
+
+    @FXML
+    private void irBackups() {
+        scrollHasta(backupsLabel);
+    }
 
     private void configurarEmpresa() {
         configurarTextFieldTile(
@@ -126,6 +154,12 @@ public class AjustesController {
                 "www.kitaujibar.com",
                 ajustesService::setEmpresaWeb
         );
+        configurarTextFieldTile(
+                qrEmpresaTile,
+                ajustesService.getEmpresaQr(),
+                "https://...",
+                ajustesService::setEmpresaQr
+        );
     }
 
     private void configurarTicket() {
@@ -165,6 +199,11 @@ public class AjustesController {
                 mostrarIvaTicketTile,
                 ajustesService.getTicketMostrarIva(),
                 ajustesService::setTicketMostrarIva
+        );
+        configurarCheckTile(
+                mostrarQrTicketTile,
+                ajustesService.getTicketMostrarQr(),
+                ajustesService::setTicketMostrarQr
         );
     }
 
@@ -341,6 +380,26 @@ public class AjustesController {
 
         return impresoras;
     }
+
+    private void scrollHasta(Node nodo) {
+        Platform.runLater(() -> {
+            double contenidoAlto = ajustesScrollPane.getContent().getBoundsInLocal().getHeight();
+            double viewportAlto = ajustesScrollPane.getViewportBounds().getHeight();
+
+            double yNodo = nodo.getBoundsInParent().getMinY();
+
+            double maxScroll = contenidoAlto - viewportAlto;
+
+            if (maxScroll <= 0) {
+                ajustesScrollPane.setVvalue(0);
+                return;
+            }
+
+            double vvalue = yNodo / maxScroll;
+            ajustesScrollPane.setVvalue(Math.max(0, Math.min(1, vvalue)));
+        });
+    }
+
 
     private void configurarAccionTile(Tile tile, javafx.scene.Node actionNode, Runnable actionHandler) {
         Platform.runLater(() -> {
