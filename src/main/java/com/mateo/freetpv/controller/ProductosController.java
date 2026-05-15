@@ -10,6 +10,7 @@ import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -150,10 +151,12 @@ public class ProductosController {
 
         estadoColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
         estadoColumn.setCellFactory(param -> new TableCell<>() {
+
             private FontIcon icon = new FontIcon();
 
             @Override
             protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                 } else {
@@ -176,10 +179,11 @@ public class ProductosController {
 
             @Override
             protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    icon.getStyleClass().removeAll();
+                    icon.getStyleClass().removeAll(Styles.DANGER);
                     icon.getStyleClass().add(Styles.DANGER);
                     if (getTableView().getItems().get(getIndex()).getFavorito()) {
                         icon.setIconLiteral("fas-heart");
@@ -204,6 +208,7 @@ public class ProductosController {
 
             @Override
             protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                 } else {
@@ -213,11 +218,16 @@ public class ProductosController {
         });
 
         Platform.runLater(() -> {
-            TabPane tabPane = (TabPane) productosPane.getParent().getParent().getParent();
-            Tab miTab = tabPane.getTabs().get(0); // Productos es el tab 0
-            miTab.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-                if (isSelected) actualizarCategoriasCombo();
-            });
+            Parent parent = productosPane.getParent();
+            while (parent != null && !(parent instanceof TabPane)) {
+                parent = parent.getParent();
+            }
+            if (parent instanceof TabPane tabPane) {
+                Tab miTab = tabPane.getTabs().get(0);
+                miTab.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                    if (isSelected) actualizarCategoriasCombo();
+                });
+            }
         });
 
         actualizarProductos();

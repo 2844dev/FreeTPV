@@ -2,19 +2,27 @@ package com.mateo.freetpv.controller;
 
 import atlantafx.base.controls.Tile;
 import com.mateo.freetpv.service.AjustesService;
+import com.mateo.freetpv.service.ImprimirService;
 import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AjustesController {
@@ -25,12 +33,6 @@ public class AjustesController {
     @FXML private Button guardarButton;
 
     @FXML private ScrollPane ajustesScrollPane;
-
-    @FXML private Label empresaLabel;
-    @FXML private Label ticketLabel;
-    @FXML private Label impresoraLabel;
-    @FXML private Label aparienciaLabel;
-    @FXML private Label backupsLabel;
 
     // EMPRESA
     @FXML private Tile nombreEmpresaTile;
@@ -58,6 +60,10 @@ public class AjustesController {
     @FXML private Tile impresoraCortarPapelTile;
     @FXML private Tile impresoraAbrirCajonTile;
 
+    @FXML private Button imprimirTestButton;
+    @FXML private Button abrirCajonButton;
+    @FXML private Button ayudaDriversButton;
+
     // APARIENCIA
     @FXML private Tile temaTile;
 
@@ -80,29 +86,37 @@ public class AjustesController {
         guardarButton.setDisable(true);
     }
 
-    @FXML
-    private void irEmpresa() {
-        scrollHasta(empresaLabel);
+    @FXML public void imprimirTicketPrueba() {
+        guardarAjustes();
+        Optional<PrintService> impresora = buscarImpresora();
+        if (impresora.isPresent()) {
+            try {
+                ImprimirService.imprimirTicket(impresora.get());
+            } catch (IOException e) {
+                log.error("No se puedo imprimir una prueba", e);
+            }
+        }
     }
 
-    @FXML
-    private void irTicket() {
-        scrollHasta(ticketLabel);
+    @FXML public void abrirCajon() {
+        guardarAjustes();
+        Optional<PrintService> impresora = buscarImpresora();
+        if (impresora.isPresent()) {
+            try {
+                ImprimirService.abrirCajon(impresora.get());
+            } catch (IOException e) {
+                log.error("No se pudo abrir el cajón", e);
+            }
+        }
     }
 
-    @FXML
-    private void irImpresora() {
-        scrollHasta(impresoraLabel);
-    }
+    @FXML public void mostrarAyudaDrivers() {
+        try {
+            Desktop.getDesktop().browse(URI.create("https://example.com"));
+        } catch (IOException e) {
+            log.error("No se pudo abrir el video de drivers", e);
+        }
 
-    @FXML
-    private void irApariencia() {
-        scrollHasta(aparienciaLabel);
-    }
-
-    @FXML
-    private void irBackups() {
-        scrollHasta(backupsLabel);
     }
 
     private void configurarEmpresa() {
@@ -210,7 +224,12 @@ public class AjustesController {
     private void configurarImpresora() {
         List<String> impresoras = obtenerNombresImpresoras();
 
-        configurarChoiceTile(
+        boolean sinImpresora = impresoras.size() == 1 &&
+                "No hay impresoras disponibles".equals(impresoras.get(0));
+        imprimirTestButton.setDisable(sinImpresora);
+        abrirCajonButton.setDisable(sinImpresora);
+
+        ChoiceBox<String> impresoraNombre = configurarChoiceTile(
                 impresoraNombreTile,
                 impresoras,
                 ajustesService.getImpresoraNombre(),
@@ -220,6 +239,14 @@ public class AjustesController {
                     }
                 }
         );
+
+        impresoraNombre.valueProperty().addListener((observable, oldValue, newValue) -> {
+            boolean valida = newValue != null &&
+                    !newValue.isBlank() &&
+                    !"No hay impresoras disponibles".equals(newValue);
+            imprimirTestButton.setDisable(!valida);
+            abrirCajonButton.setDisable(!valida);
+        });
 
         configurarChoiceTile(
                 impresoraAnchoTile,
@@ -367,6 +394,13 @@ public class AjustesController {
         return choiceBox;
     }
 
+    private void configurarAccionTile(Tile tile, javafx.scene.Node actionNode, Runnable actionHandler) {
+        Platform.runLater(() -> {
+            tile.setAction(actionNode);
+            tile.setActionHandler(actionHandler);
+        });
+    }
+
     private List<String> obtenerNombresImpresoras() {
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 
@@ -381,30 +415,10 @@ public class AjustesController {
         return impresoras;
     }
 
-    private void scrollHasta(Node nodo) {
-        Platform.runLater(() -> {
-            double contenidoAlto = ajustesScrollPane.getContent().getBoundsInLocal().getHeight();
-            double viewportAlto = ajustesScrollPane.getViewportBounds().getHeight();
-
-            double yNodo = nodo.getBoundsInParent().getMinY();
-
-            double maxScroll = contenidoAlto - viewportAlto;
-
-            if (maxScroll <= 0) {
-                ajustesScrollPane.setVvalue(0);
-                return;
-            }
-
-            double vvalue = yNodo / maxScroll;
-            ajustesScrollPane.setVvalue(Math.max(0, Math.min(1, vvalue)));
-        });
-    }
-
-
-    private void configurarAccionTile(Tile tile, javafx.scene.Node actionNode, Runnable actionHandler) {
-        Platform.runLater(() -> {
-            tile.setAction(actionNode);
-            tile.setActionHandler(actionHandler);
-        });
+    private Optional<PrintService> buscarImpresora() {
+        String nombre = ajustesService.getImpresoraNombre();
+        return Arrays.stream(PrintServiceLookup.lookupPrintServices(null, null))
+                .filter(p -> p.getName().equals(nombre))
+                .findFirst();
     }
 }

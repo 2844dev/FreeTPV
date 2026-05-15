@@ -24,7 +24,7 @@
                </graphic></Button>
          </bottom>
          <center>
-            <ScrollPane fx:id="ajustesScrollPane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+            <ScrollPane fx:id="ajustesScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" BorderPane.alignment="CENTER">
                <content>
                   <VBox>
                      <children>
@@ -77,12 +77,15 @@
                         <Tile fx:id="impresoraCodepageTile" description="Codificación usada por la impresora. Afecta a símbolos como €, ñ y tildes." title="Codepage/charset" />
                         <Tile fx:id="impresoraCortarPapelTile" description="Activa el corte automático del ticket si la impresora lo permite." title="Cortar papel" />
                         <Tile fx:id="impresoraAbrirCajonTile" description="Envía la orden de apertura del cajón portamonedas al finalizar un cobro." title="Abrir cajón al cobrar" />
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Imprimir ticket de prueba" />
-                              <Button mnemonicParsing="false" text="Abrir cajón" />
-                              <Button mnemonicParsing="false" text="Ayuda para instalar drivers" />
+                              <Button fx:id="imprimirTestButton" mnemonicParsing="false" onAction="#imprimirTicketPrueba" text="Imprimir ticket de prueba" />
+                              <Button fx:id="abrirCajonButton" mnemonicParsing="false" onAction="#abrirCajon" text="Abrir cajón" />
+                              <Button fx:id="ayudaDriversButton" mnemonicParsing="false" onAction="#mostrarAyudaDrivers" text="Ayuda para instalar drivers" />
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="20.0" />
+                           </VBox.margin>
                         </HBox>
                         <Separator prefWidth="200.0" />
                         <Label fx:id="aparienciaLabel" text="Apariencia">
@@ -112,19 +115,8 @@
                </content>
             </ScrollPane>
          </center>
-         <left>
-            <VBox BorderPane.alignment="CENTER">
-               <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irEmpresa" text="Empresa" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irTicket" text="Ticket" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irImpresora" text="Impresora" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irApariencia" text="Apariencia" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irBackups" text="Copias de seguridad" />
-               </children>
-            </VBox>
-         </left>
          <StackPane.margin>
-            <Insets bottom="20.0" left="20.0" top="20.0" />
+            <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
          </StackPane.margin>
       </BorderPane>
    </children>

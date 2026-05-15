@@ -9,7 +9,7 @@ import javax.print.PrintService;
 import java.io.IOException;
 
 public class ImprimirService {
-    private static final int WIDTH = 32; // 80mm aprox. Para 58mm usa 32.
+    private static final int WIDTH = 32;
 
     public static void imprimirTicket(PrintService printService) throws IOException {
         PrinterOutputStream printerOutputStream = new PrinterOutputStream(printService);
@@ -79,6 +79,14 @@ public class ImprimirService {
         escpos.close();
     }
 
+    public static void abrirCajon(PrintService printService) throws IOException {
+        PrinterOutputStream printerOutputStream = new PrinterOutputStream(printService);
+        EscPos escpos = new EscPos(printerOutputStream);
+        escpos.pulsePin(EscPos.PinConnector.Pin_2, 120, 240);
+        escpos.pulsePin(EscPos.PinConnector.Pin_5, 120, 240);
+        escpos.close();
+    }
+
     private static String line() {
         return "-".repeat(WIDTH);
     }
@@ -118,31 +126,3 @@ public class ImprimirService {
         return text.length() <= max ? text : text.substring(0, max);
     }
 }
-/**
- *  DISEÑO TICKET
- * [nombre empresa]
- * direccion
- * tel | nif
- *
- * ---
- *
- * fecha | hora
- * nº ticket
- * mesa: | camarero:
- * cliente:
- *
- * ------
- * Cant | Nombre | P.Unit | Importe
- * ------
- * 0 chorizo 2 0
- * ----
- * Total    xx
- *
- * Resumen de impuestos
- *
- * Base% Imp | Cuota | Importe
- * 2           10% 0,2 2,2
- *
- * Gracias por su visita
- *
- */

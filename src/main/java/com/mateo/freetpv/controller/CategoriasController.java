@@ -142,6 +142,7 @@ public class CategoriasController {
 
     @FXML
     public void mostrarFormularioNuevo() {
+        borrarButton.setVisible(false);
         errorLabel.setText("");
         nuevoText.setText("Creando nueva categoría ");
         categoriaText.setText("");
@@ -172,6 +173,7 @@ public class CategoriasController {
         }
 
         errorLabel.setText("");
+        borrarButton.setVisible(true);
         categoriasPane.setDisable(true);
         nuevacategoriaPane.setVisible(true);
 
