@@ -5,12 +5,15 @@ import java.util.Random;
 
 public class NombreUtil {
     // Lista con todos los nombres
-    List<String> lista = List.of("Yui Hirasawa", "Azusa Nakano", "Ritsu Tainaka",
-                                "Mio Akiyama", "Mugi Kotobuki");
+    private static final List<String> lista = List.of(
+            "Yui Hirasawa", "Azusa Nakano", "Ritsu Tainaka", "Mio Akiyama", "Mugi Kotobuki", //K-ON!
+            "Reina Kousaka", "Oumae Kumiko" //Hibike! Euphonium
+            );
+
+    private final Random r = new Random();
 
     // Metodo para sacar un nombre aleatorio de la lista
     public String getNombre() {
-        Random r = new Random();
         int i = r.nextInt(lista.size());
         return lista.get(i);
     }

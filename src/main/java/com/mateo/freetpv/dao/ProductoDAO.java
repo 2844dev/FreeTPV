@@ -92,7 +92,7 @@ public class ProductoDAO {
         }
     }
 
-    public List<Producto> obtenerProductos(String buscar, Optional<Integer> categoria, boolean activo, boolean noactivo) {
+    public List<Producto> obtenerProductos(String buscar, Optional<Integer> categoria, boolean activo, boolean noactivo, boolean solofavorito) {
         if (!activo && !noactivo) return new ArrayList<>();
 
         StringBuilder sql = new StringBuilder("SELECT * FROM productos WHERE 1=1");
@@ -110,6 +110,9 @@ public class ProductoDAO {
         }
         if (!activo && noactivo) {
             sql.append(" AND estado = 0");
+        }
+        if (solofavorito) {
+            sql.append(" AND favorito = 1");
         }
 
         try (var connection = db.getConnection();
@@ -147,7 +150,7 @@ public class ProductoDAO {
     }
 
     public boolean existeProducto(String nombre) {
-        String sql = "SELECT nombre FROM productos WHERE nombre = ?";
+        String sql = "SELECT nombre FROM productos WHERE LOWER(nombre) = LOWER(?)";
         try (var connection = db.getConnection();
              var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nombre);

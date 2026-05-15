@@ -73,15 +73,15 @@ public class LoginController {
             Usuario user = usuarioDAO.validarLogin(usuario, pin);
             if (user != null) {
                 try {
+                    // Ajustamos la sesion al usuario logeado
+                    SesionActual.getInstancia().setUsuario(user);
+
                     // Cargar ventana principal
                     FXMLLoader fxmlLoader = new FXMLLoader(FreeTPVApplication.class.getResource("view/main-view.fxml"));
                     Scene scene = new Scene(fxmlLoader.load());
 
                     // Conseguir stage desde el un objeto
                     Stage stage = (Stage) loginButton.getScene().getWindow();
-
-                    // Ajustamos la sesion al usuario logeado
-                    SesionActual.getInstancia().setUsuario(user);
 
                     stage.setResizable(true);
                     stage.setMinWidth(1280);

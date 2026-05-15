@@ -1,38 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import atlantafx.base.controls.Tile?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.AjustesController">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.AjustesController">
    <children>
-      <BorderPane fx:id="ajustesPane" maxHeight="680.0" maxWidth="990.0" prefHeight="680.0" prefWidth="990.0">
-         <center>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" graphicTextGap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Tema:">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <graphic>
-                        <FontIcon iconLiteral="fas-paint-brush" />
-                     </graphic>
-                  </Label>
-                  <ChoiceBox fx:id="temasChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-               </children>
-            </HBox>
-         </center>
+      <BorderPane fx:id="ajustesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <bottom>
             <Button fx:id="guardarButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#guardarAjustes" text="Guardar" BorderPane.alignment="CENTER">
                <graphic>
                   <FontIcon iconLiteral="fas-save" iconSize="16" />
                </graphic></Button>
          </bottom>
+         <center>
+            <ScrollPane fx:id="ajustesScrollPane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox>
+                     <children>
+                        <Label fx:id="empresaLabel" text="Empresa">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="text-bold" />
+                              <String fx:value="accent" />
+                           </styleClass>
+                        </Label>
+                        <Tile fx:id="nombreEmpresaTile" description="Nombre comercial que aparecerá en la parte superior del ticket." maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Nombre de la empresa" />
+                        <Tile fx:id="cifEmpresaTile" description="Identificador fiscal del negocio. Se mostrará en el ticket si la opción está activada." title="CIF/NIF" />
+                        <Tile fx:id="direccionEmpresaTile" description="Dirección física del negocio que aparecerá en el ticket." title="Dirección" />
+                        <Tile fx:id="codigoPostalEmpresaTile" description="Código postal de la dirección del negocio." title="Código postal" />
+                        <Tile fx:id="ciudadEmpresaTile" description="Ciudad o localidad del negocio." title="Ciudad" />
+                        <Tile fx:id="telefonoEmpresaTile" description="Teléfono de contacto que aparecerá en el ticket si la opción está activada." title="Teléfono" />
+                        <Tile fx:id="webEmpresaTile" description="Página web o enlace del negocio. Se mostrará al final del ticket si la opción está activada." title="Web" />
+                        <Tile fx:id="qrEmpresaTile" description="URL para imprimir en ticket" title="QR" />
+                        <Separator prefWidth="200.0" />
+                        <Label fx:id="ticketLabel" text="Ticket">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="text-bold" />
+                              <String fx:value="accent" />
+                           </styleClass>
+                        </Label>
+                        <Tile fx:id="tituloTicketTile" description="Texto principal del ticket. Por defecto: “TICKET DE VENTA”." title="Título del ticket" />
+                        <Tile fx:id="mensajeFinalTicketTile" description="Mensaje que aparecerá al final del ticket, por ejemplo una frase de agradecimiento." title="Mensaje final" />
+                        <Tile fx:id="mostrarCifTicketTile" description="Muestra u oculta el CIF/NIF de la empresa en el ticket." title="Mostrar CIF/NIF" />
+                        <Tile fx:id="mostrarTelefonoTicketTile" description="Muestra u oculta el teléfono de contacto en el ticket." title="Mostrar teléfono" />
+                        <Tile fx:id="mostrarWebTicketTile" description="Muestra u oculta la web del negocio al final del ticket." title="Mostrar web" />
+                        <Tile fx:id="mostrarIvaTicketTile" description="Muestra u oculta el resumen de impuestos en el ticket." title="Mostrar desglose de IVA" />
+                        <Tile fx:id="mostrarQrTicketTile" description="" title="Mostrar QR" />
+                        <Separator prefWidth="200.0" />
+                        <Label fx:id="impresoraLabel" text="Impresora">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="text-bold" />
+                              <String fx:value="accent" />
+                           </styleClass>
+                        </Label>
+                        <Tile fx:id="impresoraNombreTile" description="Impresora térmica que usará la aplicación para imprimir tickets." title="Impresora" />
+                        <Tile fx:id="impresoraAnchoTile" description="Ancho del ticket. Usa 58 mm para impresoras pequeñas y 80 mm para impresoras más anchas." title="Ancho de papel" />
+                        <Tile fx:id="impresoraCodepageTile" description="Codificación usada por la impresora. Afecta a símbolos como €, ñ y tildes." title="Codepage/charset" />
+                        <Tile fx:id="impresoraCortarPapelTile" description="Activa el corte automático del ticket si la impresora lo permite." title="Cortar papel" />
+                        <Tile fx:id="impresoraAbrirCajonTile" description="Envía la orden de apertura del cajón portamonedas al finalizar un cobro." title="Abrir cajón al cobrar" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Imprimir ticket de prueba" />
+                              <Button mnemonicParsing="false" text="Abrir cajón" />
+                              <Button mnemonicParsing="false" text="Ayuda para instalar drivers" />
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <Label fx:id="aparienciaLabel" text="Apariencia">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="text-bold" />
+                              <String fx:value="accent" />
+                           </styleClass>
+                        </Label>
+                        <Tile fx:id="temaTile" description="Cambia el aspecto visual de la aplicación." title="Tema" />
+                        <Separator prefWidth="200.0" />
+                        <Label fx:id="backupsLabel" text="Copias de seguridad">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="text-bold" />
+                              <String fx:value="accent" />
+                           </styleClass>
+                        </Label>
+                        <Tile fx:id="backupRutaTile" description="Carpeta donde se guardarán las copias de seguridad de FreeTPV." title="Carpeta de backups" />
+                        <Tile fx:id="backupUltimoTile" description="Fecha y hora de la última copia de seguridad realizada." title="Último backup" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </center>
+         <left>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irEmpresa" text="Empresa" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irTicket" text="Ticket" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irImpresora" text="Impresora" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irApariencia" text="Apariencia" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irBackups" text="Copias de seguridad" />
+               </children>
+            </VBox>
+         </left>
+         <StackPane.margin>
+            <Insets bottom="20.0" left="20.0" top="20.0" />
+         </StackPane.margin>
       </BorderPane>
    </children>
 </StackPane>

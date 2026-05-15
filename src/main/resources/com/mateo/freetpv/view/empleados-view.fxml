@@ -101,7 +101,7 @@
                   </VBox>
                   <VBox spacing="5.0">
                      <children>
-                        <Label text="Pin">
+                        <Label text="Clave">
                            <font>
                               <Font size="18.0" />
                            </font>

@@ -5,6 +5,7 @@ import atlantafx.base.theme.Tweaks;
 import atlantafx.base.util.Animations;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.model.Categoria;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -90,7 +91,12 @@ public class CategoriasController {
 
     @FXML public void guardarCategoria() {
 
-        String nombre = nombreField.getText();
+        String nombre = nombreField.getText().trim();
+
+        if (!SesionActual.getInstancia().esAdmin()) {
+            errorLabel.setText("Debes ser administrador");
+            return;
+        }
 
         if (nombre.isEmpty()) {
             errorLabel.setText("Debe ingresar un nombre");
@@ -100,7 +106,11 @@ public class CategoriasController {
             errorLabel.setText("El nombre debe tener menos de 35 caracteres");
             return;
         }
-        if (categoriaDAO.existeCategoria(nombre) && (categoriaEditando == null || !nombre.equals(categoriaEditando.getNombre()))) {
+        if (nombre.equalsIgnoreCase("Favoritos") || nombre.equalsIgnoreCase("Favorito")) {
+            errorLabel.setText("No puedes crear una categoría con ese nombre");
+            return;
+        }
+        if (categoriaDAO.existeCategoria(nombre) && (categoriaEditando == null || !nombre.equalsIgnoreCase(categoriaEditando.getNombre()))) {
             errorLabel.setText("Ya existe una categoria con ese nombre");
             return;
         }
@@ -170,6 +180,12 @@ public class CategoriasController {
     }
 
     @FXML public void borrarCategoria() {
+
+        if (!SesionActual.getInstancia().esAdmin()) {
+            errorLabel.setText("Debes ser administrador");
+            return;
+        }
+
         if (categoriaEditando != null) {
             if (categoriaDAO.tieneProductos(categoriaEditando)) {
                 errorLabel.setText("Esta categoria contiene productos.");
@@ -188,6 +204,8 @@ public class CategoriasController {
                     errorLabel.setText("No se pudo eliminar la categoría");
                 }
             }
+        } else {
+            errorLabel.setText("No se pudo eliminar la categoria");
         }
     }
 

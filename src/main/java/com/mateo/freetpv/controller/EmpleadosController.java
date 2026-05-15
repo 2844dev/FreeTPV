@@ -191,14 +191,30 @@ public class EmpleadosController {
      */
     @FXML
     public void guardarFormulario() {
-        String nombre = usuarioField.getText();
+        String nombre = usuarioField.getText().trim();
         String rol = rolChoiceBox.getSelectionModel().getSelectedItem();
-        String pin = pinField.getText();
+        String claveRaw = pinField.getText();
+        String clave = claveRaw.trim();
         boolean estado = estadoButton.isSelected();
 
+        if (!SesionActual.getInstancia().esAdmin()) {
+            errorLabel.setText("Debes ser administrador");
+            return;
+        }
+
         // Comprobamos que tenga pin un usuario nuevo
-        if (usuarioEditando == null && pin.isEmpty()) {
-            errorLabel.setText("Debe insertar un pin");
+        if (usuarioEditando == null && clave.isEmpty()) {
+            errorLabel.setText("Debe insertar una clave");
+            return;
+        }
+
+        if (!claveRaw.isEmpty() && clave.isEmpty()) {
+            errorLabel.setText("La clave no puede contener solo espacios");
+            return;
+        }
+
+        if (!clave.isEmpty() && !claveValida(clave)) {
+            errorLabel.setText("La clave debe tener entre 4 y 16 caracteres y no contener espacios");
             return;
         }
 
@@ -215,13 +231,13 @@ public class EmpleadosController {
         }
 
         // Comprobamos que no exista un usuario el mismo nombre
-        if (usuarioDAO.existeUsuario(nombre) && (usuarioEditando == null || !nombre.equals(usuarioEditando.getNombre()))) {
+        if (usuarioDAO.existeUsuario(nombre) && (usuarioEditando == null || !nombre.equalsIgnoreCase(usuarioEditando.getNombre()))) {
             errorLabel.setText("Ya existe un usuario con ese nombre");
             return;
         }
         // Creamos un usuario
         if (usuarioEditando == null) {
-            if (usuarioDAO.crearUsuario(nombre, pin, rol)) {
+            if (usuarioDAO.crearUsuario(nombre, clave, rol)) {
                 infoAlert.setTitle("Crear Usuario");
                 infoAlert.setHeaderText("Usuario creado correctamente");
                 infoAlert.setContentText("Usuario " + nombre + " creado.");
@@ -232,7 +248,7 @@ public class EmpleadosController {
             }
             // Editamos un usuario
         } else {
-            if (usuarioDAO.editarUsuario(usuarioEditando, nombre, pin, rol, estado)) {
+            if (usuarioDAO.editarUsuario(usuarioEditando, nombre, clave, rol, estado)) {
                 infoAlert.setTitle("Editar Usuario");
                 infoAlert.setHeaderText("Usuario editado correctamente");
                 infoAlert.setContentText("Usuario " + nombre + " editado.");
@@ -365,5 +381,9 @@ public class EmpleadosController {
 
         // Convertimos la lista a una observableList, y ponemos los items con los nuevos
         empleadosTable.getItems().setAll(FXCollections.observableList(usuarios));
+    }
+
+    private boolean claveValida(String clave) {
+        return clave != null && clave.matches("\\S{4,16}");
     }
 }
