@@ -3,8 +3,12 @@ package com.mateo.freetpv.controller;
 import atlantafx.base.theme.Styles;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
+import com.mateo.freetpv.model.DatosTicket;
 import com.mateo.freetpv.model.LineaTicket;
 import com.mateo.freetpv.model.Producto;
+import com.mateo.freetpv.service.AjustesService;
+import com.mateo.freetpv.service.ImprimirService;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,14 +22,22 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static com.mateo.freetpv.util.ConversionUtil.centimosEuros;
 
 public class VentasController {
+    private static final Logger log = LoggerFactory.getLogger(VentasController.class);
     @FXML private TilePane productosTilePane;
     @FXML private TilePane categoriasTilePane;
 
@@ -48,6 +60,8 @@ public class VentasController {
     private final CategoriaDAO categoriaDAO = new CategoriaDAO();
 
     private final ObservableList<LineaTicket> ticket = FXCollections.observableArrayList();
+
+    private final AjustesService ajustesService = new AjustesService();
 
     @FXML
     public void initialize() {
@@ -98,6 +112,53 @@ public class VentasController {
                 }
             }
         };
+    }
+
+    @FXML
+    public void cobrar() {
+        if (ticket == null || ticket.isEmpty()) return;
+
+        // TODO: diálogo tarjeta/efectivo — por ahora hardcodeado
+        String metodoPago = "Tarjeta";
+        int entregado = 0;
+
+        DatosTicket datosTicket = new DatosTicket(
+                ajustesService.getEmpresaNombre(),
+                ajustesService.getEmpresaCif(),
+                ajustesService.getEmpresaDireccion(),
+                ajustesService.getEmpresaCodigoPostal(),
+                ajustesService.getEmpresaCiudad(),
+                ajustesService.getEmpresaTelefono(),
+                ajustesService.getEmpresaWeb(),
+                ajustesService.getEmpresaQr(),
+                ajustesService.getTicketTitulo(),
+                ajustesService.getTicketMensajeFinal(),
+                ajustesService.getTicketMostrarCif(),
+                ajustesService.getTicketMostrarTelefono(),
+                ajustesService.getTicketMostrarWeb(),
+                ajustesService.getTicketMostrarIva(),
+                ajustesService.getTicketMostrarQr(),
+                SesionActual.getInstancia().getUsuario().getNombre(),
+                new ArrayList<>(ticket),
+                metodoPago,
+                entregado
+        );
+
+        buscarImpresora().ifPresent(impresora -> {
+            try {
+                ImprimirService.imprimirTicket(impresora, datosTicket);
+                cancelarVenta();
+            } catch (IOException e) {
+                log.error("Error al imprimir ticket", e);
+            }
+        });
+    }
+
+    private Optional<PrintService> buscarImpresora() {
+        String nombre = ajustesService.getImpresoraNombre();
+        return Arrays.stream(PrintServiceLookup.lookupPrintServices(null, null))
+                .filter(p -> p.getName().equals(nombre))
+                .findFirst();
     }
 
     private Button crearBotonCategoria(String nombre, Optional<Integer> categoriaId) {
@@ -167,7 +228,7 @@ public class VentasController {
             lineaExistente.get().setCantidad(lineaExistente.get().getCantidad() + 1);
             ticketTableView.refresh();
         } else {
-            ticket.add(new LineaTicket(producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getIva()));
+            ticket.add(new LineaTicket(producto.getId(), producto.getNombre(), producto.getNombre_ticket(), producto.getPrecio(), producto.getIva()));
         }
         actualizarTotales();
     }

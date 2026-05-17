@@ -4,13 +4,15 @@ public class LineaTicket {
     private int id;
     private int productoId;
     private String nombreProducto;
+    private String nombreTicket;
     private int cantidad;
     private int precioUnitario;
     private int iva;
 
-    public LineaTicket(int productoId, String nombreProducto, int precioUnitario, int iva) {
+    public LineaTicket(int productoId, String nombreProducto, String nombreTicket, int precioUnitario, int iva) {
         this.productoId = productoId;
         this.nombreProducto = nombreProducto;
+        this.nombreTicket = nombreTicket;
         this.precioUnitario = precioUnitario;
         this.iva = iva;
         this.cantidad = 1;
@@ -30,6 +32,10 @@ public class LineaTicket {
 
     public String getNombreProducto() {
         return nombreProducto;
+    }
+
+    public String getNombreTicket() {
+        return nombreTicket;
     }
 
     public int getCantidad() {

@@ -4,14 +4,28 @@ import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
 import com.github.anastaciocintra.output.PrinterOutputStream;
+import com.mateo.freetpv.model.DatosTicket;
+import com.mateo.freetpv.model.LineaTicket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.print.PrintService;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.mateo.freetpv.util.ConversionUtil.centimosEuros;
 
 public class ImprimirService {
     private static final int WIDTH = 32;
 
-    public static void imprimirTicket(PrintService printService) throws IOException {
+    private static final Logger log = LoggerFactory.getLogger(ImprimirService.class);
+
+    public static void imprimirTicket(PrintService printService, DatosTicket ticket) throws IOException {
         PrinterOutputStream printerOutputStream = new PrinterOutputStream(printService);
         EscPos escpos = new EscPos(printerOutputStream);
 
@@ -29,52 +43,95 @@ public class ImprimirService {
                 .setBold(true)
                 .setJustification(EscPosConst.Justification.Center);
 
+        LocalDateTime ahora = LocalDateTime.now();
+        String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String hora = ahora.format(DateTimeFormatter.ofPattern("HH:mm"));
+
         escpos.initializePrinter();
 
         // Charset / codepage para tildes y ñ
         escpos.setCharacterCodeTable(EscPos.CharacterCodeTable.CP858_Euro);
 
-        escpos.writeLF(centerBold, "NOMBRE DEL NEGOCIO");
-        escpos.writeLF(center, "CIF/NIF: X00000000");
-        escpos.writeLF(center, "Calle Ejemplo 123");
-        escpos.writeLF(center, "28000 Madrid");
-        escpos.writeLF(center, "Tel: 600 000 000");
+        escpos.feed(1);
+        escpos.writeLF(centerBold, ticket.nombreEmpresa());
+        if (ticket.mostrarCif()) escpos.writeLF(center, "CIF/NIF: " + ticket.cif());
+        escpos.writeLF(center, ticket.direccion());
+        escpos.writeLF(center, ticket.codigoPostal() + " " + ticket.ciudad());
+        if (ticket.mostrarTelefono()) escpos.writeLF(center, "Tlf: " + ticket.telefono());
 
         escpos.writeLF(left, line());
-        escpos.writeLF(centerBold, "TICKET DE VENTA");
+        escpos.writeLF(centerBold, ticket.tituloTicket());
         escpos.writeLF(left, line());
 
-        escpos.writeLF(left, "Ticket Nº: 000001");
-        escpos.writeLF(left, twoCols("Fecha: 12/05/2026", "Hora: 13:45"));
-        escpos.writeLF(left, twoCols("Caja: 1", "Empleado: Admin"));
+        escpos.writeLF(left, "Ticket Nº: N/A");
+        escpos.writeLF(left, twoCols("Fecha: " + fecha, "Hora: " + hora));
+        escpos.writeLF(left, twoCols("Caja: 1", "Empleado: " + ticket.nombreCamarero()));
 
         escpos.writeLF(left, line());
         escpos.writeLF(left, itemHeader());
         escpos.writeLF(left, line());
 
-        escpos.writeLF(left, itemRow("Café solo", "1", "1,20", "1,20"));
-        escpos.writeLF(left, itemRow("Bocadillo", "2", "3,50", "7,00"));
-        escpos.writeLF(left, itemRow("Agua", "1", "1,00", "1,00"));
+        for (LineaTicket linea : ticket.lineas()) {
+            escpos.writeLF(left, itemRow(linea.getNombreTicket(),
+                    String.valueOf(linea.getCantidad()),
+                    centimosEuros(linea.getPrecioUnitario()).orElse("0,00") + "€",
+                    centimosEuros(linea.getSubtotal()).orElse("0,00") + "€"));
+        }
 
         escpos.writeLF(left, line());
-        escpos.writeLF(left, amountRow("Subtotal:", "9,20"));
-        escpos.writeLF(left, amountRow("IVA 10%:", "0,92"));
-        escpos.writeLF(left, line());
 
-        escpos.writeLF(totalStyle, "TOTAL: 10,12 €");
+        int total = ticket.lineas().stream().mapToInt(LineaTicket::getSubtotal).sum();
+        int iva = ticket.lineas().stream().mapToInt(l -> {
+            double factor = l.getIva() / 100.0;
+            return (int) Math.round(l.getSubtotal() * factor / (1 + factor));
+        }).sum();
+        int subtotal = total - iva;
+
+        escpos.writeLF(left, amountRow("Subtotal:", centimosEuros(subtotal).orElse("0,00") + " €"));
+
+        if (ticket.mostrarIva()) {
+            Map<Integer, List<LineaTicket>> lineasPorIva = ticket.lineas().stream()
+                    .collect(Collectors.groupingBy(LineaTicket::getIva));
+
+            lineasPorIva.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
+                    .forEach(entry -> {
+                        int tipo = entry.getKey();
+                        if (tipo == 0) return;
+                        int cuota = entry.getValue().stream().mapToInt(l -> {
+                            double factor = l.getIva() / 100.0;
+                            return (int) Math.round(l.getSubtotal() * factor / (1 + factor));
+                        }).sum();
+                        try {
+                            escpos.writeLF(left, amountRow(
+                                    "IVA " + tipo + "%:",
+                                    centimosEuros(cuota).orElse("0,00") + " €"
+                            ));
+                        } catch (IOException e) {
+                            log.error("Error al escribir IVA", e);
+                        }
+                    });
+        }
 
         escpos.writeLF(left, line());
-        escpos.writeLF(left, amountRow("Pago:", "Tarjeta"));
-        escpos.writeLF(left, amountRow("Entregado:", "10,12"));
-        escpos.writeLF(left, amountRow("Cambio:", "0,00"));
+        escpos.writeLF(totalStyle, "TOTAL: " + centimosEuros(total).orElse("0,00") + " €");
+        escpos.writeLF(left, line());
+        escpos.writeLF(left, amountRow("Pago:", ticket.metodoPago()));
+
+        if (ticket.entregado() > 0) {
+            int cambio = ticket.entregado() - total;
+            escpos.writeLF(left, amountRow("Entregado:", centimosEuros(ticket.entregado()).orElse("0,00") + " €"));
+            escpos.writeLF(left, amountRow("Cambio:", centimosEuros(cambio).orElse("0,00") + " €"));
+        }
+
         escpos.writeLF(left, line());
 
         escpos.feed(1);
-        escpos.writeLF(center, "Gracias por su compra");
+        escpos.writeLF(center, ticket.mensajeFinal());
         escpos.feed(1);
-        escpos.writeLF(center, "www.tunegocio.com");
+        if (ticket.mostrarWeb()) escpos.writeLF(center, ticket.web());
 
-        escpos.feed(4);
+        escpos.feed(2);
         escpos.cut(EscPos.CutMode.FULL);
         escpos.close();
     }

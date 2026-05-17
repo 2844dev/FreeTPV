@@ -7,7 +7,7 @@ public class NombreUtil {
     // Lista con todos los nombres
     private static final List<String> lista = List.of(
             "Yui Hirasawa", "Azusa Nakano", "Ritsu Tainaka", "Mio Akiyama", "Mugi Kotobuki", //K-ON!
-            "Reina Kousaka", "Oumae Kumiko" //Hibike! Euphonium
+            "Reina Kousaka", "Kumiko Oumae", "Asuka Tanaka" //Hibike! Euphonium
             );
 
     private final Random r = new Random();

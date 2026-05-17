@@ -1,6 +1,8 @@
 package com.mateo.freetpv.controller;
 
 import atlantafx.base.controls.Tile;
+import com.mateo.freetpv.model.DatosTicket;
+import com.mateo.freetpv.model.LineaTicket;
 import com.mateo.freetpv.service.AjustesService;
 import com.mateo.freetpv.service.ImprimirService;
 import com.mateo.freetpv.util.SesionActual;
@@ -91,9 +93,37 @@ public class AjustesController {
         Optional<PrintService> impresora = buscarImpresora();
         if (impresora.isPresent()) {
             try {
-                ImprimirService.imprimirTicket(impresora.get());
+                List<LineaTicket> lineasPrueba = List.of(
+                        new LineaTicket(1, "Café solo", "Café solo", 120, 10),
+                        new LineaTicket(2, "Tostada aceite", "Tost. Aceite", 250, 10),
+                        new LineaTicket(3, "Zumo naranja", "Zumo naranja", 180, 10)
+                );
+
+                DatosTicket datosTicket = new DatosTicket(
+                        ajustesService.getEmpresaNombre(),
+                        ajustesService.getEmpresaCif(),
+                        ajustesService.getEmpresaDireccion(),
+                        ajustesService.getEmpresaCodigoPostal(),
+                        ajustesService.getEmpresaCiudad(),
+                        ajustesService.getEmpresaTelefono(),
+                        ajustesService.getEmpresaWeb(),
+                        ajustesService.getEmpresaQr(),
+                        ajustesService.getTicketTitulo(),
+                        ajustesService.getTicketMensajeFinal(),
+                        ajustesService.getTicketMostrarCif(),
+                        ajustesService.getTicketMostrarTelefono(),
+                        ajustesService.getTicketMostrarWeb(),
+                        ajustesService.getTicketMostrarIva(),
+                        ajustesService.getTicketMostrarQr(),
+                        SesionActual.getInstancia().getUsuario().getNombre(),
+                        lineasPrueba,
+                        "Efectivo",
+                        600
+                );
+
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
             } catch (IOException e) {
-                log.error("No se puedo imprimir una prueba", e);
+                log.error("No se pudo imprimir una prueba", e);
             }
         }
     }
