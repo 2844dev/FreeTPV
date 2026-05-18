@@ -257,20 +257,24 @@ public class VentasController {
     }
 
     private void actualizarTotales() {
-        int subtotal = ticket.stream().mapToInt(LineaTicket::getSubtotal).sum();
-
-        String subtotalFormat = centimosEuros(subtotal).orElse("0,00");
 
         int iva = ticket.stream().mapToInt(l -> {
             double factor = l.getIva() / 100.0;
             return (int) Math.round(l.getSubtotal() * factor / (1 + factor));
         }).sum();
 
+        int total = ticket.stream().mapToInt(LineaTicket::getSubtotal).sum();
+
+        int subtotal = total - iva;
+
+        String subtotalFormat = centimosEuros(subtotal).orElse("0,00");
         String ivaFormat = centimosEuros(iva).orElse("0,00");
+        String totalFormat = centimosEuros(total).orElse("0,00");
+
 
         subtotalLabel.setText(subtotalFormat + "€");
         ivaLabel.setText(ivaFormat + "€");
-        totalLabel.setText(subtotalFormat + "€");
-        cobrarButton.setText("Cobrar " + subtotalFormat + "€");
+        totalLabel.setText(totalFormat + "€");
+        cobrarButton.setText("Cobrar " + totalFormat + "€");
     }
 }

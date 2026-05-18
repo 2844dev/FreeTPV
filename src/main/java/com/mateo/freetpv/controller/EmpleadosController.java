@@ -166,6 +166,8 @@ public class EmpleadosController {
             // Llamamos a updateItem para decir si se vera o no el botón
             @Override
             protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {

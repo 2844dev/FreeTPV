@@ -10,10 +10,6 @@ import java.io.IOException;
 public class FreeTPVApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-//        PrintService printService =
-//                PrinterOutputStream.getDefaultPrintService();
-//
-//        ImprimirService.imprimirTicket(printService);
         FXMLLoader fxmlLoader = new FXMLLoader(FreeTPVApplication.class.getResource("view/load-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("FreeTPV");
