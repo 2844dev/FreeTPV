@@ -1,9 +1,13 @@
-<!-- 
+<!--
 FULL CREDITS TO:
-https://github.com/othneildrew/Best-README-Template 
+https://github.com/othneildrew/Best-README-Template
 -->
+<!--
+[THIS CONTENT WAS WRITEN BY CLAUDE]
+-->
+
 > [!IMPORTANT]
-> Este proyecto esta actualmente en desarrollo, no funcionara correctamente.
+> Este proyecto está actualmente en desarrollo, puede no funcionar correctamente.
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -11,190 +15,230 @@ https://github.com/othneildrew/Best-README-Template
 [![Issues][issues-shield]][issues-url]
 [![project_license][license-shield]][license-url]
 
-<!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/2844dev/FreeTPV">
     <img src="src/main/resources/com/mateo/freetpv/images/freetpv_logo.png" alt="Logo" width="400">
   </a>
 
-<h3 align="center">FreeTPV</h3>
+  <h3 align="center">FreeTPV</h3>
 
   <p align="center">
-    Un software TPV gratuito enfocado a la hosteleria.
+    Un software TPV gratuito y de código abierto enfocado a la hostelería.
     <br />
-    <a href="https://github.com/2844dev/FreeTPV">Ver Demo</a>
+    <a href="https://github.com/2844dev/FreeTPV/issues/new?labels=bug&template=reportar-bug.md">Reportar Bug</a>
     &middot;
-    <a href="https://github.com/2844dev/FreeTPV/issues/new?labels=bug&template=bug-report---.md">Reportar Bug</a>
-    &middot;
-    <a href="https://github.com/2844dev/FreeTPV/issues/new?labels=enhancement&template=feature-request---.md">Solicitar Funciones</a>
+    <a href="https://github.com/2844dev/FreeTPV/issues/new?labels=sugerencia&template=sugerencia-de-mejora.md">Solicitar función</a>
   </p>
 </div>
 
+---
 
-
-<!-- TABLE OF CONTENTS -->
+<!-- TABLA DE CONTENIDOS -->
 <details>
   <summary>Tabla de contenidos</summary>
   <ol>
+    <li><a href="#sobre-el-proyecto">Sobre el proyecto</a></li>
+    <li><a href="#características">Características</a></li>
+    <li><a href="#herramientas-utilizadas">Herramientas utilizadas</a></li>
     <li>
-      <a href="#about-the-project">Sobre el proyecto</a>
+      <a href="#instalación">Instalación</a>
       <ul>
-        <li><a href="#built-with">Hecho con</a></li>
+        <li><a href="#windows">Windows</a></li>
+        <li><a href="#compilar-desde-el-código-fuente">Compilar desde el código fuente</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#capturas-de-pantalla">Capturas de pantalla</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#contribuir">Contribuir</a></li>
+    <li><a href="#licencia">Licencia</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#créditos">Créditos</a></li>
   </ol>
 </details>
 
+---
 
-
-<!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+FreeTPV es una aplicación de punto de venta (TPV) de escritorio, gratuita y de código abierto, pensada para negocios de hostelería como bares, restaurantes y cafeterías.
 
-Hay muchos programas para TPV enfocados a la hosteleria ya creados, sin embargo ninguno se ajusta a mis necesidades.
+Funciona completamente en local, sin necesidad de conexión a internet ni suscripciones. Los datos se almacenan en una base de datos SQLite en el propio equipo.
 
+---
 
-### Herramientas utilizadas
+## Características
 
-[![Java][Java]][Java-url] [![JavaFX][JavaFX]][JavaFX-url] [![SQLite][SQLite]][SQLite-url] 
+- 🔐 **Sistema de usuarios** con contraseñas cifradas mediante bcrypt y roles (Admin / Camarero)
+- 🛍️ **Gestión de productos y categorías** con imágenes, precios, IVA y estado
+- 🧾 **Pantalla de ventas** con cobro en efectivo o tarjeta e impresión de tickets ESC/POS
+- ⚙️ **Configuración completa** — datos de empresa, ticket, impresora y apariencia
+- 🎨 **Múltiples temas** (Primer Light/Dark, Nord, Cupertino, Dracula)
+- 💾 **Copias de seguridad** de la base de datos
+- 📋 **Logs automáticos** con rotación diaria
 
+---
 
+## Herramientas utilizadas
 
-<!-- GETTING STARTED -->
-## Getting Started
+[![Java][Java]][Java-url] [![JavaFX][JavaFX]][JavaFX-url] [![SQLite][SQLite]][SQLite-url]
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+| Tecnología | Uso |
+|---|---|
+| Java 25 | Lenguaje principal |
+| JavaFX 26 | Interfaz gráfica |
+| SQLite (JDBC) | Base de datos local |
+| AtlantaFX | Tema y estilos de UI |
+| Ikonli / FontAwesome 5 | Iconos |
+| bcrypt | Cifrado de contraseñas |
+| escpos-coffee | Impresión de tickets ESC/POS |
+| SLF4J + Logback | Sistema de logs |
+| Maven | Gestión de dependencias y build |
 
-### Prerequisitos
+---
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+## Instalación
 
-### Instalación
+### Windows
 
-1. Instala la ultima versión .exe
-2. Abrelo
-3. Importa tu base de datos o configura la app
-4. Listo
+1. Ve a la página de [Releases](https://github.com/2844dev/FreeTPV/releases) y descarga el instalador `.exe` de la última versión.
+2. Ejecuta el instalador y sigue los pasos.
+3. Abre FreeTPV desde el acceso directo del escritorio o el menú de inicio.
+4. En el primer arranque, crea tu usuario administrador.
 
+> No es necesario tener Java instalado. El instalador incluye todo lo necesario.
 
-<!-- USAGE EXAMPLES -->
-## Uso
+### Compilar desde el código fuente
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+**Requisitos previos:**
+- Java 25 o superior
+- Maven 3.9 o superior
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+```bash
+# Clona el repositorio
+git clone https://github.com/2844dev/FreeTPV.git
+cd FreeTPV
 
+# Compila y empaqueta
+./mvnw clean package
+```
 
+Para ejecutarlo desde IntelliJ IDEA, añade estas opciones de VM en la configuración de ejecución:
 
-<!-- ROADMAP -->
+```
+--enable-native-access=org.xerial.sqlitejdbc
+--enable-native-access=javafx.graphics
+```
+
+---
+
+## Capturas de pantalla
+
+> 📸 *Próximamente*
+
+<!-- Pantalla de login -->
+<!-- ![Login](images/screenshot_login.png) -->
+
+<!-- Pantalla de ventas -->
+<!-- ![Ventas](images/screenshot_ventas.png) -->
+
+<!-- Gestión de productos -->
+<!-- ![Productos](images/screenshot_productos.png) -->
+
+<!-- Ajustes -->
+<!-- ![Ajustes](images/screenshot_ajustes.png) -->
+
+---
+
 ## Roadmap
 
 - [x] Pantalla de login
-    - [x] Contraseñas con hash
-    - [x] Pantalla de creación de primer usuario
-- [x] Base de datos SQLITE
-    - [x] Funciona en local sin internet
+  - [x] Contraseñas cifradas con bcrypt
+  - [x] Pantalla de creación del primer usuario administrador
+- [x] Base de datos SQLite local (sin internet)
 - [x] Gestión de empleados
-    - [x] Tabla de usuarios
-    - [x] Creación y edición de usuarios
-    - [ ] Roles personalizables con permisos
-- [ ] Gestión de productos
-- [ ] Gestión de categorias
-- [ ] Gestión de mesas
-- [ ] Gestión de ventas
-- [ ] Pantalla de ventas
-- [x] Configuración
-- [x] Logs
+  - [x] Tabla de usuarios con búsqueda y filtros
+  - [x] Creación y edición de usuarios
+  - [ ] Roles personalizables con permisos
+- [x] Gestión de productos
+  - [x] Creación y edición de productos con imagen, precio e IVA
+  - [x] Filtros por categoría, estado y favorito
+- [x] Gestión de categorías
+- [x] Pantalla de ventas
+  - [x] Cobro en efectivo y tarjeta
+  - [x] Impresión de tickets ESC/POS
+  - [ ] Historial de ventas
+- [x] Configuración completa (empresa, ticket, impresora, apariencia)
+- [x] Múltiples temas visuales
+- [x] Logs automáticos con rotación diaria
+- [x] Copias de seguridad
+- [x] Instalador `.exe` para Windows (GitHub Actions)
+- [ ] Gestión de mesas y zonas
+- [ ] Gestión de clientes
+- [ ] Gestión de stock
 
-Ver [open issues](https://github.com/2844dev/FreeTPV/issues) para una lista completa de funciones propuestas (y errores conocidos).
+Consulta los [issues abiertos](https://github.com/2844dev/FreeTPV/issues) para ver el estado de las funciones propuestas y los errores conocidos.
 
+---
 
-<!-- CONTRIBUTING -->
 ## Contribuir
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Las contribuciones son bienvenidas y muy apreciadas. Si tienes una sugerencia, haz un fork del repositorio y abre una pull request. También puedes abrir un issue con la etiqueta correspondiente.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+No olvides darle una estrella al proyecto si te ha resultado útil. ¡Gracias!
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Haz un fork del proyecto
+2. Crea tu rama de función (`git checkout -b feature/NuevaFuncion`)
+3. Haz commit de tus cambios (`git commit -m 'Añade NuevaFuncion'`)
+4. Sube la rama (`git push origin feature/NuevaFuncion`)
+5. Abre una Pull Request
 
-
-### Top de contribuidores:
+### Top de contribuidores
 
 <a href="https://github.com/2844dev/FreeTPV/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=2844dev/FreeTPV" alt="contrib.rocks image" />
 </a>
 
+---
 
-
-<!-- LICENSE -->
 ## Licencia
 
-Distribuido bajo la licencia MIT. Ver [LICENSE](https://github.com/2844dev/FreeTPV/blob/main/LICENSE) para más información.
+Distribuido bajo la licencia MIT. Consulta [LICENSE](https://github.com/2844dev/FreeTPV/blob/main/LICENSE) para más información.
 
+---
 
-<!-- CONTACT -->
 ## Contacto
 
-- Link del proyecto: [https://github.com/2844dev/FreeTPV](https://github.com/2844dev/FreeTPV)
+- Repositorio: [https://github.com/2844dev/FreeTPV](https://github.com/2844dev/FreeTPV)
 - Discord: @2844
 
-<!-- ACKNOWLEDGMENTS -->
-## Creditos
+---
 
-* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+## Créditos
 
+- [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+- [AtlantaFX](https://github.com/mkpaz/atlantafx)
+- [escpos-coffee](https://github.com/anastaciocintra/escpos-coffee)
+- [Ikonli](https://github.com/kordamp/ikonli)
+- [contrib.rocks](https://contrib.rocks)
 
+---
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/2844dev/FreeTPV.svg?style=for-the-badge
 [contributors-url]: https://github.com/2844dev/FreeTPV/graphs/contributors
-
 [forks-shield]: https://img.shields.io/github/forks/2844dev/FreeTPV.svg?style=for-the-badge
 [forks-url]: https://github.com/2844dev/FreeTPV/network/members
-
 [stars-shield]: https://img.shields.io/github/stars/2844dev/FreeTPV.svg?style=for-the-badge
 [stars-url]: https://github.com/2844dev/FreeTPV/stargazers
-
 [issues-shield]: https://img.shields.io/github/issues/2844dev/FreeTPV.svg?style=for-the-badge
 [issues-url]: https://github.com/2844dev/FreeTPV/issues
-
 [license-shield]: https://img.shields.io/github/license/2844dev/FreeTPV.svg?style=for-the-badge
 [license-url]: https://github.com/2844dev/FreeTPV/blob/master/LICENSE.txt
 
-[product-screenshot]: images/screenshot.png
-<!-- Shields.io badges. You can a comprehensive list with many more badges at: https://github.com/inttter/md-badges -->
 [Java]: https://img.shields.io/badge/Java-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [Java-url]: https://www.java.com/
-
 [JavaFX]: https://img.shields.io/badge/JavaFX-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [JavaFX-url]: https://openjfx.io/
-
 [SQLite]: https://img.shields.io/badge/SQLite-%2307405e?style=for-the-badge&logo=sqlite&logoColor=white
 [SQLite-url]: https://sqlite.org/
