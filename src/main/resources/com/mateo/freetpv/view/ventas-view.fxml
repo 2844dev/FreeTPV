@@ -17,7 +17,6 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.VentasController">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
@@ -53,7 +52,7 @@
                <children>
                   <HBox alignment="BOTTOM_LEFT" spacing="30.0">
                      <children>
-                        <Button contentDisplay="TOP" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="95.0" prefWidth="95.0" text="Salir">
+                        <Button contentDisplay="TOP" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#salir" prefHeight="95.0" prefWidth="95.0" text="Salir">
                            <graphic>
                               <FontIcon iconLiteral="fas-angle-double-right" iconSize="16">
                                  <font>

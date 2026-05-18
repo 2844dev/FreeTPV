@@ -1,6 +1,7 @@
 package com.mateo.freetpv.controller;
 
 import atlantafx.base.theme.Styles;
+import com.mateo.freetpv.FreeTPVApplication;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
 import com.mateo.freetpv.model.DatosTicket;
@@ -12,8 +13,10 @@ import com.mateo.freetpv.util.SesionActual;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -21,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,6 +116,25 @@ public class VentasController {
                 }
             }
         };
+    }
+
+    @FXML public void salir() {
+        try {
+
+            // Cargar ventana principal
+            FXMLLoader fxmlLoader = new FXMLLoader(FreeTPVApplication.class.getResource("view/main-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+
+            // Conseguir stage desde el un objeto
+            Stage stage = (Stage) cobrarButton.getScene().getWindow();
+
+            stage.setResizable(true);
+            stage.setMinWidth(1280);
+            stage.setMinHeight(720);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            log.error("Error al cargar el view principal", e);
+        }
     }
 
     @FXML
