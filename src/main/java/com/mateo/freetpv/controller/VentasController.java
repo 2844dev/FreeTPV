@@ -4,12 +4,9 @@ import atlantafx.base.theme.Styles;
 import com.mateo.freetpv.FreeTPVApplication;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
-import com.mateo.freetpv.model.DatosTicket;
 import com.mateo.freetpv.model.LineaTicket;
 import com.mateo.freetpv.model.Producto;
 import com.mateo.freetpv.service.AjustesService;
-import com.mateo.freetpv.service.ImprimirService;
-import com.mateo.freetpv.util.SesionActual;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,7 +32,6 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -82,6 +78,16 @@ public class VentasController {
     private final ObservableList<LineaTicket> ticket = FXCollections.observableArrayList();
 
     private final AjustesService ajustesService = new AjustesService();
+
+    private String metodoPago = null;
+
+    private int iva;
+    private int subtotal;
+    private int total;
+    private String ivaFormat;
+    private String subtotalFormat;
+    private String totalFormat;
+
 
     @FXML
     public void initialize() {
@@ -154,8 +160,34 @@ public class VentasController {
     }
 
     @FXML
+    public void seleccionarEfectivo() {
+
+        calculadoraGrid.setDisable(false);
+        rapidoGrid.setDisable(false);
+
+        metodoPago = "Efectivo";
+        efectivoButton.getStyleClass().remove(Styles.BUTTON_OUTLINED);
+        tarjetaButton.getStyleClass().add(Styles.BUTTON_OUTLINED);
+    }
+
+    @FXML
+    public void seleccionarTarjeta() {
+
+        calculadoraGrid.setDisable(true);
+        rapidoGrid.setDisable(true);
+
+        metodoPago = "Tarjeta";
+        efectivoButton.getStyleClass().add(Styles.BUTTON_OUTLINED);
+        tarjetaButton.getStyleClass().remove(Styles.BUTTON_OUTLINED);
+    }
+
+    @FXML
     public void cobrar() {
         if (ticket == null || ticket.isEmpty()) return;
+
+        seleccionarEfectivo();
+
+        totalField.setText(totalFormat + "€");
 
         ventasBorderPane.setDisable(true);
         cobrarBorderPane.setVisible(true);
@@ -299,18 +331,18 @@ public class VentasController {
 
     private void actualizarTotales() {
 
-        int iva = ticket.stream().mapToInt(l -> {
+        iva = ticket.stream().mapToInt(l -> {
             double factor = l.getIva() / 100.0;
             return (int) Math.round(l.getSubtotal() * factor / (1 + factor));
         }).sum();
 
-        int total = ticket.stream().mapToInt(LineaTicket::getSubtotal).sum();
+        total = ticket.stream().mapToInt(LineaTicket::getSubtotal).sum();
 
-        int subtotal = total - iva;
+        subtotal = total - iva;
 
-        String subtotalFormat = centimosEuros(subtotal).orElse("0,00");
-        String ivaFormat = centimosEuros(iva).orElse("0,00");
-        String totalFormat = centimosEuros(total).orElse("0,00");
+        subtotalFormat = centimosEuros(subtotal).orElse("0,00");
+        ivaFormat = centimosEuros(iva).orElse("0,00");
+        totalFormat = centimosEuros(total).orElse("0,00");
 
 
         subtotalLabel.setText(subtotalFormat + "€");
