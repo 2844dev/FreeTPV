@@ -21,6 +21,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -42,6 +44,9 @@ import static com.mateo.freetpv.util.ConversionUtil.centimosEuros;
 
 public class VentasController {
     private static final Logger log = LoggerFactory.getLogger(VentasController.class);
+
+    @FXML private BorderPane ventasBorderPane;
+
     @FXML private TilePane productosTilePane;
     @FXML private TilePane categoriasTilePane;
 
@@ -59,6 +64,17 @@ public class VentasController {
     @FXML private Button borrarVentaButton;
     @FXML private Button borrarLineaButton;
     @FXML private Button cobrarButton;
+
+    @FXML private BorderPane cobrarBorderPane;
+    @FXML private Button efectivoButton;
+    @FXML private Button tarjetaButton;
+    @FXML private GridPane calculadoraGrid;
+    @FXML private GridPane rapidoGrid;
+    @FXML private Button cancelarButton;
+    @FXML private Button finalCobrarButton;
+    @FXML private TextField totalField;
+    @FXML private TextField entregadoField;
+    @FXML private TextField vueltaField;
 
     private final ProductoDAO productoDAO = new ProductoDAO();
     private final CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -141,40 +157,42 @@ public class VentasController {
     public void cobrar() {
         if (ticket == null || ticket.isEmpty()) return;
 
-        // TODO: diálogo tarjeta/efectivo — por ahora hardcodeado
-        String metodoPago = "Tarjeta";
-        int entregado = 0;
-
-        DatosTicket datosTicket = new DatosTicket(
-                ajustesService.getEmpresaNombre(),
-                ajustesService.getEmpresaCif(),
-                ajustesService.getEmpresaDireccion(),
-                ajustesService.getEmpresaCodigoPostal(),
-                ajustesService.getEmpresaCiudad(),
-                ajustesService.getEmpresaTelefono(),
-                ajustesService.getEmpresaWeb(),
-                ajustesService.getEmpresaQr(),
-                ajustesService.getTicketTitulo(),
-                ajustesService.getTicketMensajeFinal(),
-                ajustesService.getTicketMostrarCif(),
-                ajustesService.getTicketMostrarTelefono(),
-                ajustesService.getTicketMostrarWeb(),
-                ajustesService.getTicketMostrarIva(),
-                ajustesService.getTicketMostrarQr(),
-                SesionActual.getInstancia().getUsuario().getNombre(),
-                new ArrayList<>(ticket),
-                metodoPago,
-                entregado
-        );
-
-        buscarImpresora().ifPresent(impresora -> {
-            try {
-                ImprimirService.imprimirTicket(impresora, datosTicket);
-                cancelarVenta();
-            } catch (IOException e) {
-                log.error("Error al imprimir ticket", e);
-            }
-        });
+        ventasBorderPane.setDisable(true);
+        cobrarBorderPane.setVisible(true);
+//        // TODO: diálogo tarjeta/efectivo
+//        String metodoPago = "Tarjeta";
+//        int entregado = 0;
+//
+//        DatosTicket datosTicket = new DatosTicket(
+//                ajustesService.getEmpresaNombre(),
+//                ajustesService.getEmpresaCif(),
+//                ajustesService.getEmpresaDireccion(),
+//                ajustesService.getEmpresaCodigoPostal(),
+//                ajustesService.getEmpresaCiudad(),
+//                ajustesService.getEmpresaTelefono(),
+//                ajustesService.getEmpresaWeb(),
+//                ajustesService.getEmpresaQr(),
+//                ajustesService.getTicketTitulo(),
+//                ajustesService.getTicketMensajeFinal(),
+//                ajustesService.getTicketMostrarCif(),
+//                ajustesService.getTicketMostrarTelefono(),
+//                ajustesService.getTicketMostrarWeb(),
+//                ajustesService.getTicketMostrarIva(),
+//                ajustesService.getTicketMostrarQr(),
+//                SesionActual.getInstancia().getUsuario().getNombre(),
+//                new ArrayList<>(ticket),
+//                metodoPago,
+//                entregado
+//        );
+//
+//        buscarImpresora().ifPresent(impresora -> {
+//            try {
+//                ImprimirService.imprimirTicket(impresora, datosTicket);
+//                cancelarVenta();
+//            } catch (IOException e) {
+//                log.error("Error al imprimir ticket", e);
+//            }
+//        });
     }
 
     private Optional<PrintService> buscarImpresora() {
@@ -299,5 +317,10 @@ public class VentasController {
         ivaLabel.setText(ivaFormat + "€");
         totalLabel.setText(totalFormat + "€");
         cobrarButton.setText("Cobrar " + totalFormat + "€");
+    }
+
+    @FXML public void cancelarCobrar() {
+        ventasBorderPane.setDisable(false);
+        cobrarBorderPane.setVisible(false);
     }
 }
