@@ -4,15 +4,19 @@ import atlantafx.base.theme.Styles;
 import com.mateo.freetpv.FreeTPVApplication;
 import com.mateo.freetpv.dao.CategoriaDAO;
 import com.mateo.freetpv.dao.ProductoDAO;
+import com.mateo.freetpv.model.DatosTicket;
 import com.mateo.freetpv.model.LineaTicket;
 import com.mateo.freetpv.model.Producto;
 import com.mateo.freetpv.service.AjustesService;
+import com.mateo.freetpv.service.ImprimirService;
+import com.mateo.freetpv.util.SesionActual;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,11 +36,13 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static com.mateo.freetpv.util.ConversionUtil.centimosEuros;
+import static com.mateo.freetpv.util.ConversionUtil.eurosCentimos;
 
 public class VentasController {
     private static final Logger log = LoggerFactory.getLogger(VentasController.class);
@@ -88,6 +94,8 @@ public class VentasController {
     private String subtotalFormat;
     private String totalFormat;
 
+    private StringBuilder entregado = new StringBuilder("");
+
 
     @FXML
     public void initialize() {
@@ -122,6 +130,49 @@ public class VentasController {
         categoriaDAO.obtenerCategorias("").forEach(c ->
                 categoriasTilePane.getChildren().add(crearBotonCategoria(c.getNombre(), Optional.of(c.getId())))
         );
+
+        for (Node b : calculadoraGrid.getChildren()) {
+            if (!(b instanceof Button btn)) continue;
+            String num = btn.getText();
+
+            btn.setOnAction(e -> {
+               if (num == null || num.isEmpty()) return;
+               if (num.equals(",")) {
+                   if (entregado.toString().contains(",")) return;
+               }
+
+               if (num.equals("Borrar")) {
+                   if (entregado.length() > 0) {
+                       entregado.deleteCharAt(entregado.length() - 1);
+                   }
+                   entregadoField.setText(entregado.toString());
+                   actualizarVuelta();
+                   return;
+               }
+                entregado.append(num);
+
+                entregadoField.setText(entregado.toString());
+                actualizarVuelta();
+            });
+
+        }
+
+        for (Node b : rapidoGrid.getChildren()) {
+            if (!(b instanceof Button btn)) continue;
+            String num = btn.getText().substring(1);
+            int numFormat = eurosCentimos(num).orElse(0);
+
+            btn.setOnAction(e -> {
+                int entregadoFormat = eurosCentimos(entregado.toString()).orElse(0);
+                int entregadoSuma = entregadoFormat + numFormat;
+                String entregadoFinal = centimosEuros(entregadoSuma).orElse("");
+                entregado.setLength(0);
+                entregado.append(entregadoFinal);
+                entregadoField.setText(entregado.toString());
+                actualizarVuelta();
+            });
+        }
+
         cargarProductos(Optional.empty()); // Cargar categoria Favoritos
         actualizarTotales();
     }
@@ -138,6 +189,18 @@ public class VentasController {
                 }
             }
         };
+    }
+
+    private void actualizarVuelta() {
+        Optional<Integer> entregadoCentimos = eurosCentimos(entregado.toString());
+        if (entregadoCentimos.isEmpty()) {
+            vueltaField.clear();
+            return;
+        }
+        Optional<String> vueltaEuros = centimosEuros(entregadoCentimos.get() - total);
+        if (vueltaEuros.isPresent()) {
+            vueltaField.setText(vueltaEuros.get());
+        }
     }
 
     @FXML public void salir() {
@@ -181,9 +244,67 @@ public class VentasController {
         tarjetaButton.getStyleClass().remove(Styles.BUTTON_OUTLINED);
     }
 
+    @FXML public void finalizarCobro() {
+
+        if (metodoPago == null) {
+            //errorLabel.setText("Debes seleccionar un metodo de pago.")
+            return;
+        }
+        if (metodoPago.equals("Efectivo")) {
+            int entregadoCentimos = eurosCentimos(entregado.toString()).orElse(0);
+            if (entregadoCentimos < total) {
+                return;
+            }
+        }
+
+        int entregadoFinal = metodoPago.equals("Efectivo") ? eurosCentimos(entregado.toString()).orElse(0) : total;
+
+        DatosTicket datosTicket = new DatosTicket(
+                ajustesService.getEmpresaNombre(),
+                ajustesService.getEmpresaCif(),
+                ajustesService.getEmpresaDireccion(),
+                ajustesService.getEmpresaCodigoPostal(),
+                ajustesService.getEmpresaCiudad(),
+                ajustesService.getEmpresaTelefono(),
+                ajustesService.getEmpresaWeb(),
+                ajustesService.getEmpresaQr(),
+                ajustesService.getTicketTitulo(),
+                ajustesService.getTicketMensajeFinal(),
+                ajustesService.getTicketMostrarCif(),
+                ajustesService.getTicketMostrarTelefono(),
+                ajustesService.getTicketMostrarWeb(),
+                ajustesService.getTicketMostrarIva(),
+                ajustesService.getTicketMostrarQr(),
+                SesionActual.getInstancia().getUsuario().getNombre(),
+                new ArrayList<>(ticket),
+                metodoPago,
+                entregadoFinal
+        );
+
+        Optional<PrintService> impresora = buscarImpresora();
+        if (impresora.isPresent()) {
+            try {
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
+                cancelarVenta();
+            } catch (IOException e) {
+                log.error("Error al imprimir ticket", e);
+            }
+        } else {
+            Alert warn = new Alert(Alert.AlertType.WARNING);
+            warn.setTitle("Sin impresora");
+            warn.setHeaderText("No se ha podido imprimir el ticket");
+            warn.setContentText("No hay ninguna impresora configurada.");
+            warn.showAndWait();
+        }
+        cancelarVenta();
+        cancelarCobrar();
+    }
+
     @FXML
     public void cobrar() {
         if (ticket == null || ticket.isEmpty()) return;
+
+        entregado.setLength(0);
 
         seleccionarEfectivo();
 
@@ -352,6 +473,9 @@ public class VentasController {
     }
 
     @FXML public void cancelarCobrar() {
+        entregado.setLength(0);
+        entregadoField.clear();
+
         ventasBorderPane.setDisable(false);
         cobrarBorderPane.setVisible(false);
     }

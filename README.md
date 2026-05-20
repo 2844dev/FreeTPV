@@ -3,7 +3,7 @@ FULL CREDITS TO:
 https://github.com/othneildrew/Best-README-Template
 -->
 <!--
-[THIS CONTENT WAS WRITEN BY CLAUDE]
+[THIS CONTENT WAS WRITTEN BY CLAUDE]
 -->
 
 > [!IMPORTANT]
@@ -41,6 +41,7 @@ https://github.com/othneildrew/Best-README-Template
     <li><a href="#sobre-el-proyecto">Sobre el proyecto</a></li>
     <li><a href="#características">Características</a></li>
     <li><a href="#herramientas-utilizadas">Herramientas utilizadas</a></li>
+    <li><a href="#estructura-del-proyecto">Estructura del proyecto</a></li>
     <li>
       <a href="#instalación">Instalación</a>
       <ul>
@@ -94,6 +95,34 @@ Funciona completamente en local, sin necesidad de conexión a internet ni suscri
 | escpos-coffee | Impresión de tickets ESC/POS |
 | SLF4J + Logback | Sistema de logs |
 | Maven | Gestión de dependencias y build |
+
+---
+
+## Estructura del proyecto
+
+```text
+FreeTPV/
+├── src/
+│   └── main/
+│       ├── java/
+│       │   ├── module-info.java
+│       │   └── com/mateo/freetpv/
+│       │       ├── controller/   # Controladores de JavaFX
+│       │       ├── dao/          # Acceso a la base de datos
+│       │       ├── model/        # Modelos de datos
+│       │       ├── service/      # Lógica de negocio
+│       │       └── util/         # Utilidades generales
+│       │
+│       └── resources/
+│           └── com/mateo/freetpv/
+│               ├── images/       # Recursos gráficos
+│               └── view/         # Vistas FXML
+│
+├── pom.xml
+├── mvnw
+├── mvnw.cmd
+└── README.md
+```
 
 ---
 
