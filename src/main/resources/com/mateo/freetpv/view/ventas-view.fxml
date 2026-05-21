@@ -72,7 +72,7 @@
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button contentDisplay="TOP" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="95.0" prefWidth="95.0" styleClass="button-outlined" text="Abrir cajón">
+                        <Button contentDisplay="TOP" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#abrirCajon" prefHeight="95.0" prefWidth="95.0" styleClass="button-outlined" text="Abrir cajón">
                            <graphic>
                               <FontIcon iconLiteral="fas-unlock" iconSize="16">
                                  <font>
@@ -212,7 +212,7 @@
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button graphicTextGap="8.0" mnemonicParsing="false" text="Imprimir">
+                        <Button graphicTextGap="8.0" mnemonicParsing="false" onAction="#imprimirPreTicket" text="Imprimir">
                            <styleClass>
                               <String fx:value="button-outlined" />
                               <String fx:value="accent" />

@@ -209,6 +209,10 @@ public class AjustesService {
         setBoolean("ticket.mostrarQr", mostrarQr);
     }
 
+    public int getBackupFrecuencia() { return getInt("backup.frecuencia", 7); }
+
+    public void setBackupFrecuencia(int frecuenciaBackup) { setInt("backup.frecuencia", frecuenciaBackup); }
+
     public void loadTema() {
         String tema = getTema();
 

@@ -87,6 +87,7 @@ public class AjustesUtil {
 
         ajustes.setProperty("backup.ruta", "");
         ajustes.setProperty("backup.ultimo", "");
+        ajustes.setProperty("backup.frecuencia", "7");
 
         return ajustes;
     }

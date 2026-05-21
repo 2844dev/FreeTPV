@@ -250,16 +250,66 @@ public class VentasController {
             //errorLabel.setText("Debes seleccionar un metodo de pago.")
             return;
         }
+
+        boolean entregadoVacio = entregado.toString().isBlank();
+        int entregadoCentimos = entregadoVacio ? 0 : eurosCentimos(entregado.toString()).orElse(0);
+
         if (metodoPago.equals("Efectivo")) {
-            int entregadoCentimos = eurosCentimos(entregado.toString()).orElse(0);
-            if (entregadoCentimos < total) {
+            if (!entregadoVacio && entregadoCentimos < total) {
                 return;
             }
         }
 
-        int entregadoFinal = metodoPago.equals("Efectivo") ? eurosCentimos(entregado.toString()).orElse(0) : total;
+        int entregadoFinal = metodoPago.equals("Efectivo")
+                ? (entregadoVacio ? total : entregadoCentimos)
+                : total;
 
-        DatosTicket datosTicket = new DatosTicket(
+        DatosTicket datosTicket = getDatosTicket(metodoPago, entregadoFinal);
+
+        Optional<PrintService> impresora = buscarImpresora();
+        if (impresora.isPresent()) {
+            try {
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
+                ImprimirService.abrirCajon(impresora.get());
+            } catch (IOException e) {
+                log.error("Error al imprimir ticket", e);
+            }
+        } else {
+            Alert warn = new Alert(Alert.AlertType.WARNING);
+            warn.setTitle("Sin impresora");
+            warn.setHeaderText("No se ha podido imprimir el ticket");
+            warn.setContentText("No hay ninguna impresora configurada.");
+            warn.showAndWait();
+        }
+        cancelarVenta();
+        cancelarCobrar();
+    }
+
+    @FXML public void imprimirPreTicket() {
+        DatosTicket datosTicket = getDatosTicket("", 0);
+
+        Optional<PrintService> impresora = buscarImpresora();
+        if (impresora.isPresent()) {
+            try {
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
+                if (ajustesService.getImpresoraAbrirCajon()) {
+                    ImprimirService.abrirCajon(impresora.get());
+                }
+            } catch (IOException e) {
+                log.error("Error al imprimir preticket", e);
+            }
+        } else {
+            Alert warn = new Alert(Alert.AlertType.WARNING);
+            warn.setTitle("Sin impresora");
+            warn.setHeaderText("No se ha podido imprimir el preticket");
+            warn.setContentText("No hay ninguna impresora configurada.");
+            warn.showAndWait();
+        }
+
+    }
+
+    private DatosTicket getDatosTicket(String metodoPago, int entregado) {
+        return new DatosTicket(
                 ajustesService.getEmpresaNombre(),
                 ajustesService.getEmpresaCif(),
                 ajustesService.getEmpresaDireccion(),
@@ -278,26 +328,8 @@ public class VentasController {
                 SesionActual.getInstancia().getUsuario().getNombre(),
                 new ArrayList<>(ticket),
                 metodoPago,
-                entregadoFinal
+                entregado
         );
-
-        Optional<PrintService> impresora = buscarImpresora();
-        if (impresora.isPresent()) {
-            try {
-                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
-                cancelarVenta();
-            } catch (IOException e) {
-                log.error("Error al imprimir ticket", e);
-            }
-        } else {
-            Alert warn = new Alert(Alert.AlertType.WARNING);
-            warn.setTitle("Sin impresora");
-            warn.setHeaderText("No se ha podido imprimir el ticket");
-            warn.setContentText("No hay ninguna impresora configurada.");
-            warn.showAndWait();
-        }
-        cancelarVenta();
-        cancelarCobrar();
     }
 
     @FXML
@@ -312,40 +344,17 @@ public class VentasController {
 
         ventasBorderPane.setDisable(true);
         cobrarBorderPane.setVisible(true);
-//        // TODO: diálogo tarjeta/efectivo
-//        String metodoPago = "Tarjeta";
-//        int entregado = 0;
-//
-//        DatosTicket datosTicket = new DatosTicket(
-//                ajustesService.getEmpresaNombre(),
-//                ajustesService.getEmpresaCif(),
-//                ajustesService.getEmpresaDireccion(),
-//                ajustesService.getEmpresaCodigoPostal(),
-//                ajustesService.getEmpresaCiudad(),
-//                ajustesService.getEmpresaTelefono(),
-//                ajustesService.getEmpresaWeb(),
-//                ajustesService.getEmpresaQr(),
-//                ajustesService.getTicketTitulo(),
-//                ajustesService.getTicketMensajeFinal(),
-//                ajustesService.getTicketMostrarCif(),
-//                ajustesService.getTicketMostrarTelefono(),
-//                ajustesService.getTicketMostrarWeb(),
-//                ajustesService.getTicketMostrarIva(),
-//                ajustesService.getTicketMostrarQr(),
-//                SesionActual.getInstancia().getUsuario().getNombre(),
-//                new ArrayList<>(ticket),
-//                metodoPago,
-//                entregado
-//        );
-//
-//        buscarImpresora().ifPresent(impresora -> {
-//            try {
-//                ImprimirService.imprimirTicket(impresora, datosTicket);
-//                cancelarVenta();
-//            } catch (IOException e) {
-//                log.error("Error al imprimir ticket", e);
-//            }
-//        });
+    }
+
+    @FXML public void abrirCajon() {
+        Optional<PrintService> impresora = buscarImpresora();
+        if (impresora.isPresent()) {
+            try {
+                ImprimirService.abrirCajon(impresora.get());
+            } catch (IOException e) {
+                log.error("Error al abrir cajon", e);
+            }
+        }
     }
 
     private Optional<PrintService> buscarImpresora() {
@@ -473,6 +482,7 @@ public class VentasController {
     }
 
     @FXML public void cancelarCobrar() {
+        vueltaField.clear();
         entregado.setLength(0);
         entregadoField.clear();
 

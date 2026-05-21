@@ -21,7 +21,7 @@ public class DatabaseConnection {
     // Ponemos el constructor privado para Singleton
     private DatabaseConnection() { }
 
-    // Creamos método para coger instancia desde otras clases
+    // Cogemos instancia desde otras clases
     public static DatabaseConnection getInstancia() {
         return instancia;
     }

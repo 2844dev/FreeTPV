@@ -72,6 +72,7 @@ public class AjustesController {
     // BACKUPS
     @FXML private Tile backupRutaTile;
     @FXML private Tile backupUltimoTile;
+    @FXML private Tile backupFrecuenciaTile;
 
     private final AjustesService ajustesService = new AjustesService();
     private final List<Runnable> accionesGuardar = new ArrayList<>();
@@ -338,6 +339,13 @@ public class AjustesController {
                 ajustesService.getBackupUltimo(),
                 "Sin backups todavía",
                 ajustesService::setBackupUltimo
+        );
+
+        configurarTextFieldTile(
+                backupFrecuenciaTile,
+                String.valueOf(ajustesService.getBackupFrecuencia()),
+                "Frecuencia de backups",
+                frecuencia -> ajustesService.setBackupFrecuencia(Integer.parseInt(frecuencia))
         );
 
         ultimoBackupField.setEditable(false);

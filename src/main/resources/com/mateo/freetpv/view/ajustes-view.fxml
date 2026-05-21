@@ -110,6 +110,7 @@
                         </Label>
                         <Tile fx:id="backupRutaTile" description="Carpeta donde se guardarán las copias de seguridad de FreeTPV." title="Carpeta de backups" />
                         <Tile fx:id="backupUltimoTile" description="Fecha y hora de la última copia de seguridad realizada." title="Último backup" />
+                        <Tile fx:id="backupFrecuenciaTile" description="Dias que pasan entre cada copia de seguridad." title="Frecuencia de copias de seguridad" />
                      </children>
                   </VBox>
                </content>

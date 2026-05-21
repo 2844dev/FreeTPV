@@ -6,8 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,7 +14,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-
 
 <StackPane maxHeight="500.0" maxWidth="850.0" minHeight="500.0" minWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mateo.freetpv.controller.LoadController">
    <children>
@@ -123,13 +120,6 @@
                         <FontIcon iconLiteral="far-folder" iconSize="16" />
                      </graphic>
                   </Button>
-                  <TableView fx:id="importarTableView" prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn fx:id="resultadoTableColumn" minWidth="150.0" prefWidth="150.0" resizable="false" />
-                      <TableColumn fx:id="cantidadTableColumn" prefWidth="75.0" resizable="false" text="Cantidad" />
-                        <TableColumn fx:id="verTableColumn" prefWidth="75.0" resizable="false" />
-                    </columns>
-                  </TableView>
                   <Button fx:id="importarButton" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="accent" text="Importar copia">
                      <VBox.margin>
                         <Insets />
