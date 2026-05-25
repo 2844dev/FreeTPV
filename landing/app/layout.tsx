@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { CursorGlow } from "@/components/cursor-glow";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -49,7 +50,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="bg-background font-sans antialiased">{children}</body>
+    <body className="bg-background font-sans antialiased">
+    <CursorGlow />
+    <div className="relative z-10">
+      {children}
+    </div>
+    </body>
     </html>
   );
 }
