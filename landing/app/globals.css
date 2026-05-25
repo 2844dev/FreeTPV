@@ -103,13 +103,10 @@ body {
 .feature-card-reveal {
   opacity: 0;
   transform: translateY(16px);
-  transition:
-    opacity 520ms ease,
-    transform 520ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease;
-  transition-delay: var(--feature-delay, 0ms);
+  transition-property: opacity, transform, background-color, border-color, box-shadow;
+  transition-duration: 520ms, 520ms, 160ms, 160ms, 160ms;
+  transition-timing-function: ease, ease, ease, ease, ease;
+  transition-delay: var(--feature-delay, 0ms), var(--feature-delay, 0ms), 0ms, 0ms, 0ms;
 }
 
 .feature-card-reveal.is-visible {
