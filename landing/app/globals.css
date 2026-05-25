@@ -39,23 +39,20 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 0;
-  width: 44px;
-  height: 44px;
+  z-index: 1;
+  width: 52px;
+  height: 52px;
   pointer-events: none;
   border-radius: 9999px;
   opacity: 0;
-
-  background: rgba(124, 58, 237, 0.06);
+  background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(124, 58, 237, 0.16);
-
   box-shadow:
-          inset 0 1px 1px rgba(255, 255, 255, 0.55),
-          0 1px 6px rgba(15, 15, 15, 0.04);
-
-  backdrop-filter: blur(10px) saturate(120%);
-  -webkit-backdrop-filter: blur(10px) saturate(120%);
-
+    inset 0 1px 1px rgba(255, 255, 255, 0.75),
+    inset 0 -1px 1px rgba(124, 58, 237, 0.08),
+    0 1px 6px rgba(15, 15, 15, 0.04);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
   transition: opacity 160ms ease;
   will-change: transform;
 }
@@ -63,16 +60,15 @@ body {
 .cursor-glow::after {
   content: "";
   position: absolute;
-  inset: 17px;
+  inset: 20px;
   border-radius: inherit;
   background: rgba(124, 58, 237, 0.18);
 }
 
-/* Aparición suave del hero */
 @keyframes heroIn {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(18px);
   }
 
   to {
@@ -82,19 +78,38 @@ body {
 }
 
 .animate-hero-in {
-  animation: heroIn 760ms ease-out both;
+  animation: heroIn 900ms ease-out both;
 }
 
 .animate-delay-100 {
-  animation-delay: 140ms;
+  animation-delay: 160ms;
 }
 
 .animate-delay-200 {
-  animation-delay: 260ms;
+  animation-delay: 320ms;
 }
 
 .animate-delay-300 {
-  animation-delay: 380ms;
+  animation-delay: 480ms;
+}
+
+.tilt-link {
+  transform:
+    perspective(700px)
+    rotateX(var(--rotate-x, 0deg))
+    rotateY(var(--rotate-y, 0deg));
+  transform-style: preserve-3d;
+  transition:
+    transform 120ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+  will-change: transform;
+}
+
+.tilt-link:hover {
+  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -102,42 +117,12 @@ body {
     scroll-behavior: auto;
   }
 
-  .animate-hero-in {
-    animation: none;
-  }
-}
-
-.tilt-link {
-  transform:
-          perspective(700px)
-          rotateX(var(--rotate-x, 0deg))
-          rotateY(var(--rotate-y, 0deg));
-  transform-style: preserve-3d;
-  transition:
-          transform 140ms ease,
-          background-color 140ms ease,
-          border-color 140ms ease,
-          color 140ms ease;
-  will-change: transform;
-}
-
-.tilt-link:hover {
-  transform:
-          perspective(700px)
-          rotateX(var(--rotate-x, 0deg))
-          rotateY(var(--rotate-y, 0deg))
-          translateY(-1px);
-}
-
-@media (prefers-reduced-motion: reduce) {
   .tilt-link,
   .tilt-link:hover {
     transform: none;
-    transition: none;
-  }
-
-  .animate-hero-in {
-    animation: none;
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease;
   }
 }
-
