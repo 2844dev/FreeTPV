@@ -114,6 +114,90 @@ body {
   transform: translateY(0);
 }
 
+.faq-item {
+  transition: background-color 180ms ease;
+}
+
+.faq-item:hover {
+  background: rgba(124, 58, 237, 0.025);
+}
+
+.faq-trigger {
+  transition: color 180ms ease;
+}
+
+.faq-trigger:hover {
+  color: var(--color-primary);
+}
+
+.faq-toggle {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 9999px;
+  background: var(--color-muted);
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.faq-trigger:hover .faq-toggle {
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.faq-toggle span {
+  position: absolute;
+  width: 12px;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--color-muted-foreground);
+  transition:
+    background-color 180ms ease,
+    transform 220ms ease;
+}
+
+.faq-toggle span:last-child {
+  transform: rotate(90deg);
+}
+
+.faq-trigger:hover .faq-toggle span {
+  background: var(--color-primary);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-toggle {
+  background: rgba(124, 58, 237, 0.12);
+  transform: rotate(180deg);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-toggle span {
+  background: var(--color-primary);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-toggle span:last-child {
+  transform: rotate(0deg);
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 180ms ease;
+}
+
+.faq-answer > div {
+  overflow: hidden;
+}
+
+.faq-answer[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -135,5 +219,13 @@ body {
       background-color 160ms ease,
       border-color 160ms ease,
       box-shadow 160ms ease;
+  }
+
+  .faq-answer,
+  .faq-item,
+  .faq-trigger,
+  .faq-toggle,
+  .faq-toggle span {
+    transition: none;
   }
 }
