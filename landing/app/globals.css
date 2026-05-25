@@ -81,6 +81,26 @@ body {
   box-shadow: 0 6px 14px rgba(15, 15, 15, 0.1);
 }
 
+.feature-card {
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 120ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.feature-card:hover {
+  background: rgba(124, 58, 237, 0.04);
+  border-color: rgba(124, 58, 237, 0.32);
+  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.08);
+}
+
+.feature-card:hover .feature-icon {
+  background: rgba(124, 58, 237, 0.14);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
