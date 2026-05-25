@@ -18,31 +18,31 @@ const features = [
   },
   {
     icon: Package,
-    title: "Gestion de productos",
+    title: "Gestión de productos",
     description:
-      "Organiza tus productos por categorias con precios, descripciones e imagenes.",
+      "Organiza tus productos por categorías con precios, descripciones e imágenes.",
   },
   {
     icon: Monitor,
     title: "Pantalla de ventas",
     description:
-      "Interfaz intuitiva y rapida para gestionar pedidos y ventas en tiempo real.",
+      "Interfaz intuitiva y rápida para gestionar pedidos y ventas en tiempo real.",
   },
   {
     icon: CreditCard,
     title: "Cobro flexible",
     description:
-      "Acepta pagos en efectivo o tarjeta con gestion automatica del cambio.",
+      "Acepta pagos en efectivo o tarjeta con gestión automática del cambio.",
   },
   {
     icon: Printer,
-    title: "Impresion ESC/POS",
+    title: "Impresión ESC/POS",
     description:
-      "Compatible con impresoras termicas ESC/POS para tickets profesionales.",
+      "Compatible con impresoras térmicas ESC/POS para tickets profesionales.",
   },
   {
     icon: Palette,
-    title: "Multiples temas",
+    title: "Múltiples temas",
     description:
       "Personaliza la apariencia con diferentes temas visuales incluidos.",
   },
@@ -54,9 +54,9 @@ const features = [
   },
   {
     icon: Code2,
-    title: "Codigo abierto",
+    title: "Código abierto",
     description:
-      "Software libre bajo licencia GPL-3.0. Modifica y adapta segun tus necesidades.",
+      "Software de código abierto bajo licencia MIT. Modifica y adapta el proyecto según tus necesidades.",
   },
 ];
 
@@ -69,8 +69,8 @@ export function Features() {
             Todo lo que necesitas para tu negocio
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            FreeTPV incluye todas las herramientas esenciales para gestionar 
-            tu bar, restaurante o cafeteria de forma profesional.
+            FreeTPV incluye las herramientas esenciales para gestionar
+            tu bar, restaurante o cafetería de forma profesional.
           </p>
         </div>
 
