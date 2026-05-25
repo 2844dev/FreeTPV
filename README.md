@@ -261,7 +261,7 @@ Distribuido bajo la licencia MIT. Consulta [LICENSE](https://github.com/2844dev/
 [issues-url]: https://github.com/2844dev/FreeTPV/issues
 [license-shield]: https://img.shields.io/github/license/2844dev/FreeTPV.svg?style=for-the-badge
 
-[license-url]: https://github.com/2844dev/FreeTPV/blob/master/LICENSE
+[license-url]: https://github.com/2844dev/FreeTPV/blob/main/LICENSE
 
 [Java]: https://img.shields.io/badge/Java-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [Java-url]: https://www.java.com/
