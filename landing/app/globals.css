@@ -1,0 +1,231 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
+
+  --color-background: #ffffff;
+  --color-foreground: #0f0f0f;
+  --color-muted: #f5f5f5;
+  --color-muted-foreground: #737373;
+  --color-primary: #7c3aed;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f3f4f6;
+  --color-secondary-foreground: #1f2937;
+  --color-accent: #8b5cf6;
+  --color-border: #e5e5e5;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f0f0f;
+
+  --radius: 0.75rem;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-in {
+  animation: heroIn 900ms ease-out both;
+}
+
+.animate-delay-100 {
+  animation-delay: 160ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 320ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 480ms;
+}
+
+.tilt-link {
+  transform:
+    perspective(700px)
+    rotateX(var(--rotate-x, 0deg))
+    rotateY(var(--rotate-y, 0deg));
+  transform-style: preserve-3d;
+  transition:
+    transform 120ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+  will-change: transform;
+}
+
+.tilt-link:hover {
+  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.1);
+}
+
+.feature-card {
+  color: inherit;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.feature-card:hover {
+  background: rgba(124, 58, 237, 0.04);
+  border-color: rgba(124, 58, 237, 0.32);
+  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.08);
+}
+
+.feature-card:hover .feature-icon {
+  background: rgba(124, 58, 237, 0.14);
+}
+
+.feature-card-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition-property: opacity, transform, background-color, border-color, box-shadow;
+  transition-duration: 520ms, 520ms, 160ms, 160ms, 160ms;
+  transition-timing-function: ease, ease, ease, ease, ease;
+  transition-delay: var(--feature-delay, 0ms), var(--feature-delay, 0ms), 0ms, 0ms, 0ms;
+}
+
+.feature-card-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-item {
+  transition: background-color 180ms ease;
+}
+
+.faq-item:hover {
+  background: rgba(124, 58, 237, 0.025);
+}
+
+.faq-trigger {
+  transition: color 180ms ease;
+}
+
+.faq-trigger:hover {
+  color: var(--color-primary);
+}
+
+.faq-toggle {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 9999px;
+  background: var(--color-muted);
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.faq-trigger:hover .faq-toggle {
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.faq-toggle span {
+  position: absolute;
+  width: 12px;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--color-muted-foreground);
+  transition:
+    background-color 180ms ease,
+    transform 220ms ease;
+}
+
+.faq-toggle span:last-child {
+  transform: rotate(90deg);
+}
+
+.faq-trigger:hover .faq-toggle span {
+  background: var(--color-primary);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-toggle {
+  background: rgba(124, 58, 237, 0.12);
+  transform: rotate(180deg);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-toggle span {
+  background: var(--color-primary);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-toggle span:last-child {
+  transform: rotate(0deg);
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 180ms ease;
+}
+
+.faq-answer > div {
+  overflow: hidden;
+}
+
+.faq-answer[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .tilt-link,
+  .tilt-link:hover {
+    transform: none;
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease;
+  }
+
+  .feature-card-reveal {
+    opacity: 1;
+    transform: none;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .faq-answer,
+  .faq-item,
+  .faq-trigger,
+  .faq-toggle,
+  .faq-toggle span {
+    transition: none;
+  }
+}
