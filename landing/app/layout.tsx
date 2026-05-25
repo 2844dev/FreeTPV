@@ -13,9 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://freetpv.pages.dev"),
   title: "FreeTPV - Software TPV Gratuito para Hostelería",
   description:
-    "Un software TPV gratuito y de código abierto enfocado a la hostelería. Gestiona tu bar, restaurante o cafetería de forma sencilla y sin costes de licencia.",
+    "Software TPV gratuito y de código abierto para bares, restaurantes y cafeterías. Gestiona ventas, productos y usuarios de forma sencilla y sin cuotas.",
   keywords: [
     "TPV",
     "punto de venta",
@@ -28,11 +29,24 @@ export const metadata: Metadata = {
     "gestión",
   ],
   authors: [{ name: "FreeTPV" }],
+  creator: "2844dev",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "FreeTPV - Software TPV Gratuito para Hostelería",
     description:
-      "Un software TPV gratuito y de código abierto enfocado a la hostelería.",
+      "TPV gratuito y de código abierto para bares, restaurantes y cafeterías.",
+    url: "/",
+    siteName: "FreeTPV",
+    locale: "es_ES",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FreeTPV - Software TPV Gratuito para Hostelería",
+    description:
+      "TPV gratuito y de código abierto para bares, restaurantes y cafeterías.",
   },
 };
 
