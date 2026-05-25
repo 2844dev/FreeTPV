@@ -286,6 +286,11 @@ public class VentasController {
     }
 
     @FXML public void imprimirPreTicket() {
+
+        if (ticket.isEmpty()) {
+            return;
+        }
+
         DatosTicket datosTicket = getDatosTicket("", 0);
 
         Optional<PrintService> impresora = buscarImpresora();

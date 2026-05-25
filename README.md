@@ -2,12 +2,6 @@
 FULL CREDITS TO:
 https://github.com/othneildrew/Best-README-Template
 -->
-<!--
-[THIS CONTENT WAS WRITTEN BY CLAUDE]
--->
-
-> [!IMPORTANT]
-> Este proyecto está actualmente en desarrollo, puede no funcionar correctamente.
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -29,6 +23,8 @@ https://github.com/othneildrew/Best-README-Template
     <a href="https://github.com/2844dev/FreeTPV/issues/new?labels=bug&template=reportar-bug.md">Reportar Bug</a>
     &middot;
     <a href="https://github.com/2844dev/FreeTPV/issues/new?labels=sugerencia&template=sugerencia-de-mejora.md">Solicitar función</a>
+    &middot;
+    <a href="https://freetpv.pages.dev">Ver web</a>
   </p>
 </div>
 
@@ -102,6 +98,7 @@ Funciona completamente en local, sin necesidad de conexión a internet ni suscri
 
 ```text
 FreeTPV/
+├── landing/   # Página web con Next.js + Tailwind CSS
 ├── src/
 │   └── main/
 │       ├── java/
@@ -263,7 +260,8 @@ Distribuido bajo la licencia MIT. Consulta [LICENSE](https://github.com/2844dev/
 [issues-shield]: https://img.shields.io/github/issues/2844dev/FreeTPV.svg?style=for-the-badge
 [issues-url]: https://github.com/2844dev/FreeTPV/issues
 [license-shield]: https://img.shields.io/github/license/2844dev/FreeTPV.svg?style=for-the-badge
-[license-url]: https://github.com/2844dev/FreeTPV/blob/master/LICENSE.txt
+
+[license-url]: https://github.com/2844dev/FreeTPV/blob/master/LICENSE
 
 [Java]: https://img.shields.io/badge/Java-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [Java-url]: https://www.java.com/
