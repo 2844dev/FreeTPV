@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 function GithubIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -11,15 +9,15 @@ function GithubIcon({ className }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-36">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-44">
         <svg
-          className="absolute inset-x-0 bottom-0 h-full w-full text-primary/14"
+          className="absolute inset-x-0 bottom-0 h-full w-full text-primary/16"
           viewBox="0 0 1440 180"
           preserveAspectRatio="none"
         >
           <path
             fill="currentColor"
-            d="M0,96 C160,28 300,150 480,96 C660,42 800,28 980,70 C1160,112 1280,132 1440,76 L1440,180 L0,180 Z"
+            d="M0,78 C160,10 300,132 480,78 C660,24 800,10 980,52 C1160,94 1280,114 1440,58 L1440,180 L0,180 Z"
           />
         </svg>
         <div className="absolute inset-x-0 bottom-0 h-full bg-white/35 backdrop-blur-md" />
@@ -28,12 +26,10 @@ export function Footer() {
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
+            <img
+              src="/favicon.ico"
               alt="Logo de FreeTPV"
-              width={96}
-              height={54}
-              className="h-auto w-20"
+              className="h-10 w-10 rounded-xl"
             />
             <div>
               <p className="font-semibold text-foreground">FreeTPV</p>
@@ -73,6 +69,10 @@ export function Footer() {
             >
               2844dev
             </a>
+          </p>
+          <p className="mt-2">
+            ¿Dudas o problemas? Discord:{" "}
+            <span className="font-medium text-foreground">@2844</span>
           </p>
         </div>
       </div>
