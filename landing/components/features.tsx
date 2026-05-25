@@ -1,3 +1,7 @@
+"use client";
+
+import type { CSSProperties } from "react";
+import { useEffect } from "react";
 import {
   Users,
   Package,
@@ -8,8 +12,6 @@ import {
   Database,
   Code2,
 } from "lucide-react";
-
-import { TiltLink } from "@/components/tilt-link";
 
 const features = [
   {
@@ -63,6 +65,34 @@ const features = [
 ];
 
 export function Features() {
+  useEffect(() => {
+    const cards = document.querySelectorAll<HTMLElement>(".feature-card-reveal");
+
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach((card) => card.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: "0px 0px -80px 0px",
+        threshold: 0.18,
+      }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="caracteristicas" className="scroll-mt-20 py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
       <div className="max-w-6xl mx-auto">
@@ -77,18 +107,18 @@ export function Features() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature) => (
-            <TiltLink
+          {features.map((feature, index) => (
+            <div
               key={feature.title}
-              href="#caracteristicas"
-              className="feature-card block bg-card p-6 rounded-xl border border-border"
+              className="feature-card feature-card-reveal bg-card p-6 rounded-xl border border-border"
+              style={{ "--feature-delay": `${index * 80}ms` } as CSSProperties}
             >
               <div className="feature-icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <feature.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.description}</p>
-            </TiltLink>
+            </div>
           ))}
         </div>
       </div>
