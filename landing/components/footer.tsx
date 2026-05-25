@@ -11,71 +11,69 @@ function GithubIcon({ className }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-full">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-36">
         <svg
-          className="absolute left-1/2 top-0 h-44 w-[140%] -translate-x-1/2 text-primary/18"
+          className="absolute inset-x-0 bottom-0 h-full w-full text-primary/14"
           viewBox="0 0 1440 180"
           preserveAspectRatio="none"
         >
           <path
             fill="currentColor"
-            d="M0,80 C170,10 310,155 490,92 C660,32 760,24 940,58 C1120,92 1270,142 1440,68 L1440,180 L0,180 Z"
+            d="M0,96 C160,28 300,150 480,96 C660,42 800,28 980,70 C1160,112 1280,132 1440,76 L1440,180 L0,180 Z"
           />
         </svg>
-        <div className="absolute inset-x-0 top-0 h-44 bg-white/35 backdrop-blur-md" />
+        <div className="absolute inset-x-0 bottom-0 h-full bg-white/35 backdrop-blur-md" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="rounded-2xl border border-border/80 bg-white/70 px-6 py-8 shadow-sm backdrop-blur-md sm:px-8">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="Logo de FreeTPV"
-                width={96}
-                height={54}
-                className="h-auto w-20"
-              />
-              <div>
-                <p className="font-semibold text-foreground">FreeTPV</p>
-                <p className="text-sm text-muted-foreground">TPV gratuito para hostelería</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <a
-                href="https://github.com/2844dev/FreeTPV"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-colors hover:text-primary"
-              >
-                <GithubIcon className="h-4 w-4" />
-                GitHub
-              </a>
-              <a
-                href="https://github.com/2844dev/FreeTPV/blob/main/LICENSE"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-primary"
-              >
-                Licencia MIT
-              </a>
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="Logo de FreeTPV"
+              width={96}
+              height={54}
+              className="h-auto w-20"
+            />
+            <div>
+              <p className="font-semibold text-foreground">FreeTPV</p>
+              <p className="text-sm text-muted-foreground">TPV gratuito para hostelería</p>
             </div>
           </div>
 
-          <div className="mt-7 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-            <p>
-              Desarrollado por{" "}
-              <a
-                href="https://github.com/2844dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-primary underline underline-offset-4"
-              >
-                2844dev
-              </a>
-            </p>
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <a
+              href="https://github.com/2844dev/FreeTPV"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 transition-colors hover:text-primary"
+            >
+              <GithubIcon className="h-4 w-4" />
+              GitHub
+            </a>
+            <a
+              href="https://github.com/2844dev/FreeTPV/blob/main/LICENSE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              Licencia MIT
+            </a>
           </div>
+        </div>
+
+        <div className="mt-7 border-t border-border pt-6 text-center text-sm text-muted-foreground">
+          <p>
+            Desarrollado por{" "}
+            <a
+              href="https://github.com/2844dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline underline-offset-4"
+            >
+              2844dev
+            </a>
+          </p>
         </div>
       </div>
     </footer>
