@@ -13,15 +13,15 @@ function GithubIcon({ className }: { className?: string }) {
 
 export function Hero() {
   return (
-    <section className="border-b border-border bg-background px-4 pt-28 pb-20 sm:px-6 lg:px-8">
+    <section className="border-b border-border bg-background px-4 pt-24 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
-        <div className="animate-hero-in mb-8 flex justify-center">
+        <div className="animate-hero-in mb-10 flex justify-center">
           <Image
             src="/logo.png"
             alt="Logo de FreeTPV"
-            width={160}
-            height={90}
-            className="h-auto w-40"
+            width={360}
+            height={203}
+            className="h-auto w-64 sm:w-72 md:w-80"
             priority
             loading="eager"
           />
