@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -82,13 +83,11 @@ body {
 }
 
 .feature-card {
-  text-decoration: none;
   color: inherit;
   transition:
-    transform 120ms ease,
-    background-color 140ms ease,
-    border-color 140ms ease,
-    box-shadow 140ms ease;
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .feature-card:hover {
@@ -99,6 +98,23 @@ body {
 
 .feature-card:hover .feature-icon {
   background: rgba(124, 58, 237, 0.14);
+}
+
+.feature-card-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 520ms ease,
+    transform 520ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+  transition-delay: var(--feature-delay, 0ms);
+}
+
+.feature-card-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -113,5 +129,14 @@ body {
       background-color 140ms ease,
       border-color 140ms ease,
       color 140ms ease;
+  }
+
+  .feature-card-reveal {
+    opacity: 1;
+    transform: none;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease;
   }
 }
