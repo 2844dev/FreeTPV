@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Download } from "lucide-react";
 
 import { TiltLink } from "@/components/tilt-link";
@@ -14,17 +15,29 @@ export function Hero() {
   return (
     <section className="border-b border-border bg-background px-4 pt-28 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
-        <h1 className="animate-hero-in mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+        <div className="animate-hero-in mb-8 flex justify-center">
+          <Image
+            src="/logo.png"
+            alt="Logo de FreeTPV"
+            width={160}
+            height={90}
+            className="h-auto w-40"
+            priority
+            loading="eager"
+          />
+        </div>
+
+        <h1 className="animate-hero-in animate-delay-100 mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
           TPV gratuito para pequeños negocios de hostelería.
         </h1>
 
-        <p className="animate-hero-in animate-delay-100 mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+        <p className="animate-hero-in animate-delay-200 mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
           FreeTPV es una aplicación de escritorio para gestionar ventas,
           productos y usuarios en bares, restaurantes y cafeterías. Código
           abierto, sin cuotas y pensado para instalarse rápido.
         </p>
 
-        <div className="animate-hero-in animate-delay-200 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="animate-hero-in animate-delay-300 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <TiltLink
             href="https://github.com/2844dev/FreeTPV/releases"
             target="_blank"
