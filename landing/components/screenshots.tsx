@@ -3,7 +3,7 @@ import { ImageIcon } from "lucide-react";
 const screenshots = [
   {
     id: "login",
-    title: "Pantalla de inicio de sesion",
+    title: "Pantalla de inicio de sesión",
     description: "Acceso seguro con sistema de usuarios",
     filename: "screenshot-login.png",
   },
@@ -15,14 +15,14 @@ const screenshots = [
   },
   {
     id: "productos",
-    title: "Gestion de productos",
-    description: "Organiza productos y categorias",
+    title: "Gestión de productos",
+    description: "Organiza productos y categorías",
     filename: "screenshot-productos.png",
   },
   {
     id: "cobro",
     title: "Pantalla de cobro",
-    description: "Proceso de pago rapido y sencillo",
+    description: "Proceso de pago rápido y sencillo",
     filename: "screenshot-cobro.png",
   },
 ];
@@ -36,7 +36,7 @@ export function Screenshots() {
             Conoce la interfaz
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Una interfaz moderna y facil de usar, disenada para agilizar 
+            Una interfaz moderna y fácil de usar, diseñada para agilizar
             el trabajo diario en tu establecimiento.
           </p>
         </div>
@@ -44,12 +44,12 @@ export function Screenshots() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {screenshots.map((screenshot) => (
             <div key={screenshot.id} className="group">
-              {/* 
-                PLACEHOLDER: Coloca aqui la captura de pantalla
-                
+              {/*
+                PLACEHOLDER: coloca aquí la captura de pantalla.
+
                 Archivo esperado: /public/screenshots/{screenshot.filename}
                 Ejemplo: /public/screenshots/screenshot-login.png
-                
+
                 Formato recomendado: PNG
                 Tamaño recomendado: 1280x800px o 1920x1080px
                 Aspecto: 16:10 o 16:9
@@ -71,7 +71,6 @@ export function Screenshots() {
           ))}
         </div>
 
-        {/* Instrucciones para el desarrollador */}
         <div className="mt-12 p-6 bg-muted/50 rounded-xl border border-border">
           <h4 className="font-semibold text-foreground mb-3">Instrucciones para agregar capturas:</h4>
           <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
