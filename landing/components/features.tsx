@@ -9,6 +9,8 @@ import {
   Code2,
 } from "lucide-react";
 
+import { TiltLink } from "@/components/tilt-link";
+
 const features = [
   {
     icon: Users,
@@ -62,7 +64,7 @@ const features = [
 
 export function Features() {
   return (
-    <section id="caracteristicas" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
+    <section id="caracteristicas" className="scroll-mt-20 py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -76,16 +78,17 @@ export function Features() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature) => (
-            <div
+            <TiltLink
               key={feature.title}
-              className="bg-card p-6 rounded-xl border border-border hover:border-primary/50 transition-colors"
+              href="#caracteristicas"
+              className="feature-card block bg-card p-6 rounded-xl border border-border"
             >
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+              <div className="feature-icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <feature.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.description}</p>
-            </div>
+            </TiltLink>
           ))}
         </div>
       </div>
