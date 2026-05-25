@@ -108,14 +108,6 @@ export function DownloadCTA() {
             </TiltLink>
           </div>
         </div>
-
-        <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm text-muted-foreground sm:flex-row sm:gap-6">
-          <span>Licencia MIT</span>
-          <span className="hidden sm:inline">·</span>
-          <span>Compilado con Java 25</span>
-          <span className="hidden sm:inline">·</span>
-          <span>Windows 10/11</span>
-        </div>
       </div>
     </section>
   );
