@@ -1,92 +1,70 @@
-import { ImageIcon } from "lucide-react";
+import { CreditCard, Monitor, Package, Settings } from "lucide-react";
 
 const screenshots = [
   {
-    id: "login",
-    title: "Pantalla de inicio de sesión",
-    description: "Acceso seguro con sistema de usuarios",
-    filename: "screenshot-login.png",
-  },
-  {
     id: "ventas",
+    icon: Monitor,
     title: "Pantalla de ventas",
-    description: "Interfaz principal para gestionar pedidos",
+    description: "Categorías, productos, ticket y total en una sola vista.",
     filename: "screenshot-ventas.png",
   },
   {
+    id: "cobro",
+    icon: CreditCard,
+    title: "Cobro y cambio",
+    description: "Pago en efectivo o tarjeta con calculadora y vuelta.",
+    filename: "screenshot-cobro.png",
+  },
+  {
     id: "productos",
+    icon: Package,
     title: "Gestión de productos",
-    description: "Organiza productos y categorías",
+    description: "Tabla de productos, filtros, búsqueda y formulario de edición.",
     filename: "screenshot-productos.png",
   },
   {
-    id: "cobro",
-    title: "Pantalla de cobro",
-    description: "Proceso de pago rápido y sencillo",
-    filename: "screenshot-cobro.png",
+    id: "ajustes",
+    icon: Settings,
+    title: "Ajustes del negocio",
+    description: "Empresa, ticket, impresora, apariencia y copias de seguridad.",
+    filename: "screenshot-ajustes.png",
   },
 ];
 
 export function Screenshots() {
   return (
-    <section id="capturas" className="py-20 px-4 sm:px-6 lg:px-8">
+    <section id="capturas" className="scroll-mt-20 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Conoce la interfaz
+            Un vistazo a FreeTPV
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Una interfaz moderna y fácil de usar, diseñada para agilizar
-            el trabajo diario en tu establecimiento.
+            Las capturas mostrarán las partes principales de la aplicación,
+            desde la venta diaria hasta la configuración del negocio.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {screenshots.map((screenshot) => (
             <div key={screenshot.id} className="group">
-              {/*
-                PLACEHOLDER: coloca aquí la captura de pantalla.
-
-                Archivo esperado: /public/screenshots/{screenshot.filename}
-                Ejemplo: /public/screenshots/screenshot-login.png
-
-                Formato recomendado: PNG
-                Tamaño recomendado: 1280x800px o 1920x1080px
-                Aspecto: 16:10 o 16:9
-              */}
-              <div className="aspect-video bg-muted rounded-xl border border-border overflow-hidden mb-4 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+              <div className="aspect-video bg-muted rounded-xl border border-border overflow-hidden mb-4 flex items-center justify-center transition-colors group-hover:border-primary/40 group-hover:bg-primary/[0.03]">
                 <div className="text-center p-8">
-                  <ImageIcon className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Placeholder para captura
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-background border border-border group-hover:border-primary/30">
+                    <screenshot.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <p className="text-sm font-medium text-foreground">
+                    Captura pendiente
                   </p>
-                  <code className="text-xs bg-muted-foreground/10 px-2 py-1 rounded">
-                    /public/screenshots/{screenshot.filename}
-                  </code>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {screenshot.filename}
+                  </p>
                 </div>
               </div>
               <h3 className="font-semibold text-foreground mb-1">{screenshot.title}</h3>
               <p className="text-sm text-muted-foreground">{screenshot.description}</p>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 p-6 bg-muted/50 rounded-xl border border-border">
-          <h4 className="font-semibold text-foreground mb-3">Instrucciones para agregar capturas:</h4>
-          <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-            <li>Crea la carpeta <code className="bg-muted-foreground/10 px-1 rounded">/public/screenshots/</code></li>
-            <li>Guarda las capturas con los siguientes nombres:</li>
-          </ol>
-          <ul className="text-sm text-muted-foreground mt-2 ml-6 space-y-1">
-            {screenshots.map((s) => (
-              <li key={s.id}>
-                <code className="bg-muted-foreground/10 px-1 rounded">{s.filename}</code> - {s.title}
-              </li>
-            ))}
-          </ul>
-          <p className="text-sm text-muted-foreground mt-3">
-            Formato: PNG | Tamaño recomendado: 1280x800px o 1920x1080px
-          </p>
         </div>
       </div>
     </section>
