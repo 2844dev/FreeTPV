@@ -13,7 +13,7 @@ function GithubIcon({ className }: { className?: string }) {
 
 export function Hero() {
   return (
-    <section className="border-b border-border bg-background px-4 pt-20 pb-20 sm:px-6 lg:px-8">
+    <section id="top" className="border-b border-border bg-background px-4 pt-24 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         <div className="animate-hero-in mb-6 flex justify-center">
           <Image
@@ -39,13 +39,13 @@ export function Hero() {
 
         <div className="animate-hero-in animate-delay-300 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <TiltLink
-            href="https://github.com/2844dev/FreeTPV/releases"
+            href="https://github.com/2844dev/FreeTPV/releases/latest"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto"
           >
             <Download className="h-5 w-5" />
-            Descargar para Windows
+            Descargar última versión para Windows
           </TiltLink>
 
           <TiltLink
@@ -60,7 +60,7 @@ export function Hero() {
         </div>
 
         <p className="animate-hero-in animate-delay-300 mt-5 text-sm text-muted-foreground">
-          MIT · Windows 10/11 · Java 25
+          MIT · Windows 10/11 · Java 25 incluido en el instalador
         </p>
       </div>
     </section>

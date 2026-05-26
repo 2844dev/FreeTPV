@@ -4,20 +4,77 @@
   --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
 
-  --color-background: #ffffff;
-  --color-foreground: #0f0f0f;
-  --color-muted: #f5f5f5;
-  --color-muted-foreground: #737373;
-  --color-primary: #7c3aed;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f3f4f6;
-  --color-secondary-foreground: #1f2937;
-  --color-accent: #8b5cf6;
-  --color-border: #e5e5e5;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f0f0f;
+  --color-background: var(--theme-background);
+  --color-foreground: var(--theme-foreground);
+  --color-muted: var(--theme-muted);
+  --color-muted-foreground: var(--theme-muted-foreground);
+  --color-primary: var(--theme-primary);
+  --color-primary-foreground: var(--theme-primary-foreground);
+  --color-secondary: var(--theme-secondary);
+  --color-secondary-foreground: var(--theme-secondary-foreground);
+  --color-accent: var(--theme-accent);
+  --color-border: var(--theme-border);
+  --color-card: var(--theme-card);
+  --color-card-foreground: var(--theme-card-foreground);
 
   --radius: 0.75rem;
+}
+
+:root,
+:root[data-theme="latte"] {
+  --theme-background: #eff1f5;
+  --theme-foreground: #4c4f69;
+  --theme-muted: #e6e9ef;
+  --theme-muted-foreground: #6c6f85;
+  --theme-primary: #8839ef;
+  --theme-primary-foreground: #eff1f5;
+  --theme-secondary: #dce0e8;
+  --theme-secondary-foreground: #4c4f69;
+  --theme-accent: #8839ef;
+  --theme-border: #ccd0da;
+  --theme-card: #eff1f5;
+  --theme-card-foreground: #4c4f69;
+  --theme-shadow: 76, 79, 105;
+  --theme-primary-rgb: 136, 57, 239;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --theme-background: #1e1e2e;
+    --theme-foreground: #cdd6f4;
+    --theme-muted: #313244;
+    --theme-muted-foreground: #a6adc8;
+    --theme-primary: #cba6f7;
+    --theme-primary-foreground: #1e1e2e;
+    --theme-secondary: #45475a;
+    --theme-secondary-foreground: #cdd6f4;
+    --theme-accent: #cba6f7;
+    --theme-border: #45475a;
+    --theme-card: #181825;
+    --theme-card-foreground: #cdd6f4;
+    --theme-shadow: 17, 17, 27;
+    --theme-primary-rgb: 203, 166, 247;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="mocha"] {
+  --theme-background: #1e1e2e;
+  --theme-foreground: #cdd6f4;
+  --theme-muted: #313244;
+  --theme-muted-foreground: #a6adc8;
+  --theme-primary: #cba6f7;
+  --theme-primary-foreground: #1e1e2e;
+  --theme-secondary: #45475a;
+  --theme-secondary-foreground: #cdd6f4;
+  --theme-accent: #cba6f7;
+  --theme-border: #45475a;
+  --theme-card: #181825;
+  --theme-card-foreground: #cdd6f4;
+  --theme-shadow: 17, 17, 27;
+  --theme-primary-rgb: 203, 166, 247;
+  color-scheme: dark;
 }
 
 * {
@@ -27,12 +84,33 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  transition:
+    background-color 240ms ease,
+    color 240ms ease;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
+  transition:
+    background-color 240ms ease,
+    color 240ms ease;
+}
+
+a,
+button,
+section,
+header,
+footer,
+.feature-card,
+.faq-item,
+.faq-toggle {
+  transition:
+    background-color 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease,
+    box-shadow 240ms ease;
 }
 
 @keyframes heroIn {
@@ -71,40 +149,36 @@ body {
   transform-style: preserve-3d;
   transition:
     transform 120ms ease,
-    background-color 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease,
-    box-shadow 140ms ease;
+    background-color 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease,
+    box-shadow 240ms ease;
   will-change: transform;
 }
 
 .tilt-link:hover {
-  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.1);
+  box-shadow: 0 6px 14px rgba(var(--theme-shadow), 0.12);
 }
 
 .feature-card {
   color: inherit;
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease;
 }
 
 .feature-card:hover {
-  background: rgba(124, 58, 237, 0.04);
-  border-color: rgba(124, 58, 237, 0.32);
-  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.08);
+  background: rgba(var(--theme-primary-rgb), 0.06);
+  border-color: rgba(var(--theme-primary-rgb), 0.32);
+  box-shadow: 0 6px 14px rgba(var(--theme-shadow), 0.1);
 }
 
 .feature-card:hover .feature-icon {
-  background: rgba(124, 58, 237, 0.14);
+  background: rgba(var(--theme-primary-rgb), 0.14);
 }
 
 .feature-card-reveal {
   opacity: 0;
   transform: translateY(16px);
   transition-property: opacity, transform, background-color, border-color, box-shadow;
-  transition-duration: 520ms, 520ms, 160ms, 160ms, 160ms;
+  transition-duration: 520ms, 520ms, 240ms, 240ms, 240ms;
   transition-timing-function: ease, ease, ease, ease, ease;
   transition-delay: var(--feature-delay, 0ms), var(--feature-delay, 0ms), 0ms, 0ms, 0ms;
 }
@@ -114,16 +188,8 @@ body {
   transform: translateY(0);
 }
 
-.faq-item {
-  transition: background-color 180ms ease;
-}
-
 .faq-item:hover {
-  background: rgba(124, 58, 237, 0.025);
-}
-
-.faq-trigger {
-  transition: color 180ms ease;
+  background: rgba(var(--theme-primary-rgb), 0.04);
 }
 
 .faq-trigger:hover {
@@ -140,12 +206,12 @@ body {
   border-radius: 9999px;
   background: var(--color-muted);
   transition:
-    background-color 180ms ease,
+    background-color 240ms ease,
     transform 180ms ease;
 }
 
 .faq-trigger:hover .faq-toggle {
-  background: rgba(124, 58, 237, 0.1);
+  background: rgba(var(--theme-primary-rgb), 0.1);
 }
 
 .faq-toggle span {
@@ -155,7 +221,7 @@ body {
   border-radius: 9999px;
   background: var(--color-muted-foreground);
   transition:
-    background-color 180ms ease,
+    background-color 240ms ease,
     transform 220ms ease;
 }
 
@@ -168,7 +234,7 @@ body {
 }
 
 .faq-trigger[aria-expanded="true"] .faq-toggle {
-  background: rgba(124, 58, 237, 0.12);
+  background: rgba(var(--theme-primary-rgb), 0.12);
   transform: rotate(180deg);
 }
 
@@ -203,29 +269,19 @@ body {
     scroll-behavior: auto;
   }
 
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
   .tilt-link,
   .tilt-link:hover {
     transform: none;
-    transition:
-      background-color 140ms ease,
-      border-color 140ms ease,
-      color 140ms ease;
   }
 
   .feature-card-reveal {
     opacity: 1;
     transform: none;
-    transition:
-      background-color 160ms ease,
-      border-color 160ms ease,
-      box-shadow 160ms ease;
-  }
-
-  .faq-answer,
-  .faq-item,
-  .faq-trigger,
-  .faq-toggle,
-  .faq-toggle span {
-    transition: none;
   }
 }

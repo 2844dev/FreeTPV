@@ -9,9 +9,9 @@ function GithubIcon({ className }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-44">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-44 text-primary/10">
         <svg
-          className="absolute inset-x-0 bottom-0 h-full w-full text-primary/16"
+          className="absolute inset-x-0 bottom-0 h-full w-full"
           viewBox="0 0 1440 180"
           preserveAspectRatio="none"
         >
@@ -20,7 +20,6 @@ export function Footer() {
             d="M0,78 C160,10 300,132 480,78 C660,24 800,10 980,52 C1160,94 1280,114 1440,58 L1440,180 L0,180 Z"
           />
         </svg>
-        <div className="absolute inset-x-0 bottom-0 h-full bg-white/35 backdrop-blur-md" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl">
@@ -37,7 +36,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
             <a
               href="https://github.com/2844dev/FreeTPV"
               target="_blank"
@@ -46,6 +45,14 @@ export function Footer() {
             >
               <GithubIcon className="h-4 w-4" />
               GitHub
+            </a>
+            <a
+              href="https://github.com/2844dev/FreeTPV/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              Reportar bug
             </a>
             <a
               href="https://github.com/2844dev/FreeTPV/blob/main/LICENSE"
@@ -69,10 +76,6 @@ export function Footer() {
             >
               2844dev
             </a>
-          </p>
-          <p className="mt-2">
-            ¿Dudas o problemas? Discord:{" "}
-            <span className="font-medium text-foreground">@2844</span>
           </p>
         </div>
       </div>
