@@ -15,11 +15,11 @@ const signals = [
 
 export function TrustSignals() {
   return (
-    <section className="border-b border-border bg-background px-4 py-6 sm:px-6 lg:px-8">
+    <section className="bg-background px-4 py-7 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        <ul className="grid gap-5 border-y border-border py-5 sm:grid-cols-3 sm:gap-8">
+        <ul className="grid gap-6 sm:grid-cols-3 sm:gap-10">
           {signals.map((signal) => (
-            <li key={signal.title}>
+            <li key={signal.title} className="border-t border-border pt-4">
               <p className="text-sm font-semibold text-foreground">{signal.title}</p>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">
                 {signal.description}
