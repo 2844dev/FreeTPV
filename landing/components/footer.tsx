@@ -6,14 +6,6 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
-function DiscordIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20.32 4.37A19.8 19.8 0 0 0 15.36 3a13.7 13.7 0 0 0-.64 1.32 18.6 18.6 0 0 0-5.44 0A13.7 13.7 0 0 0 8.64 3c-1.74.3-3.4.77-4.96 1.37C.54 9.07-.31 13.66.11 18.18A20 20 0 0 0 6.2 21a14.8 14.8 0 0 0 1.3-2.1c-.72-.27-1.4-.6-2.04-.98l.5-.39A14.2 14.2 0 0 0 12 19.08c2.12 0 4.15-.48 6.04-1.55l.5.39c-.64.39-1.33.72-2.04.98.38.74.82 1.45 1.3 2.1a20 20 0 0 0 6.09-2.82c.5-5.24-.84-9.79-3.57-13.81ZM8.02 15.4c-1.18 0-2.14-1.08-2.14-2.4s.94-2.4 2.14-2.4c1.2 0 2.16 1.08 2.14 2.4 0 1.32-.94 2.4-2.14 2.4Zm7.96 0c-1.18 0-2.14-1.08-2.14-2.4s.94-2.4 2.14-2.4c1.2 0 2.16 1.08 2.14 2.4 0 1.32-.94 2.4-2.14 2.4Z" />
-    </svg>
-  );
-}
-
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
@@ -85,11 +77,6 @@ export function Footer() {
             >
               2844dev
             </a>
-          </p>
-          <p className="mt-2 inline-flex items-center justify-center gap-2">
-            <DiscordIcon className="h-4 w-4" />
-            <span>Discord:</span>
-            <span className="font-medium text-foreground">@2844</span>
           </p>
         </div>
       </div>
