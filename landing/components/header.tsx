@@ -14,6 +14,13 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
+const navItems = [
+  { href: "#caracteristicas", label: "Características" },
+  { href: "#capturas", label: "Capturas" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#descargar", label: "Descargar" },
+];
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -21,7 +28,7 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="#top" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
             <img
               src="/favicon.ico"
               alt=""
@@ -31,21 +38,21 @@ export function Header() {
             <span className="text-lg font-semibold text-foreground">FreeTPV</span>
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex" aria-label="Navegación principal">
-            <a href="#caracteristicas" className="text-muted-foreground transition-colors hover:text-foreground">
-              Características
-            </a>
-            <a href="#capturas" className="text-muted-foreground transition-colors hover:text-foreground">
-              Capturas
-            </a>
-            <a href="#descargar" className="text-muted-foreground transition-colors hover:text-foreground">
-              Descargar
-            </a>
+          <nav className="hidden items-center gap-6 md:flex" aria-label="Navegación principal">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
             <a
               href="https://github.com/2844dev/FreeTPV"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <GithubIcon className="h-5 w-5" />
               GitHub
@@ -69,32 +76,22 @@ export function Header() {
         {mobileMenuOpen && (
           <nav className="border-t border-border py-4 md:hidden" aria-label="Navegación móvil">
             <div className="flex flex-col gap-4">
-              <a
-                href="#caracteristicas"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Características
-              </a>
-              <a
-                href="#capturas"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Capturas
-              </a>
-              <a
-                href="#descargar"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Descargar
-              </a>
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ))}
               <a
                 href="https://github.com/2844dev/FreeTPV"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 <GithubIcon className="h-5 w-5" />
                 GitHub
