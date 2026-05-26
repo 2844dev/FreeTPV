@@ -13,7 +13,7 @@ function GithubIcon({ className }: { className?: string }) {
 
 export function Hero() {
   return (
-    <section className="border-b border-border bg-background px-4 pt-20 pb-20 sm:px-6 lg:px-8">
+    <section id="top" className="border-b border-border bg-background px-4 pt-24 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         <div className="animate-hero-in mb-6 flex justify-center">
           <Image
