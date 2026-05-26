@@ -4,18 +4,18 @@
   --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
 
-  --color-background: #ffffff;
-  --color-foreground: #0f0f0f;
-  --color-muted: #f5f5f5;
-  --color-muted-foreground: #737373;
-  --color-primary: #7c3aed;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f3f4f6;
-  --color-secondary-foreground: #1f2937;
-  --color-accent: #8b5cf6;
-  --color-border: #e5e5e5;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f0f0f;
+  --color-background: #eff1f5;
+  --color-foreground: #4c4f69;
+  --color-muted: #e6e9ef;
+  --color-muted-foreground: #6c6f85;
+  --color-primary: #8839ef;
+  --color-primary-foreground: #eff1f5;
+  --color-secondary: #dce0e8;
+  --color-secondary-foreground: #4c4f69;
+  --color-accent: #8839ef;
+  --color-border: #ccd0da;
+  --color-card: #eff1f5;
+  --color-card-foreground: #4c4f69;
 
   --radius: 0.75rem;
 }
@@ -79,7 +79,7 @@ body {
 }
 
 .tilt-link:hover {
-  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.1);
+  box-shadow: 0 6px 14px rgba(76, 79, 105, 0.12);
 }
 
 .feature-card {
@@ -91,13 +91,13 @@ body {
 }
 
 .feature-card:hover {
-  background: rgba(124, 58, 237, 0.04);
-  border-color: rgba(124, 58, 237, 0.32);
-  box-shadow: 0 6px 14px rgba(15, 15, 15, 0.08);
+  background: rgba(136, 57, 239, 0.06);
+  border-color: rgba(136, 57, 239, 0.32);
+  box-shadow: 0 6px 14px rgba(76, 79, 105, 0.1);
 }
 
 .feature-card:hover .feature-icon {
-  background: rgba(124, 58, 237, 0.14);
+  background: rgba(136, 57, 239, 0.14);
 }
 
 .feature-card-reveal {
@@ -119,7 +119,7 @@ body {
 }
 
 .faq-item:hover {
-  background: rgba(124, 58, 237, 0.025);
+  background: rgba(136, 57, 239, 0.04);
 }
 
 .faq-trigger {
@@ -145,7 +145,7 @@ body {
 }
 
 .faq-trigger:hover .faq-toggle {
-  background: rgba(124, 58, 237, 0.1);
+  background: rgba(136, 57, 239, 0.1);
 }
 
 .faq-toggle span {
@@ -168,7 +168,7 @@ body {
 }
 
 .faq-trigger[aria-expanded="true"] .faq-toggle {
-  background: rgba(124, 58, 237, 0.12);
+  background: rgba(136, 57, 239, 0.12);
   transform: rotate(180deg);
 }
 
