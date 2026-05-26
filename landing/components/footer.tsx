@@ -8,8 +8,21 @@ function GithubIcon({ className }: { className?: string }) {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
+    <footer className="relative overflow-hidden border-t border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-44 text-primary/10">
+        <svg
+          className="absolute inset-x-0 bottom-0 h-full w-full"
+          viewBox="0 0 1440 180"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="currentColor"
+            d="M0,78 C160,10 300,132 480,78 C660,24 800,10 980,52 C1160,94 1280,114 1440,58 L1440,180 L0,180 Z"
+          />
+        </svg>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-3">
             <img
