@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
+import { TrustSignals } from "@/components/trust-signals";
 import { Features } from "@/components/features";
 import { Screenshots } from "@/components/screenshots";
 import { FAQ } from "@/components/faq";
@@ -12,6 +13,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <TrustSignals />
         <Features />
         <Screenshots />
         <FAQ />
