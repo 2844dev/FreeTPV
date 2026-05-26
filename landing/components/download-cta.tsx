@@ -26,7 +26,7 @@ const developerSteps = [
 
 export function DownloadCTA() {
   return (
-    <section id="descargar" className="scroll-mt-20 bg-background px-4 py-20 sm:px-6 lg:px-8">
+    <section id="descargar" className="bg-background px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto mb-12 max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
@@ -63,13 +63,13 @@ export function DownloadCTA() {
             </ol>
 
             <TiltLink
-              href="https://github.com/2844dev/FreeTPV/releases"
+              href="https://github.com/2844dev/FreeTPV/releases/latest"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto"
             >
               <Download className="h-5 w-5" />
-              Descargar para Windows
+              Descargar última versión para Windows
             </TiltLink>
           </div>
 
