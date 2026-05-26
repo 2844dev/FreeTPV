@@ -94,29 +94,29 @@ export function Features() {
   }, []);
 
   return (
-    <section id="caracteristicas" className="scroll-mt-20 py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+    <section id="caracteristicas" className="bg-muted/50 px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-16 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             Todo lo que necesitas para tu negocio
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             FreeTPV incluye las herramientas esenciales para gestionar
             tu bar, restaurante o cafetería de forma profesional.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="feature-card feature-card-reveal bg-card p-6 rounded-xl border border-border"
+              className="feature-card feature-card-reveal rounded-xl border border-border bg-card p-6"
               style={{ "--feature-delay": `${index * 80}ms` } as CSSProperties}
             >
-              <div className="feature-icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <feature.icon className="w-6 h-6 text-primary" />
+              <div className="feature-icon mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+                <feature.icon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
+              <h3 className="mb-2 font-semibold text-foreground">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.description}</p>
             </div>
           ))}
