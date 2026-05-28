@@ -188,6 +188,84 @@ footer,
   transform: translateY(0);
 }
 
+@keyframes screenshotFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes screenshotSlideNext {
+  from {
+    opacity: 0;
+    transform: translateX(22px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes screenshotSlidePrevious {
+  from {
+    opacity: 0;
+    transform: translateX(-22px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes screenshotSlideDirect {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.screenshot-image-fade {
+  animation: screenshotFadeIn 260ms ease both;
+}
+
+.modal-panel-in {
+  animation: modalPanelIn 220ms ease both;
+}
+
+.screenshot-slide-next {
+  animation: screenshotSlideNext 240ms ease both;
+}
+
+.screenshot-slide-previous {
+  animation: screenshotSlidePrevious 240ms ease both;
+}
+
+.screenshot-slide-direct {
+  animation: screenshotSlideDirect 200ms ease both;
+}
+
 .faq-item:hover {
   background: rgba(var(--theme-primary-rgb), 0.04);
 }

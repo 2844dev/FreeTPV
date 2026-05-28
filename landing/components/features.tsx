@@ -68,8 +68,14 @@ export function Features() {
   useEffect(() => {
     const cards = document.querySelectorAll<HTMLElement>(".feature-card-reveal");
 
+    function revealCard(card: Element) {
+      window.setTimeout(() => {
+        card.classList.add("is-visible");
+      }, 80);
+    }
+
     if (!("IntersectionObserver" in window)) {
-      cards.forEach((card) => card.classList.add("is-visible"));
+      cards.forEach(revealCard);
       return;
     }
 
@@ -77,7 +83,7 @@ export function Features() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
+            revealCard(entry.target);
             observer.unobserve(entry.target);
           }
         });

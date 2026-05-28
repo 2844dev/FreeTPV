@@ -13,7 +13,7 @@
    <left>
       <VBox fx:id="sidebar" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" spacing="10.0" styleClass="bg-inset" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="138.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+             <ImageView fitHeight="135.0" fitWidth="224.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/freetpv_logo.png" />
                </image>
@@ -72,7 +72,10 @@
                         <Insets />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="mesasButton" alignment="TOP_LEFT" graphicTextGap="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" style="-fx-background-radius: 0;" text="Gestión de mesas">
+                   <Button fx:id="mesasButton" alignment="TOP_LEFT" graphicTextGap="25.0"
+                           maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                           minWidth="-Infinity" mnemonicParsing="false" style="-fx-background-radius: 0;"
+                           text="Gestión de mesas" visible="false">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -84,7 +87,10 @@
                         </StackPane>
                      </graphic>
                   </Button>
-                  <Button fx:id="clientesButton" alignment="TOP_LEFT" graphicTextGap="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" style="-fx-background-radius: 0;" text="Gestión de clientes">
+                   <Button fx:id="clientesButton" alignment="TOP_LEFT" graphicTextGap="25.0"
+                           maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                           minWidth="-Infinity" mnemonicParsing="false" style="-fx-background-radius: 0;"
+                           text="Gestión de clientes" visible="false">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -123,8 +129,11 @@
             </Label>
          </children>
           <BorderPane.margin>
-            <Insets bottom="10.0" top="10.0" />
+              <Insets/>
           </BorderPane.margin>
+          <padding>
+            <Insets bottom="10.0" top="10.0" />
+          </padding>
       </VBox>
    </left>
    <center>
