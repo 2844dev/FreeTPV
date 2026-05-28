@@ -2,7 +2,7 @@
 
 @theme inline {
   --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
+  --font-mono: "Geist Mono", "Geist Fallback", monospace;
 
   --color-background: var(--theme-background);
   --color-foreground: var(--theme-foreground);
@@ -334,15 +334,4 @@ footer,
 
 .faq-trigger[aria-expanded="true"] .faq-toggle span:last-child {
   transform: rotate(0deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 1ms !important;
-  }
 }
