@@ -188,6 +188,100 @@ footer,
   transform: translateY(0);
 }
 
+@keyframes screenshotFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(16px);
+  }
+}
+
+@keyframes modalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes screenshotSlideNext {
+  from {
+    opacity: 0;
+    transform: translateX(22px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes screenshotSlidePrevious {
+  from {
+    opacity: 0;
+    transform: translateX(-22px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes screenshotSlideDirect {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.screenshot-image-fade {
+  animation: screenshotFadeIn 260ms ease both;
+}
+
+.modal-backdrop-in {
+  animation: modalBackdropIn 180ms ease both;
+}
+
+.modal-panel-in {
+  animation: modalPanelIn 220ms ease both;
+}
+
+.screenshot-slide-next {
+  animation: screenshotSlideNext 240ms ease both;
+}
+
+.screenshot-slide-previous {
+  animation: screenshotSlidePrevious 240ms ease both;
+}
+
+.screenshot-slide-direct {
+  animation: screenshotSlideDirect 200ms ease both;
+}
+
 .faq-item:hover {
   background: rgba(var(--theme-primary-rgb), 0.04);
 }
@@ -238,50 +332,17 @@ footer,
   transform: rotate(180deg);
 }
 
-.faq-trigger[aria-expanded="true"] .faq-toggle span {
-  background: var(--color-primary);
-}
-
 .faq-trigger[aria-expanded="true"] .faq-toggle span:last-child {
   transform: rotate(0deg);
 }
 
-.faq-answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition:
-    grid-template-rows 240ms ease,
-    opacity 180ms ease;
-}
-
-.faq-answer > div {
-  overflow: hidden;
-}
-
-.faq-answer[data-open="true"] {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
   *,
   *::before,
   *::after {
-    transition: none !important;
-  }
-
-  .tilt-link,
-  .tilt-link:hover {
-    transform: none;
-  }
-
-  .feature-card-reveal {
-    opacity: 1;
-    transform: none;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }
