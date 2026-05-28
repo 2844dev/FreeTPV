@@ -2,7 +2,7 @@
 
 @theme inline {
   --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Fallback", monospace;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
 
   --color-background: var(--theme-background);
   --color-foreground: var(--theme-foreground);
@@ -198,18 +198,6 @@ footer,
   }
 }
 
-@keyframes modalBackdropIn {
-  from {
-    opacity: 0;
-    backdrop-filter: blur(0);
-  }
-
-  to {
-    opacity: 1;
-    backdrop-filter: blur(16px);
-  }
-}
-
 @keyframes modalPanelIn {
   from {
     opacity: 0;
@@ -260,10 +248,6 @@ footer,
 
 .screenshot-image-fade {
   animation: screenshotFadeIn 260ms ease both;
-}
-
-.modal-backdrop-in {
-  animation: modalBackdropIn 180ms ease both;
 }
 
 .modal-panel-in {
@@ -332,6 +316,50 @@ footer,
   transform: rotate(180deg);
 }
 
+.faq-trigger[aria-expanded="true"] .faq-toggle span {
+  background: var(--color-primary);
+}
+
 .faq-trigger[aria-expanded="true"] .faq-toggle span:last-child {
   transform: rotate(0deg);
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 180ms ease;
+}
+
+.faq-answer > div {
+  overflow: hidden;
+}
+
+.faq-answer[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
+  .tilt-link,
+  .tilt-link:hover {
+    transform: none;
+  }
+
+  .feature-card-reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
