@@ -17,7 +17,7 @@ export function Hero() {
       <div className="mx-auto max-w-4xl text-center">
         <div className="animate-hero-in mb-6 flex justify-center">
           <Image
-            src="/logo.png"
+            src="/images/logo.webp"
             alt="Logo de FreeTPV"
             width={360}
             height={203}
