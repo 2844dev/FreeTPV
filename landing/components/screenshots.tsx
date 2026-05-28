@@ -50,6 +50,7 @@ const screenshots = [
 export function Screenshots() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const activeScreenshot = activeIndex === null ? null : screenshots[activeIndex];
+  const activeNumber = activeIndex === null ? 0 : activeIndex + 1;
 
   function closeCarousel() {
     setActiveIndex(null);
@@ -144,7 +145,7 @@ export function Screenshots() {
             <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm text-muted-foreground">
-                  {activeIndex + 1} / {screenshots.length}
+                  {activeNumber} / {screenshots.length}
                 </p>
                 <h3 className="text-xl font-semibold text-foreground">{activeScreenshot.title}</h3>
               </div>
