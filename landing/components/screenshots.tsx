@@ -6,28 +6,32 @@ const screenshots = [
     icon: Monitor,
     title: "Pantalla de ventas",
     description: "Categorías, productos, ticket y total en una sola vista.",
-    filename: "screenshot-ventas.png",
+    src: "/images/screenshots/screenshot-ventas.webp",
+    alt: "Pantalla de ventas de FreeTPV con categorías, productos y ticket",
   },
   {
     id: "cobro",
     icon: CreditCard,
     title: "Cobro y cambio",
     description: "Pago en efectivo o tarjeta con calculadora y vuelta.",
-    filename: "screenshot-cobro.png",
+    src: "/images/screenshots/screenshot-cobro.webp",
+    alt: "Pantalla de cobro de FreeTPV con opciones de efectivo y tarjeta",
   },
   {
     id: "productos",
     icon: Package,
     title: "Gestión de productos",
     description: "Tabla de productos, filtros, búsqueda y formulario de edición.",
-    filename: "screenshot-productos.png",
+    src: "/images/screenshots/screenshot-productos.webp",
+    alt: "Pantalla de gestión de productos de FreeTPV",
   },
   {
     id: "ajustes",
     icon: Settings,
     title: "Ajustes del negocio",
     description: "Empresa, ticket, impresora, apariencia y copias de seguridad.",
-    filename: "screenshot-ajustes.png",
+    src: "/images/screenshots/screenshot-ajustes.webp",
+    alt: "Pantalla de ajustes de negocio de FreeTPV",
   },
 ];
 
@@ -40,7 +44,7 @@ export function Screenshots() {
             Un vistazo a FreeTPV
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Las capturas mostrarán las partes principales de la aplicación,
+            Capturas reales de las partes principales de la aplicación,
             desde la venta diaria hasta la configuración del negocio.
           </p>
         </div>
@@ -48,20 +52,18 @@ export function Screenshots() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {screenshots.map((screenshot) => (
             <div key={screenshot.id} className="group">
-              <div className="mb-4 flex aspect-video items-center justify-center overflow-hidden rounded-xl border border-border bg-muted transition-colors group-hover:border-primary/40 group-hover:bg-primary/[0.03]">
-                <div className="p-8 text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background group-hover:border-primary/30">
-                    <screenshot.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <p className="text-sm font-medium text-foreground">
-                    Captura pendiente
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {screenshot.filename}
-                  </p>
-                </div>
+              <div className="mb-4 aspect-video overflow-hidden rounded-xl border border-border bg-muted shadow-sm transition-colors group-hover:border-primary/40">
+                <img
+                  src={screenshot.src}
+                  alt={screenshot.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                />
               </div>
-              <h3 className="mb-1 font-semibold text-foreground">{screenshot.title}</h3>
+              <div className="mb-1 flex items-center gap-2">
+                <screenshot.icon className="h-4 w-4 text-primary" aria-hidden="true" />
+                <h3 className="font-semibold text-foreground">{screenshot.title}</h3>
+              </div>
               <p className="text-sm text-muted-foreground">{screenshot.description}</p>
             </div>
           ))}
