@@ -11,6 +11,9 @@ module com.mateo.freetpv {
     requires bcrypt;
     requires java.desktop;
     requires escpos.coffee;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
+
 
     opens com.mateo.freetpv.model to javafx.base;
     opens  com.mateo.freetpv.controller to javafx.fxml;

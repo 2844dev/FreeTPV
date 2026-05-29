@@ -3,13 +3,23 @@ package com.mateo.freetpv.service;
 import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
+import com.github.anastaciocintra.escpos.image.BitonalThreshold;
+import com.github.anastaciocintra.escpos.image.CoffeeImageImpl;
+import com.github.anastaciocintra.escpos.image.EscPosImage;
+import com.github.anastaciocintra.escpos.image.GraphicsImageWrapper;
 import com.github.anastaciocintra.output.PrinterOutputStream;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.mateo.freetpv.model.DatosTicket;
 import com.mateo.freetpv.model.LineaTicket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.print.PrintService;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,11 +31,14 @@ import java.util.stream.Collectors;
 import static com.mateo.freetpv.util.ConversionUtil.centimosEuros;
 
 public class ImprimirService {
-    private static final int WIDTH = 32;
+    private static int WIDTH = 32;
 
     private static final Logger log = LoggerFactory.getLogger(ImprimirService.class);
 
-    public static void imprimirTicket(PrintService printService, DatosTicket ticket) throws IOException {
+    public static void imprimirTicket(PrintService printService, DatosTicket ticket, int ancho, String codepage, boolean cortar) throws IOException {
+        WIDTH = ancho == 58 ? 32 : 48;
+
+
         PrinterOutputStream printerOutputStream = new PrinterOutputStream(printService);
         EscPos escpos = new EscPos(printerOutputStream);
 
@@ -48,9 +61,12 @@ public class ImprimirService {
         String hora = ahora.format(DateTimeFormatter.ofPattern("HH:mm"));
 
         escpos.initializePrinter();
+        EscPos.CharacterCodeTable charset = switch (codepage) {
+            case "CP850" -> EscPos.CharacterCodeTable.CP850_Multilingual;
+            default -> EscPos.CharacterCodeTable.CP858_Euro;
+        };
+        escpos.setCharacterCodeTable(charset);
 
-        // Charset / codepage para tildes y ñ
-        escpos.setCharacterCodeTable(EscPos.CharacterCodeTable.CP858_Euro);
 
         escpos.feed(1);
         escpos.writeLF(centerBold, ticket.nombreEmpresa());
@@ -131,8 +147,22 @@ public class ImprimirService {
         escpos.feed(1);
         if (ticket.mostrarWeb()) escpos.writeLF(center, ticket.web());
 
+        if (ticket.mostrarQr() && !ticket.qr().isBlank()) {
+            try {
+                BitMatrix bitMatrix = new QRCodeWriter().encode(ticket.qr(), BarcodeFormat.QR_CODE, 200, 200);
+                BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+                GraphicsImageWrapper imageWrapper = new GraphicsImageWrapper();
+                imageWrapper.setJustification(EscPosConst.Justification.Center);
+                EscPosImage escposImage = new EscPosImage(new CoffeeImageImpl(qrImage), new BitonalThreshold());
+                escpos.write(imageWrapper, escposImage);
+            } catch (WriterException e) {
+                log.error("Error al dibujar el código QR", e);
+            }
+        }
+
         escpos.feed(2);
-        escpos.cut(EscPos.CutMode.FULL);
+        if (cortar) escpos.cut(EscPos.CutMode.FULL);
         escpos.close();
     }
 

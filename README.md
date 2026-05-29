@@ -160,19 +160,34 @@ Para ejecutarlo desde IntelliJ IDEA, añade estas opciones de VM en la configura
 
 ## Capturas de pantalla
 
-> 📸 *Próximamente*
+<table>
+  <tr>
+    <td align="center">
+      <img src="landing/public/images/screenshots/screenshot-ventas.webp" alt="Pantalla de ventas de FreeTPV" width="420">
+      <br>
+      <sub>Ventas</sub>
+    </td>
+    <td align="center">
+      <img src="landing/public/images/screenshots/screenshot-cobro.webp" alt="Pantalla de cobro de FreeTPV" width="420">
+      <br>
+      <sub>Cobro</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="landing/public/images/screenshots/screenshot-productos.webp" alt="Gestión de productos en FreeTPV" width="420">
+      <br>
+      <sub>Productos</sub>
+    </td>
+    <td align="center">
+      <img src="landing/public/images/screenshots/screenshot-ajustes.webp" alt="Pantalla de ajustes de FreeTPV" width="420">
+      <br>
+      <sub>Ajustes</sub>
+    </td>
+  </tr>
+</table>
 
-<!-- Pantalla de login -->
-<!-- ![Login](images/screenshot_login.png) -->
-
-<!-- Pantalla de ventas -->
-<!-- ![Ventas](images/screenshot_ventas.png) -->
-
-<!-- Gestión de productos -->
-<!-- ![Productos](images/screenshot_productos.png) -->
-
-<!-- Ajustes -->
-<!-- ![Ajustes](images/screenshot_ajustes.png) -->
+> También hay capturas en modo oscuro disponibles en la [web del proyecto](https://freetpv.pages.dev).
 
 ---
 

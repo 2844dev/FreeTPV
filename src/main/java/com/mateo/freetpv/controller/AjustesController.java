@@ -122,7 +122,7 @@ public class AjustesController {
                         600
                 );
 
-                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket, ajustesService.getImpresoraAncho(), ajustesService.getImpresoraCodepage(), ajustesService.getImpresoraCortarPapel());
             } catch (IOException e) {
                 log.error("No se pudo imprimir una prueba", e);
             }

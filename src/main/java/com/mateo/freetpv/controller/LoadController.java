@@ -3,12 +3,17 @@ package com.mateo.freetpv.controller;
 import com.mateo.freetpv.FreeTPVApplication;
 import com.mateo.freetpv.dao.UsuarioDAO;
 import com.mateo.freetpv.service.AjustesService;
+import com.mateo.freetpv.service.BackupService;
 import com.mateo.freetpv.util.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +24,12 @@ import java.io.IOException;
 public class LoadController {
 
     private static final Logger log = LoggerFactory.getLogger(LoadController.class);
-    @FXML
-    private TableColumn<?, ?> cantidadTableColumn;
 
     @FXML
     private Button crearButton;
 
     @FXML
     private Button importarButton;
-
-    @FXML
-    private TableView<?> importarTableView;
 
     @FXML
     private PasswordField newPinField;
@@ -41,17 +41,18 @@ public class LoadController {
     private Label errorLabel;
 
     @FXML
-    private TableColumn<?, ?> resultadoTableColumn;
-
-    @FXML
     private Button seleccionarButton;
 
     @FXML
-    private TableColumn<?, ?> verTableColumn;
+    private Label seleccionadoLabel;
 
     private final String path = System.getProperty("user.home") + "/.freetpv";
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+    private final BackupService backupService = new BackupService();
+
+    private File archivoSeleccionado;
 
     public void initialize() {
         new File(path).mkdirs();
@@ -70,6 +71,29 @@ public class LoadController {
             return;
         }
         Platform.runLater(() -> cargarLogin());
+    }
+
+    @FXML
+    public void seleccionarBackup() {
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Copia de seguridad", "*.tpv"));
+        File archivo = fc.showOpenDialog(crearButton.getScene().getWindow());
+        if (archivo != null && archivo.exists()) {
+            archivoSeleccionado = archivo;
+            seleccionadoLabel.setText("Has seleccionado " + archivo.getName());
+            importarButton.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void importarBackup() {
+        if (archivoSeleccionado == null) return;
+
+        if (backupService.restaurarBackup(archivoSeleccionado)) {
+            initialize();
+        } else {
+            seleccionadoLabel.setText("No se ha podido importar la copia de seguridad");
+        }
     }
 
     private void cargarLogin() {
