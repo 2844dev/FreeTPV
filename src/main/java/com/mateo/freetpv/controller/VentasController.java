@@ -269,8 +269,10 @@ public class VentasController {
         Optional<PrintService> impresora = buscarImpresora();
         if (impresora.isPresent()) {
             try {
-                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
-                ImprimirService.abrirCajon(impresora.get());
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket, ajustesService.getImpresoraAncho(), ajustesService.getImpresoraCodepage(), ajustesService.getImpresoraCortarPapel());
+                if (ajustesService.getImpresoraAbrirCajon()) {
+                    ImprimirService.abrirCajon(impresora.get());
+                }
             } catch (IOException e) {
                 log.error("Error al imprimir ticket", e);
             }
@@ -296,10 +298,7 @@ public class VentasController {
         Optional<PrintService> impresora = buscarImpresora();
         if (impresora.isPresent()) {
             try {
-                ImprimirService.imprimirTicket(impresora.get(), datosTicket);
-                if (ajustesService.getImpresoraAbrirCajon()) {
-                    ImprimirService.abrirCajon(impresora.get());
-                }
+                ImprimirService.imprimirTicket(impresora.get(), datosTicket, ajustesService.getImpresoraAncho(), ajustesService.getImpresoraCodepage(), ajustesService.getImpresoraCortarPapel());
             } catch (IOException e) {
                 log.error("Error al imprimir preticket", e);
             }
